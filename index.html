@@ -170,6 +170,20 @@ a{color:inherit;text-underline-offset:3px}
 .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+/* 직관 준비 */
+.pg{display:flex;flex-direction:column;gap:30px;min-width:0}
+.prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+.prep-park dt{color:var(--pencil)}
+.list .row.tip{grid-template-columns:minmax(0,1fr)}
+.row.tip b{display:block}
+.row .rec{font-size:var(--fs-cap);color:var(--team-ink);margin-left:6px;font-weight:400}
+.check{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer}
+.check:first-child{border-top:0}
+.check input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--team-ink)}
+.check b{display:block;font-weight:500}
+.check span{font-size:var(--fs-cap);color:var(--pencil)}
+.check:has(input:checked) b{color:var(--pencil);text-decoration:line-through}
+.check:has(input:focus-visible){outline:2px solid var(--team-ink);outline-offset:-2px}
 /* 직관 기록 */
 .mini .pk{color:var(--tk-faint)}
 .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
@@ -225,6 +239,10 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   .page{grid-column:1/-1}
   #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
   #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
+  /* 직관 준비: 왼쪽 쪽 가는 법·좌석 / 오른쪽 쪽 준비물·응원 */
+  #p-prep{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
+  #p-prep>.pg:first-child{padding-right:36px}
+  #p-prep>.pg+.pg{padding-left:36px;border-left:1px solid var(--line)}
   /* 직관 기록: 왼쪽 쪽 붙인 티켓 / 오른쪽 쪽 티켓 붙이기 */
   #p-log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
   #p-log>section:first-child{padding-right:36px}
@@ -377,7 +395,31 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   </div>
 
   <!-- 아직 만들지 않은 탭 -->
-  <div class="page" id="p-prep" hidden><section aria-labelledby="h-prep"><div class="sec-head"><h2 id="h-prep">직관 준비</h2></div><p class="empty">구장 가는 법, 좌석 고르기, 준비물, 응원 방법을 준비하고 있어요.</p></section></div>
+  <!-- 직관 준비: 구장 가는 법 · 좌석 · 준비물 · 응원 -->
+  <div class="page" id="p-prep" hidden>
+    <div class="pg">
+      <section aria-labelledby="h-go">
+        <div class="sec-head"><h2 id="h-go">구장 가는 법</h2><select id="prep-park" aria-label="구장"></select></div>
+        <dl class="info prep-park" id="prep-park-info"></dl>
+        <p class="fine">구단 안내와 보도 기준(2026.10.13 확인)이에요. 노선과 주차는 바뀔 수 있으니 출발 전에 지도 앱으로 한 번 더 확인하세요.</p>
+      </section>
+      <section aria-labelledby="h-seat">
+        <div class="sec-head"><h2 id="h-seat">좌석 고르기</h2></div>
+        <div class="list" id="prep-seats"></div>
+      </section>
+    </div>
+    <div class="pg">
+      <section aria-labelledby="h-bag">
+        <div class="sec-head"><h2 id="h-bag">준비물</h2><span class="note" id="prep-count"></span></div>
+        <div class="list" id="prep-check"></div>
+        <p class="fine">음료·주류 반입 기준은 구장마다 달라요. 유리병은 대부분 들고 갈 수 없고, 캔은 2023년부터 다시 들고 갈 수 있게 됐어요. 양 제한이 있으니 구단 공지를 확인하세요.</p>
+      </section>
+      <section aria-labelledby="h-cheer">
+        <div class="sec-head"><h2 id="h-cheer">응원 방법</h2></div>
+        <div class="list" id="prep-cheer"></div>
+      </section>
+    </div>
+  </div>
   <!-- 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저에만 저장 -->
   <div class="page" id="p-log" hidden>
     <section aria-labelledby="h-log">
@@ -488,7 +530,7 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  renderTicket(t);renderClubs(t);setDiaryTeam(t);
+  renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);
 }
 
 // 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 오픈 시각은 확인된 구단만
@@ -599,6 +641,60 @@ $('log-diary').addEventListener('click',ev=>{
   DIARY=DIARY.filter(e=>String(e.id)!==b.dataset.peel);saveDiary();renderDiary();
 });
 document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{go('log');F.date.focus()}));
+
+// 직관 준비: 구장 가는 법 (구단 안내·보도 기준 2026.10.13). 응원석 방향을 확인 못 한 구장은 null
+const PARK_INFO={
+  '잠실야구장':{go:'지하철 2·9호선 종합운동장역',home:'1루 (LG·두산 모두 홈경기 때 1루)'},
+  '고척스카이돔':{go:'지하철 1호선 구일역에서 걸어서 약 3분',car:'경기 날은 구장 일반 주차가 안 돼요. 대중교통을 이용하세요',home:'1루'},
+  '인천SSG랜더스필드':{go:'인천 1호선 문학경기장역',home:'1루'},
+  '수원KT위즈파크':{go:'1호선 수원역·화서역·성균관대역에서 버스나 택시',car:'경기 날은 사전 예약한 차만 주차할 수 있어요',home:'1루'},
+  '대전한화생명볼파크':{go:'시내버스 한밭종합운동장 정류장',home:'1루'},
+  '대구삼성라이온즈파크':{go:'대구 2호선 대공원역',home:'3루 (대부분의 구장과 반대)'},
+  '광주기아챔피언스필드':{go:'시내버스 챔피언스필드 정류장. 광주역·광천터미널·광주송정역에서 버스나 택시',home:'3루 (대부분의 구장과 반대)'},
+  '사직야구장':{go:'부산 3호선 사직역·종합운동장역',car:'경기가 끝나면 역 주변이 붐벼요. 여유 있게 움직이세요',home:null},
+  '창원NC파크':{go:'시내버스 창원NC파크·마산회원구청 정류장',car:'주말 셔틀버스는 구단 공지를 확인하세요',home:'1루'}
+};
+const SEATS=[
+  ['응원석','응원단상 앞. 서서 응원가를 따라 부르며 봐요',true],
+  ['내야석','투수와 타자가 가까이 보여서 경기 흐름을 보기 좋아요'],
+  ['테이블석','앞에 테이블이 있어 음식 먹으며 보기 편해요. 값은 비싼 편'],
+  ['외야석','값이 싸고 홈런 공이 날아오기도 해요. 선수는 멀리 보여요'],
+  ['원정팬이라면','홈 응원석 반대쪽 내야에 원정 팬이 모여요']
+];
+const PREP_ITEMS=[
+  ['ticket','모바일 티켓','예매처 앱에 로그인돼 있는지 미리 확인'],['battery','보조배터리','티켓 QR과 사진 찍느라 금방 닳아요'],
+  ['jacket','얇은 겉옷','해가 지면 쌀쌀해요'],['rain','우비','비 예보가 있으면. 우산은 뒷자리 시야를 가려요'],
+  ['tissue','물티슈·휴지','의자 닦고 음식 먹을 때'],['cheer','응원 도구','유니폼, 응원 타올 (구장 굿즈숍에서도 팔아요)'],
+  ['sun','모자·선크림','낮 경기라면'],['trash','작은 봉투','쓰레기는 들고 나와요']
+];
+const CLUB_URL={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
+  '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
+let PREP_DONE={};try{PREP_DONE=JSON.parse(localStorage.getItem('prep')||'{}')||{}}catch(e){}
+const prepPark=$('prep-park');
+prepPark.innerHTML=PARKS.map(p=>`<option value="${p}">${PARK_SHORT[p]} · ${p}</option>`).join('');
+function renderPark(){
+  const p=PARK_INFO[prepPark.value];
+  $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
+    <dt>홈 응원석</dt><dd>${p.home||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>`;
+}
+prepPark.addEventListener('change',renderPark);
+$('prep-seats').innerHTML=SEATS.map(([k,v,rec])=>`<div class="row tip"><div><b>${k}${rec?'<span class="rec">처음이라면</span>':''}</b><span>${v}</span></div></div>`).join('');
+$('prep-check').innerHTML=PREP_ITEMS.map(([id,k,v])=>`<label class="check"><input type="checkbox" data-id="${id}"${PREP_DONE[id]?' checked':''}><div><b>${k}</b><span>${v}</span></div></label>`).join('');
+const prepCount=()=>{$('prep-count').textContent=`${PREP_ITEMS.filter(([id])=>PREP_DONE[id]).length}/${PREP_ITEMS.length} 챙김`};
+$('prep-check').addEventListener('change',e=>{
+  PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();
+  try{localStorage.setItem('prep',JSON.stringify(PREP_DONE))}catch(err){}
+});
+prepCount();
+function setPrepTeam(t){
+  prepPark.value=t[3];renderPark();
+  $('prep-cheer').innerHTML=[
+    ['응원단상 가까이','응원단장과 치어리더를 따라 하면 처음이어도 금방 익숙해져요'],
+    ['응원가는 공격 때','우리 팀 공격 때 선수별 응원가가 나와요. 한두 곡만 알아 가도 충분해요'],
+    ['파울볼 조심','내야석에는 파울볼이 자주 날아와요. 공이 뜨면 눈을 떼지 마세요'],
+    ['응원가 미리 듣기',`<a href="${CLUB_URL[t[1]]}" target="_blank" rel="noopener">${t[0]} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
+  ].map(([k,v])=>`<div class="row tip"><div><b>${k}</b><span>${v}</span></div></div>`).join('');
+}
 
 let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved=s}catch(e){}
 sel.value=saved;apply(saved);
