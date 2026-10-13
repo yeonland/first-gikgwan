@@ -288,7 +288,7 @@ input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
 .fig .tx{font-family:var(--sans);font-size:12px;fill:var(--pencil)}
 .fig .tx.em{fill:var(--team-ink);font-weight:700}
 .fig figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
-/* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기장 장면 + 규정집 조항 */
+/* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기 장면 + 규정집 조항 */
 .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
@@ -465,7 +465,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   <div class="page" id="p-rule" hidden>
     <section aria-labelledby="h-rule">
       <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note" id="rule-count"></span></div>
-      <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기장 장면과 규정집 조항이 보여요.</p>
+      <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기 장면과 규정집 조항이 보여요.</p>
       <div class="chips" role="group" aria-label="분류별로 보기" id="rule-chips"></div>
       <div class="rule-list" id="rule-list"></div>
       <p class="fine" id="rule-fine"></p>
@@ -904,7 +904,7 @@ $('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 let ruleCat='전체';
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
-  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" data-start="${r.video.start||0}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}${r.video.start?` · ${r.video.start}초부터`:""}<br>${esc(r.video.title)}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" data-start="${r.video.start||0}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}${r.video.start?` · ${r.video.start}초부터`:""}<br>${esc(r.video.title)}${r.video.game?`<br>경기: ${esc(r.video.game)}`:''}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
