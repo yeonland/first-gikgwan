@@ -928,6 +928,16 @@ function renderRules(){
   $('rule-list').innerHTML=[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('');
   document.querySelectorAll('#rule-list .rcard').forEach(d=>{if(open.has(d.dataset.id))d.open=true});
 }
+// 룰 카드는 한 번에 하나만 펼침. 닫힌 카드는 새로 그려서 보던 영상도 멈춤 (toggle은 버블링이 안 돼서 캡처로 받음)
+$('rule-list').addEventListener('toggle',e=>{
+  const d=e.target;if(!d.classList||!d.classList.contains('rcard'))return;
+  if(d.open){
+    document.querySelectorAll('#rule-list .rcard[open]').forEach(x=>{if(x!==d)x.open=false});
+    requestAnimationFrame(()=>{const t=d.getBoundingClientRect().top;if(t<0||t>innerHeight*.6)d.scrollIntoView({block:'start',behavior:'smooth'})});
+  }else if(d.querySelector('iframe')){
+    const fresh=document.createElement('div');fresh.innerHTML=ruleCard(D.ruleBy[d.dataset.id]);d.replaceWith(fresh.firstElementChild);
+  }
+},true);
 $('rule-list').addEventListener('click',e=>{
   const t=e.target.closest('.vid-tabs .tab');
   if(t){const box=t.closest('.vids'),r=D.ruleBy[t.closest('.rcard').dataset.id];
