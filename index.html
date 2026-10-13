@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>첫직관</title>
+<!-- 본문 글꼴은 페이지를 그리기 전에 미리 받아 둠 (휴대폰에서 시스템 글꼴로 오래 보이지 않게) -->
+<link rel="preload" href="fonts/KBO-Dia-Gothic_medium.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/KBO-Dia-Gothic_bold.woff" as="font" type="font/woff" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap">
 <style>
 /* 기본 리셋: hidden 속성이 display 규칙에 덮이지 않게 */
@@ -12,8 +16,8 @@ body{margin:0}
 img,svg{max-width:100%}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
-/* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 로컬 파일이 없으면 눈누 CDN에서 불러옴 */
-@font-face{font-family:"GangwonEducationSaeum";src:url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
+/* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 눈누 CDN을 먼저, 인터넷이 없을 때만 로컬 파일 */
+@font-face{font-family:"GangwonEducationSaeum";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
 /* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
 :root{
   --team:#000000;               /* 내 팀 컬러, JS가 바꿈 */
