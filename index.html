@@ -627,7 +627,7 @@ const SPORTS=[
   {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket'},
   {id:'hockey',name:'아이스하키',league:'아시아리그',icon:'puck'},
   {id:'handball',name:'핸드볼',league:'H리그',icon:'hand'},
-  {id:'soccer',name:'축구',league:'K리그1',icon:'soccer'}
+  {id:'soccer',name:'축구',league:'K리그1',icon:'soccer',ready:true}
 ];
 const SPORT=Object.fromEntries(SPORTS.map(s=>[s.id,s]));
 const READY=SPORTS.filter(s=>s.ready).map(s=>s.id);
