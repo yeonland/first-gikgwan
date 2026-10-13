@@ -8,7 +8,9 @@
 /* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
 :root{
   --team:#C30452;               /* 내 팀 컬러, JS가 바꿈 */
-  --team-ink:var(--team);       /* 글자로 쓸 때 */
+  /* 바탕 위에 선·글자로 쓸 팀 색. JS가 바탕과 대비 3:1 이상인 색을 골라 넣음 (주색 → 보조색 → 밝게 섞은 주색) */
+  --team-ink-light:var(--team); --team-ink-dark:#e7e9ea;
+  --team-ink:var(--team-ink-light);
   --paper:#f5f5f2; --ink:#1d2024; --pencil:#6b7177; --line:#d3d5d0; --surface:#ffffff;
   --tk-paper:#fdfdfb; --tk-ink:#1d2024; --tk-faint:#8a8f93;   /* 티켓은 실물 종이라 두 테마 모두 밝게 */
   --led-bg:#0d0e0b; --led:#ffb238; --led-dim:#8f7d55;          /* 전광판도 실물이라 두 테마 모두 같게 */
@@ -20,12 +22,12 @@
   --ball:var(--paper); --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55;   /* 로고 속 공 */
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
+  --team-ink:var(--team-ink-dark);
   --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
   --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
   --tape:rgba(190,182,150,.55); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
+  --team-ink:var(--team-ink-dark);
   --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
   --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
   --tape:rgba(190,182,150,.55); color-scheme:dark}
@@ -120,7 +122,7 @@ select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--
 .rules-body{padding:0 14px 14px}
 .tabs{display:flex;border-bottom:1.5px solid var(--ink)}
 .tab{font-family:var(--sans);font-size:13px;color:var(--pencil);background:transparent;border:0;padding:8px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
-.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team)}
+.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team-ink)}
 .card{padding:12px 2px 0;display:flex;flex-direction:column;gap:6px}
 .card .k{font-size:11px;color:var(--team-ink);letter-spacing:.06em}
 .card p{margin:0;font-size:14px}
@@ -128,7 +130,7 @@ select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--
 nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px))}
 nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:12px}
 nav li{padding:8px 0;color:var(--pencil)}
-nav li.on{color:var(--ink);font-weight:700;box-shadow:inset 0 2px 0 var(--team)}
+nav li.on{color:var(--ink);font-weight:700;box-shadow:inset 0 2px 0 var(--team-ink)}
 
 button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
@@ -277,19 +279,35 @@ document.querySelectorAll('.js-dday').forEach(el=>{
   el.textContent=dday(iso);
 });
 
+// [이름, 줄임, 주색, 구장, 보조색] — 구단 컬러는 근사값, 출시 전 BI 가이드로 확인
 const TEAMS=[
- ["LG 트윈스","LG","#C30452","잠실야구장"],["두산 베어스","두산","#1A1748","잠실야구장"],
- ["키움 히어로즈","키움","#820024","고척스카이돔"],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드"],
- ["KT wiz","KT","#231F20","수원KT위즈파크"],["한화 이글스","한화","#F37321","대전한화생명볼파크"],
- ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크"],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드"],
- ["롯데 자이언츠","롯데","#041E42","사직야구장"],["NC 다이노스","NC","#315288","창원NC파크"]
+ ["LG 트윈스","LG","#C30452","잠실야구장",null],["두산 베어스","두산","#1A1748","잠실야구장","#ED1C24"],
+ ["키움 히어로즈","키움","#820024","고척스카이돔",null],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드",null],
+ ["KT wiz","KT","#231F20","수원KT위즈파크","#EB1C24"],["한화 이글스","한화","#F37321","대전한화생명볼파크",null],
+ ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크",null],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드",null],
+ ["롯데 자이언츠","롯데","#041E42","사직야구장","#D00F31"],["NC 다이노스","NC","#315288","창원NC파크","#AF917B"]
 ];
+
+// 대비 계산 (WCAG): 선·아이콘은 3:1 이상이면 구분됨
+const BG_LIGHT='#f5f5f2',BG_DARK='#151618';
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lum=h=>{const [r,g,b]=rgb(h).map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*r+.7152*g+.0722*b};
+const contrast=(a,b)=>{const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p);return (x+.05)/(y+.05)};
+const mix=(h,to,t)=>'#'+rgb(h).map(v=>Math.round(v+(to-v)*t).toString(16).padStart(2,'0')).join('');
+function pickInk(main,sub,bg){
+  const to=lum(bg)>.5?0:255;   // 밝은 바탕이면 어둡게, 어두운 바탕이면 밝게 섞음
+  const tries=[main,sub,...[.2,.35,.5,.65].map(t=>mix(main,to,t))].filter(Boolean);
+  return tries.find(c=>contrast(c,bg)>=3)||mix(main,to,.8);
+}
 const sel=document.getElementById('team');
 TEAMS.forEach((t,i)=>sel.add(new Option(t[0],i)));
 const $=id=>document.getElementById(id);
 function apply(i){
   const t=TEAMS[i],o1=TEAMS[(+i+1)%10],o2=TEAMS[(+i+3)%10],o3=TEAMS[(+i+7)%10];
-  document.documentElement.style.setProperty('--team',t[2]);
+  const root=document.documentElement.style;
+  root.setProperty('--team',t[2]);
+  root.setProperty('--team-ink-light',pickInk(t[2],t[4],BG_LIGHT));
+  root.setProperty('--team-ink-dark',pickInk(t[2],t[4],BG_DARK));
   $('home').textContent=t[0];$('away').textContent=o1[0];$('park').textContent=t[3];
   $('d1').textContent='vs '+o2[1];$('d2').textContent='vs '+o3[1];
 }
