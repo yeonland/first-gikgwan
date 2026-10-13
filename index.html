@@ -455,7 +455,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <ol class="steps">
         <li><div><b>홈팀부터 확인</b><span>예매처는 홈팀 기준이에요. 원정팀 팬도 홈팀 예매처에서 사요</span></div></li>
         <li><div><b>예매처 가입·로그인</b><span>오픈 당일 가입하면 늦어요. 전날 미리 해 두세요</span></div></li>
-        <li><div><b>오픈 시각 확인</b><span>보통 경기 7~10일 전. 구단마다 달라요 (구단별 예매처 참고)</span></div></li>
+        <li><div><b>오픈 시각 확인</b><span>경기 며칠 전에 열려요. 구단마다 달라요 (구단별 예매처 참고)</span></div></li>
         <li><div><b>오픈 10분 전 접속</b><span>인기 경기는 대기열이 생기고 몇 분 만에 매진돼요</span></div></li>
         <li><div><b>좌석 고르고 결제</b><span>처음이면 홈팀 쪽 응원석이 분위기를 느끼기 좋아요</span></div></li>
         <li><div><b>모바일 티켓 확인</b><span>입장할 때 예매처 앱의 QR을 보여 주면 돼요</span></div></li>
@@ -481,11 +481,11 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   </div>
 
   <!-- 아직 만들지 않은 탭 -->
-  <!-- 직관 준비: 구장 가는 법 · 좌석 · 준비물 · 응원 -->
+  <!-- 직관 준비: 경기장 가는 법 · 좌석 · 준비물 · 응원 -->
   <div class="page" id="p-prep" hidden>
     <div class="pg">
       <section aria-labelledby="h-go">
-        <div class="sec-head"><h2 id="h-go">구장 가는 법</h2><select id="prep-park" aria-label="구장"></select></div>
+        <div class="sec-head"><h2 id="h-go">경기장 가는 법</h2><select id="prep-park" aria-label="경기장"></select></div>
         <figure class="park-map" id="park-map"></figure>
         <dl class="info prep-park" id="prep-park-info"></dl>
         <p class="fine">구단 안내와 보도 기준(2026.10.13 확인)이에요. 노선과 주차는 바뀔 수 있으니 출발 전에 지도 앱으로 한 번 더 확인하세요.</p>
@@ -524,7 +524,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <form class="add-form" id="add-form" novalidate>
         <label>날짜<input type="date" name="date" required></label>
         <div class="vs-in"><label>홈팀<select name="home"></select></label><span aria-hidden="true">vs</span><label>원정팀<select name="away"></select></label></div>
-        <label>구장<select name="park"></select></label>
+        <label>경기장<select name="park"></select></label>
         <fieldset><legend id="score-legend">점수 (선택)</legend>
           <div class="score-in"><label><span id="hs-label">홈</span><input type="number" name="hs" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label><span id="as-label">원정</span><input type="number" name="as" min="0" max="99" inputmode="numeric"></label></div>
         </fieldset>
@@ -875,7 +875,7 @@ $('log-diary').addEventListener('click',ev=>{
 });
 document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{go('log');F.date.focus()}));
 
-// 직관 준비: 구장 가는 법 · 좌석 · 준비물(종목별로 따로 저장) · 응원
+// 직관 준비: 경기장 가는 법 · 좌석 · 준비물(종목별로 따로 저장) · 응원
 let PREP_DONE={};
 const prepPark=$('prep-park');
 function renderPark(){
@@ -897,7 +897,7 @@ function renderMap(){
   const [lx,ly]=D.parkGeo[picked]?proj(D.parkGeo[picked]):[0,0];
   const label=D.parkGeo[picked]?`<text class="lb" x="${lx.toFixed(1)}" y="${(ly-13).toFixed(1)}" text-anchor="middle">${esc(D.parkShort[picked])}</text>`:'';
   $('park-map').innerHTML=`<svg viewBox="-8 -8 316 ${KOREA.H+16}" role="group" aria-label="${SP.name} 경기장 지도"><path class="land" d="${KOREA.d}"/>${pins}${label}</svg>
-    <figcaption>점을 누르면 아래 가는 길이 바뀌어요. 점선 동그라미는 내 팀 홈. 지도: Natural Earth</figcaption>`;
+    <figcaption>점을 누르면 아래 가는 길이 바뀌어요. 점선 동그라미는 내 팀 홈. 지도 윤곽: Natural Earth</figcaption>`;
 }
 const pickPin=e=>{const g=e.target.closest('.pin');if(!g)return;prepPark.value=g.dataset.park;renderPark();renderMap();
   const n=$('park-map').querySelector(`.pin[data-park="${CSS.escape(g.dataset.park)}"]`);n&&n.focus()};
