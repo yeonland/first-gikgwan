@@ -1,5 +1,5 @@
 <title>첫직관</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Gaegu:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap">
 <style>
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
@@ -17,8 +17,8 @@
   --tape:rgba(214,206,170,.72);
   --sans:"KBO Dia Gothic","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
   --dot:"DotGothic16",ui-monospace,monospace;
-  --hand:"Gaegu","Nanum Pen Script",cursive;
-  --logo:"GangwonEducationSaeum","Gaegu",cursive;
+  --hand:var(--logo);           /* 손글씨 메모도 로고와 같은 강원교육새음 */
+  --logo:"GangwonEducationSaeum","Nanum Pen Script",cursive;
   --ball:var(--paper); --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55;   /* 로고 속 공 */
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -107,7 +107,7 @@ select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--
 .mini .band{padding:4px 10px;font-size:10px}
 .mini .in{padding:8px 10px 10px;font-size:12px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .mini .in b{font-size:14px}
-.memo{font-family:var(--hand);font-size:18px;line-height:1.25;color:var(--ink);padding-inline:2px}
+.memo{font-family:var(--hand);font-size:19px;line-height:1.3;color:var(--ink);padding-inline:2px}
 .slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:13px;padding:14px;text-align:center;cursor:pointer}
 
 /* rule card: 홈에서는 접어 두고 다음 경기 바로 아래에 */
