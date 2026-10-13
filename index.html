@@ -181,6 +181,7 @@ a{color:inherit;text-underline-offset:3px}
 /* 종목: 처음 설정(여러 종목 + 종목마다 내 팀), 고른 종목이 2개 이상이면 머리말 아래 종목 칩 */
 header{flex-wrap:wrap}
 .sport-bar{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px}
+.chip.add-sport{border-style:dashed}
 .setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
 .setup::backdrop{background:rgba(0,0,0,.45)}
 .setup form{display:flex;flex-direction:column;gap:12px}
@@ -670,12 +671,14 @@ function useSport(id){
   sel.innerHTML=teamOptions(D.teams);
   sel.setAttribute('aria-label',`내 ${SP.name}팀`);sel.value=MY[id];
   const mine=SPORTS.filter(s=>s.id in MY);
-  $('sport-bar').hidden=mine.length<2;
-  $('sport-bar').innerHTML=mine.map(s=>`<button class="chip" type="button" data-sport="${s.id}" aria-pressed="${s.id===id}">${s.name}</button>`).join('');
+  // 종목 칩은 늘 보임: 고른 종목 + 끝에 '+ 종목'(종목·내 팀 고르기 열기)
+  $('sport-bar').hidden=false;
+  $('sport-bar').innerHTML=mine.map(s=>`<button class="chip" type="button" data-sport="${s.id}" aria-pressed="${s.id===id}">${s.name}</button>`).join('')
+    +'<button class="chip add-sport" type="button" data-open-setup aria-label="종목 추가·바꾸기">+ 종목</button>';
   renderSportPages();renderOthers();apply(MY[id]);
 }
 sel.addEventListener('change',()=>{MY[cur]=+sel.value;store('myTeams',MY);apply(MY[cur])});
-$('sport-bar').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur)useSport(b.dataset.sport)});
+$('sport-bar').addEventListener('click',e=>{if(e.target.closest('[data-open-setup]')){openSetup();return}const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur)useSport(b.dataset.sport)});
 
 // 홈 "다른 종목 내 팀": 고른 다른 종목마다 내 팀의 다음 경기. 누르면 그 종목으로 바꿈
 function renderOthers(){
