@@ -904,7 +904,7 @@ $('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 let ruleCat='전체';
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
-  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}<br>${esc(r.video.title)}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" data-start="${r.video.start||0}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}${r.video.start?` · ${r.video.start}초부터`:""}<br>${esc(r.video.title)}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
@@ -916,7 +916,7 @@ function renderRules(){
 }
 $('rule-list').addEventListener('click',e=>{
   const b=e.target.closest('.vid-btn');if(!b)return;
-  b.outerHTML=`<iframe class="vid-frame" src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0" title="${b.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  b.outerHTML=`<iframe class="vid-frame" src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0&start=${+b.dataset.start||0}" title="${b.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
 });
 $('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.textContent;renderRules()});
 
