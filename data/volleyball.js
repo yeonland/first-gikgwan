@@ -113,7 +113,7 @@ const rules=[
   field:'공격이나 블로킹을 하다가 손이나 몸이 두 안테나(네트 양 끝에 세운 막대) 사이의 네트에 닿으면 상대가 1점을 얻어요.',
   book:[['11.3.1','볼 플레이 중 네트 접촉']]},
  {id:'inout',name:'인·아웃과 터치아웃',cats:['헷갈리는 룰'],
-  video:{id:'O2MykN0DOdA',by:'SPOTV',len:'1분 35초',title:'애매한 상황, 비디오 판독 결과 터치아웃 판정',game:'2014.03.04 (팀 확인 중)'},
+  video:{id:'O2MykN0DOdA',by:'SPOTV',len:'1분 35초',title:'애매한 상황, 비디오 판독 결과 터치아웃 판정',game:'2014.03.04 · V-리그'},
   easy:'공이 선에 조금이라도 닿으면 인, 완전히 밖이면 아웃이에요.',
   field:'라인 위에 떨어져도 인이에요. 공격한 공이 수비 선수 손에 맞고 밖으로 나가면 마지막에 건드린 쪽이 실점해서 공격팀 점수예요(터치아웃). 손에 닿았는지는 비디오 판독으로 확인하기도 해요.',
   book:[['8.3','볼 인'],['8.4','볼 아웃']]},
@@ -134,7 +134,7 @@ const parkInfo={
   '인천계양체육관':{go:'지하철역과 멀어요. 인천 1호선 계산역에서 버스(88·302번 등)',home:null},
   '천안유관순체육관':{go:'천안종합운동장 안. 천안아산역에서 차로 약 7분',home:null},
   '부산강서체육관':{go:'부산 3호선 체육공원역 1번 출구에서 걸어서 약 5분',home:null},
-  '대전충무체육관':{go:null,home:null},
+  '대전충무체육관':{go:'대전 한화생명볼파크 바로 옆. 시내버스 한밭종합운동장 정류장',home:null},
   '수원체육관':{go:'수원종합운동장 안. 1호선 화서역에서 버스나 택시',home:null},
   '평택이충문화체육관':{go:'1호선 서정리역·송탄역 또는 SRT 평택지제역에서 버스나 택시',car:'KB손해보험의 이번 시즌 임시 홈이에요',home:null},
   '서울장충체육관':{go:'지하철 3호선 동대입구역 5번 출구와 바로 이어져요',home:null},
@@ -159,6 +159,8 @@ const parkGeo={
 };
 // 지도 앱 검색어가 경기장 이름과 다른 곳
 const mapQuery={"평택이충문화체육관":"평택 이충문화체육센터","SOOP 스타디움":"광주 염주종합체육관","부산강서체육관":"부산 강서실내체육관","수원체육관":"수원실내체육관","화성종합실내체육관":"화성종합경기타운 실내체육관"};
+// 홈 응원석: 체육관마다 달라서 따로 적지 않고 안내만
+const homeSeatNote='체육관마다 달라요. 예매처 좌석도에서 응원석 위치를 보세요';
 const seats=[
   ['응원석','응원단 앞. 응원가에 맞춰 일어나 응원해요',true],
   ['코트 옆 좌석','선수가 바로 앞에 보여요. 공이 날아오기도 하니 조심',],
@@ -185,5 +187,5 @@ const diaryExamples=[['2026-04-01',1,3,1,'처음 본 배구. 랠리가 길어서
 const scoreLabel='세트';
 
 return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
+  parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();
