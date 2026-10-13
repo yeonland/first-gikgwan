@@ -633,7 +633,8 @@ const SPORT=Object.fromEntries(SPORTS.map(s=>[s.id,s]));
 const READY=SPORTS.filter(s=>s.ready).map(s=>s.id);
 window.SPORT_DATA=window.SPORT_DATA||{};
 const loadSport=id=>SPORT_DATA[id]?Promise.resolve():new Promise((ok,no)=>{
-  const s=document.createElement('script');s.src=`data/${id}.js`;s.onload=ok;s.onerror=()=>no(new Error(id));document.head.append(s);
+  const s=document.createElement('script');s.src=`data/${id}.js?v=${Math.floor(Date.now()/60000)}`;   // 1분마다 바뀌는 번호: 업데이트 뒤 옛 데이터가 남지 않게 (사이트는 파일을 10분 동안 브라우저에 남김)
+  s.onload=ok;s.onerror=()=>no(new Error(id));document.head.append(s);
 });
 // 처음 쓰는 종목 데이터에 찾아보기 표를 붙여 둠
 function prepData(id){
