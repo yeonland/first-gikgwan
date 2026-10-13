@@ -370,13 +370,13 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note" id="next-note"></span></div>
     <article class="ticket">
       <div class="t-main">
-        <div class="band"><span id="tk-round">WILD CARD · G1</span><span>ADMIT ONE</span></div>
+        <div class="band"><span id="tk-round"></span><span>입장권</span></div>
         <div class="t-body">
           <div class="match"><span id="home">LG 트윈스</span><i id="vs">VS</i><span id="away">두산 베어스</span></div>
           <div class="led">
-            <span><small>DATE</small><b id="tk-date">10.14 WED</b></span>
-            <span><small>TIME</small><b id="tk-time">--:--</b></span>
-            <span class="dd"><small>D-DAY</small><b id="tk-dday"></b></span>
+            <span><small id="tk-date-lb">날짜</small><b id="tk-date">--.--</b></span>
+            <span><small>시간</small><b id="tk-time">--:--</b></span>
+            <span class="dd"><small>남은 날</small><b id="tk-dday"></b></span>
           </div>
           <dl class="info" id="tk-info"></dl>
         </div>
@@ -546,16 +546,18 @@ const midnight=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 function dday(iso){
   const [y,m,d]=iso.split('-').map(Number);
   const diff=Math.round((new Date(y,m-1,d)-midnight)/86400000);
-  return diff>0?`D-${diff}`:diff===0?'D-DAY':'END';
+  return diff>0?`D-${diff}`:diff===0?'D-DAY':`D+${-diff}`;
 }
 const fillDday=root=>root.querySelectorAll('.js-dday').forEach(el=>{
   const iso=el.dataset.date||el.closest('[data-date]').dataset.date;
   el.textContent=dday(iso);
 });
 fillDday(document);
-const DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const DOW=['일','월','화','수','목','금','토'];
+const dowOf=iso=>{const [y,m,d]=iso.split('-').map(Number);return DOW[new Date(y,m-1,d).getDay()]};
 // 전광판은 숫자만: 날짜·시간이 발표 전이면 --.-- / --:--
-const ledDate=iso=>{if(!iso)return '--.--';const [y,m,d]=iso.split('-').map(Number);return `${pad(m)}.${pad(d)} ${DOW[new Date(y,m-1,d).getDay()]}`};
+const ledDate=iso=>{if(!iso)return '--.--';const [,m,d]=iso.split('-');return `${m}.${d}`};   // 전광판: 09.14
+const bandDate=iso=>`${ledDate(iso)} (${dowOf(iso)})`;   // 티켓 띠: 09.14 (월)
 
 // 대비 계산 (WCAG): 선·아이콘은 3:1 이상이면 구분됨
 const BG_LIGHT='#f5f5f2',BG_DARK='#151618';
@@ -645,8 +647,8 @@ function renderOthers(){
   $('other-note').textContent=others.length?`${others.length}개 종목`:'';
   $('other-list').innerHTML=others.length?others.map(s=>{
     const d=prepData(s.id),t=d.teams[MY[s.id]],g=d.nextGame(t);
-    const when=g.off?'시즌 종료':g.date?`${ledDate(g.date).slice(0,5)} ${g.time||''}`.trim():'일정 발표 전';
-    const chip=g.off?(g.led?g.led[2]:'OFF'):g.date?dday(g.date):"--";
+    const when=g.off?'시즌 종료':g.date?`${bandDate(g.date)} ${g.time||''}`.trim():'일정 발표 전';
+    const chip=g.off?'--':g.date?dday(g.date):'--';
     return `<button type="button" class="row other" data-sport="${s.id}"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg>
       <div><b>${g.off?esc(t[0]):`${esc(g.home)} vs ${esc(g.away)}`}</b><span>${s.name} · 내 팀 ${esc(t[1])} · ${when}</span></div><span class="led-chip">${chip}</span></button>`;
   }).join(''):'<p class="row hint">고른 종목이 하나예요. 다른 종목 내 팀을 추가하면 여기에 다음 경기가 나와요.</p>';
@@ -689,7 +691,7 @@ function renderTicket(t){
   const g=D.nextGame(t);
   $('tk-round').textContent=g.round;$('home').textContent=g.home;$('vs').hidden=!!g.off;$('away').textContent=g.away;
   const [date,time,dd]=g.led||[ledDate(g.date),g.time||'--:--',g.date?dday(g.date):'--'];
-  $('tk-date').textContent=date;$('tk-time').textContent=time;$('tk-dday').textContent=dd;
+  $('tk-date').textContent=date;$('tk-date-lb').textContent=g.date&&!g.led?`날짜 · ${dowOf(g.date)}`:'날짜';$('tk-time').textContent=time;$('tk-dday').textContent=dd;
   $('tk-park').textContent=D.parkShort[g.park]||'';
   const rows=g.off||(g.date&&g.time)?g.rows:[[g.date?'시간':'일정',g.date?'발표 전':'날짜·시간 발표 전'],...g.rows];
   $('tk-info').innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
@@ -740,7 +742,7 @@ function entryHTML(e,peel){
   const sc=hasScore(e)?`${e.hs}:${e.as}`:'',said=`${e.home} ${e.hs} 대 ${e.away} ${e.as}`;
   const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${esc(c)} ${{W:'승리',L:'패배',D:'무승부'}[r]}, ${esc(said)}">${r} ${sc}</span>`
     :sc?`<span class="led-chip" aria-label="${esc(said)}">${sc}</span>`:'';
-  return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'};--on-team:${onColor(t?t[2]:'#6b7177')}"><div class="band">${ledDate(e.date)}</div>
+  return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'};--on-team:${onColor(t?t[2]:'#6b7177')}"><div class="band">${bandDate(e.date)}</div>
     <div class="in"><p class="mt"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)}</span></p><p class="rs">${chip}<span class="pk">${c?esc(c)+' 응원':'그냥 구경'}</span></p></div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
     ${e.mate?`<p class="mate">함께 · ${esc(e.mate)}</p>`:''}${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
@@ -757,8 +759,8 @@ function renderDiary(){
   $('log-empty').hidden=has;$('log-led').hidden=$('log-sum').hidden=!has;
   $('log-count').textContent=`기록 ${list.length}장`;
   $('log-led').setAttribute('aria-label',multi?`${SP.name} 직관 성적`:'직관 성적');
-  $('log-led').innerHTML=`<span><small>${multi?esc(SP.name)+' ':''}GAMES</small><b>${view.length}</b></span><span><small>W-L-D</small><b>${v.W}-${v.L}-${v.D}</b></span>
-    <span class="dd"><small>WIN%</small><b>${rate(v.W,v.L)}</b></span>`;
+  $('log-led').innerHTML=`<span><small>${multi?esc(SP.name)+' ':''}경기</small><b>${view.length}</b></span><span><small>승-패-무</small><b>${v.W}-${v.L}-${v.D}</b></span>
+    <span class="dd"><small>승률</small><b>${rate(v.W,v.L)}</b></span>`;
   const watch=view.filter(e=>!e.cheer).length,noScore=view.filter(e=>e.cheer&&!hasScore(e)).length;
   const rest=[watch&&`그냥 구경 ${watch}경기`,noScore&&`점수 없는 ${noScore}경기`].filter(Boolean);
   $('log-sum').textContent=(multi?`전광판은 ${SP.name} 기록이에요. 모든 종목을 합치면 ${list.length}경기 · ${all.W}승 ${all.L}패${all.D?` ${all.D}무`:''} · 승률 ${rate(all.W,all.L)}. `:'')

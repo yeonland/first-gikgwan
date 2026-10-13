@@ -49,7 +49,7 @@ function nextGame(t){
   const rows=[['장소',g[4]+(g[2]===t[1]?' (홈)':' (원정)')],['예매','KOVO 통합 예매 (KOVO 홈페이지·앱)']];
   rows.push(['참고',g===home?'정규리그 첫 경기가 홈경기예요'
     :home?`첫 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${home[3]}`:'첫 홈경기는 KOVO 일정표에서 확인하세요']);
-  return {round:`V-LEAGUE · ${t[5]==='남자부'?'MEN':'WOMEN'}`,home:g[2],away:g[3],date:g[0],time:g[1],park:g[4],rows};
+  return {round:`V-리그 ${t[5]}`,home:g[2],away:g[3],date:g[0],time:g[1],park:g[4],rows};
 }
 const nextNote='10.13 기준 KOVO 일정';
 
