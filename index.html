@@ -231,7 +231,8 @@ header{flex-wrap:wrap}
 .entry .memo{padding-right:56px}
 .diary .entry{padding-bottom:12px}
 .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-#log-led{grid-template-columns:repeat(3,minmax(0,1fr))}
+#log-led,#home-led{grid-template-columns:repeat(3,minmax(0,1fr))}
+.led-empty{margin:0;padding:10px 12px;border:1.5px dashed var(--line);font-size:var(--fs-cap);color:var(--pencil)}
 .add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
 .add-form label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-cap);color:var(--pencil)}
 .add-form fieldset{margin:0;padding:0;border:0;min-width:0}
@@ -436,6 +437,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
 
   <section aria-labelledby="h-diary">
     <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note" id="home-diary-note"></span></div>
+    <div class="led" id="home-led"></div>
+    <p class="led-empty" id="home-led-empty"></p>
     <div class="diary"><div class="diary-in" id="home-diary"></div><button class="slot" type="button" data-add>다음 티켓 붙이기</button></div>
   </section>
   </div>
@@ -793,13 +796,20 @@ function renderDiary(){
   const tally=arr=>{const c=arr.filter(result),n=k=>c.filter(e=>result(e)===k).length;return {c,W:n('W'),L:n('L'),D:n('D')}};
   const all=tally(list),v=tally(view),counted=all.c;
   $('home-diary').innerHTML=(has?list.slice(0,2):examples()).map(e=>entryHTML(e,false)).join('');
-  $('home-diary-note').textContent=has?`기록 ${list.length}장${v.c.length?` · ${multi?SP.name+' ':''}직관 승률 ${rate(v.W,v.L)}`:''}`:'예시 2장';
+  $('home-diary-note').textContent=has?`기록 ${list.length}장`:'예시 2장';
+  const ledHTML=`<span><small>${multi?esc(SP.name)+' ':''}경기</small><b>${view.length}</b></span><span><small>승-패-무</small><b>${v.W}-${v.L}-${v.D}</b></span>
+    <span class="dd"><small>승률</small><b>${rate(v.W,v.L)}</b></span>`;
+  // 홈: 승패를 센 경기가 있으면 전광판, 없으면 상황에 맞는 안내 한 줄
+  const hasRate=v.c.length>0;
+  $('home-led').hidden=!hasRate;$('home-led-empty').hidden=hasRate;
+  $('home-led').setAttribute('aria-label',`${multi?SP.name+' ':''}직관 성적`);
+  $('home-led').innerHTML=hasRate?ledHTML:'';
+  $('home-led-empty').textContent=!view.length?`첫 ${multi?SP.name+' ':''}직관을 다녀오면 여기에 직관 승률이 쌓여요.`:'응원한 팀과 점수를 적으면 직관 승률이 나와요.';
   $('log-diary').innerHTML=list.map(e=>entryHTML(e,true)).join('');
   $('log-empty').hidden=has;$('log-led').hidden=$('log-sum').hidden=!has;
   $('log-count').textContent=`기록 ${list.length}장`;
   $('log-led').setAttribute('aria-label',multi?`${SP.name} 직관 성적`:'직관 성적');
-  $('log-led').innerHTML=`<span><small>${multi?esc(SP.name)+' ':''}경기</small><b>${view.length}</b></span><span><small>승-패-무</small><b>${v.W}-${v.L}-${v.D}</b></span>
-    <span class="dd"><small>승률</small><b>${rate(v.W,v.L)}</b></span>`;
+  $('log-led').innerHTML=ledHTML;
   const watch=view.filter(e=>!e.cheer).length,noScore=view.filter(e=>e.cheer&&!hasScore(e)).length;
   const rest=[watch&&`그냥 구경 ${watch}경기`,noScore&&`점수 없는 ${noScore}경기`].filter(Boolean);
   $('log-sum').textContent=(multi?`전광판은 ${SP.name} 기록이에요. 모든 종목을 합치면 ${list.length}경기 · ${all.W}승 ${all.L}패${all.D?` ${all.D}무`:''} · 승률 ${rate(all.W,all.L)}. `:'')
