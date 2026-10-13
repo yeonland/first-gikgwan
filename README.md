@@ -7,7 +7,7 @@
 - **사이트: https://yeonland.github.io/first-gikgwan/**
 - 로고 시안: https://yeonland.github.io/first-gikgwan/drafts/logo.html
 - 로컬에서 보기: `index.html`을 브라우저에서 열면 됩니다 (빌드 과정 없음)
-- 현재 단계: 야구 MVP (홈·예매·룰 카드·직관 기록. 정적 HTML)
+- 현재 단계: 야구·배구 (홈·예매·룰 카드·직관 준비·직관 기록. 정적 HTML)
 
 ---
 
@@ -105,7 +105,7 @@
 ```
 first-gikgwan/
 ├─ index.html   앱 화면 (모든 종목이 같이 쓰는 화면 코드)
-├─ data/        종목별 데이터. 고른 종목 파일만 불러옴 (지금은 baseball.js)
+├─ data/        종목별 데이터. 고른 종목 파일만 불러옴 (baseball.js, volleyball.js)
 ├─ DESIGN.md    디자인 기준
 ├─ drafts/      로고 시안, 첫 홈 화면 시안(first-jikgwan.html)
 └─ fonts/       KBO 다이아고딕 (woff)
@@ -128,12 +128,14 @@ first-gikgwan/
 - [x] 종목 구조: 종목 데이터를 `data/`로 분리, 처음 설정(여러 종목 + 종목마다 내 팀), 종목 칩
 - [ ] 직관 기록 백업: 파일로 내보내기·불러오기 (로그인 없이 기기 옮기기)
 - [ ] 직관 기록 동기화: 로그인 + 서버(Supabase 등)로 여러 기기에서 같은 기록. 개인정보 처리 안내 필요
-- [ ] 겨울 종목 확장 (농구, 배구, 핸드볼, 아이스하키). HL 안양 예매: [티켓링크](https://www.ticketlink.co.kr/sports/1032/282)
+- [x] 배구 V-리그 (남녀 14팀, 2026-27 첫 경기·첫 홈경기, 룰 카드 10장, 체육관 가는 법. 팀 색은 임시)
+- [ ] 겨울 종목 확장 (농구, 핸드볼, 아이스하키). HL 안양 예매: [티켓링크](https://www.ticketlink.co.kr/sports/1032/282)
 
 ## 참고
 - 화면의 경기, 좌석 정보와 기록이 없을 때 홈에 보이는 티켓 2장은 예시 데이터입니다. 직관 기록은 사용자의 브라우저(localStorage)에만 저장됩니다.
 - 구단 컬러는 Figma에 정리한 색 스타일(구단별 메인·서브)을 따릅니다.
 - 룰 카드의 조항 번호는 [KBO 2026 공식야구규칙](https://6ptotvmi5753.edge.naverncp.com/KBO_FILE/ebook/pdf/2026_%EC%95%BC%EA%B5%AC%EA%B7%9C%EC%B9%99.pdf)(KBO 발행)과 대조했습니다. 규칙서는 [한국야구소프트볼심판아카데미 야구규칙서 게시판](http://www.umpire.or.kr/?act=board&bbs_code=sub5_5)에서 찾았고, 저작권 때문에 PDF는 저장소에 넣지 않습니다. 카드 문장은 규칙서를 옮기지 않고 풀어 썼습니다.
+- 배구 룰 카드의 조항 번호는 [대한배구협회](https://www.kva.or.kr/user/template.do?fileNm=vlb2_1) 배구경기규칙서(2025~2028)와 대조했습니다. 규칙서 PDF는 저장소에 넣지 않습니다. V-리그 일정·예매처는 [KOVO](https://kovo.co.kr) 기준(2026.10.13 확인)입니다.
 - 이 프로젝트는 KBO 및 각 구단과 관계없는 개인 프로젝트입니다.
 
 ## 글꼴 라이선스: KBO 다이아고딕

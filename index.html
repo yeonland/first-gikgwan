@@ -87,7 +87,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 /* ticket */
 .ticket{background:var(--tk-paper);color:var(--tk-ink);display:grid;grid-template-columns:1fr 64px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 14px -8px rgba(0,0,0,.35);transform:rotate(-.6deg)}
 .t-main{min-width:0;display:flex;flex-direction:column}
-.band{background:var(--team);color:#fff;font-size:var(--fs-cap);font-weight:600;letter-spacing:.08em;padding:6px 14px;display:flex;justify-content:space-between;gap:8px}
+.band{background:var(--team);color:var(--on-team,#fff);font-size:var(--fs-cap);font-weight:600;letter-spacing:.08em;padding:6px 14px;display:flex;justify-content:space-between;gap:8px}
 .t-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:12px}
 .match{font-size:var(--fs-em);font-weight:700;letter-spacing:-.01em;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
 .match i{font-style:normal;font-size:var(--fs-cap);color:var(--tk-faint)}
@@ -100,7 +100,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .barcode{width:30px;flex:1;margin:4px 0 8px;background:repeating-linear-gradient(0deg,var(--tk-ink) 0 2px,transparent 2px 4px,var(--tk-ink) 4px 5px,transparent 5px 8px,var(--tk-ink) 8px 11px,transparent 11px 13px)}
 /* 절취선 너머: 바코드 + 구장 줄임말(세로) */
 .barcode{flex:0 0 72px}
-.park-stub{writing-mode:vertical-rl;font-size:var(--fs-em);font-weight:700;letter-spacing:.2em;line-height:1;color:var(--team);padding-bottom:4px}
+.park-stub{writing-mode:vertical-rl;font-size:var(--fs-em);font-weight:700;letter-spacing:.2em;line-height:1;color:var(--team-ink-light);padding-bottom:4px}
 
 /* 다른 종목 내 팀 */
 .list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line)}
@@ -109,6 +109,10 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .row svg{width:28px;height:28px}
 .row b{display:block;font-size:var(--fs-body)}
 .row span{font-size:var(--fs-cap);color:var(--pencil)}
+.list-in{display:contents}
+.row.other{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.row.other:first-child{border-top:0}
+.row.hint{grid-template-columns:minmax(0,1fr);font-size:var(--fs-cap);color:var(--pencil)}
 .add{border:0;border-top:1px dashed var(--line);background:transparent;color:var(--pencil);font-family:var(--sans);font-size:var(--fs-cap);padding:12px;cursor:pointer}
 
 /* diary */
@@ -366,20 +370,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   </section>
 
   <section aria-labelledby="h-other">
-    <div class="sec-head"><h2 id="h-other">다른 종목 내 팀</h2><span class="note">팀은 예시</span></div>
-    <div class="list">
-      <div class="row">
-        <svg viewBox="0 0 100 100" aria-label="배구"><use href="#volley"/></svg>
-        <div><b>대한항공 vs 현대캐피탈</b><span>V-리그 개막전 · 10.31 (토)</span></div>
-        <span class="led-chip js-dday" data-date="2026-10-31"></span>
-      </div>
-      <div class="row">
-        <svg viewBox="0 0 100 100" aria-label="여자농구"><use href="#basket"/></svg>
-        <div><b>KB스타즈 vs BNK 썸</b><span>WKBL 개막전 · 11.01 (일) · 청주체육관</span></div>
-        <span class="led-chip js-dday" data-date="2026-11-01"></span>
-      </div>
-      <button class="add" type="button" data-setup>종목별 내 팀 추가</button>
-    </div>
+    <div class="sec-head"><h2 id="h-other">다른 종목 내 팀</h2><span class="note" id="other-note"></span></div>
+    <div class="list"><div class="list-in" id="other-list"></div><button class="add" type="button" data-setup>종목별 내 팀 추가</button></div>
   </section>
 
   <section aria-labelledby="h-diary">
@@ -467,7 +459,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
         <label>날짜<input type="date" name="date" required></label>
         <div class="vs-in"><label>홈팀<select name="home"></select></label><span aria-hidden="true">vs</span><label>원정팀<select name="away"></select></label></div>
         <label>구장<select name="park"></select></label>
-        <fieldset><legend>점수 (선택)</legend>
+        <fieldset><legend id="score-legend">점수 (선택)</legend>
           <div class="score-in"><label><span id="hs-label">홈</span><input type="number" name="hs" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label><span id="as-label">원정</span><input type="number" name="as" min="0" max="99" inputmode="numeric"></label></div>
         </fieldset>
         <fieldset><legend>응원한 팀</legend>
@@ -561,7 +553,7 @@ function pickInk(main,sub,bg){
 // icon: 로고 속 공 symbol
 const SPORTS=[
   {id:'baseball',name:'야구',league:'KBO',icon:'base',ready:true},
-  {id:'volleyball',name:'배구',league:'V-리그',icon:'volley'},
+  {id:'volleyball',name:'배구',league:'V-리그',icon:'volley',ready:true},
   {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket'},
   {id:'hockey',name:'아이스하키',league:'아시아리그',icon:'puck'},
   {id:'handball',name:'핸드볼',league:'H리그',icon:'hand'},
@@ -588,11 +580,18 @@ if(MY)MY=Object.fromEntries(Object.entries(MY).filter(([id])=>READY.includes(id)
 if(MY&&!Object.keys(MY).length)MY=null;
 let cur=load('sport',null),D,SP;   // 지금 보는 종목: 데이터, 종목 정보
 const sel=$('team');
+// 팀 고르기 목록. 팀에 리그(t[5]: 남자부·여자부)가 있으면 묶어서 보여 줌
+function teamOptions(teams,val=(t,i)=>i,picked){
+  const opt=(t,i)=>`<option value="${esc(val(t,i))}"${picked!=null&&String(val(t,i))===String(picked)?' selected':''}>${esc(t[0])}</option>`;
+  if(!teams.some(t=>t[5]))return teams.map(opt).join('');
+  const groups=[...new Set(teams.map(t=>t[5]))];
+  return groups.map(g=>`<optgroup label="${esc(g)}">${teams.map((t,i)=>t[5]===g?opt(t,i):'').join('')}</optgroup>`).join('');
+}
 
 function apply(i){
   const t=D.teams[i];
   const root=document.documentElement.style;
-  root.setProperty('--team',t[2]);
+  root.setProperty('--team',t[2]);root.setProperty('--on-team',onColor(t[2]));
   const inkL=pickInk(t[2],t[4],BG_LIGHT),inkD=pickInk(t[2],t[4],BG_DARK);
   root.setProperty('--team-ink-light',inkL);
   root.setProperty('--team-ink-dark',inkD);
@@ -602,15 +601,29 @@ function apply(i){
 }
 function useSport(id){
   cur=id;store('sport',id);SP=SPORT[id];D=prepData(id);
-  sel.innerHTML=D.teams.map((t,i)=>`<option value="${i}">${esc(t[0])}</option>`).join('');
+  sel.innerHTML=teamOptions(D.teams);
   sel.setAttribute('aria-label',`내 ${SP.name}팀`);sel.value=MY[id];
   const mine=SPORTS.filter(s=>s.id in MY);
   $('sport-bar').hidden=mine.length<2;
   $('sport-bar').innerHTML=mine.map(s=>`<button class="chip" type="button" data-sport="${s.id}" aria-pressed="${s.id===id}">${s.name}</button>`).join('');
-  renderSportPages();apply(MY[id]);
+  renderSportPages();renderOthers();apply(MY[id]);
 }
 sel.addEventListener('change',()=>{MY[cur]=+sel.value;store('myTeams',MY);apply(MY[cur])});
 $('sport-bar').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur)useSport(b.dataset.sport)});
+
+// 홈 "다른 종목 내 팀": 고른 다른 종목마다 내 팀의 다음 경기. 누르면 그 종목으로 바꿈
+function renderOthers(){
+  const others=SPORTS.filter(s=>s.id in MY&&s.id!==cur);
+  $('other-note').textContent=others.length?`${others.length}개 종목`:'';
+  $('other-list').innerHTML=others.length?others.map(s=>{
+    const d=prepData(s.id),t=d.teams[MY[s.id]],g=d.nextGame(t);
+    const when=g.off?'시즌 종료':g.date?`${ledDate(g.date).slice(0,5)} ${g.time||''}`.trim():'일정 발표 전';
+    const chip=g.off?(g.led?g.led[2]:'OFF'):g.date?dday(g.date):'TBA';
+    return `<button type="button" class="row other" data-sport="${s.id}"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg>
+      <div><b>${g.off?esc(t[0]):`${esc(g.home)} vs ${esc(g.away)}`}</b><span>${s.name} · 내 팀 ${esc(t[1])} · ${when}</span></div><span class="led-chip">${chip}</span></button>`;
+  }).join(''):'<p class="row hint">고른 종목이 하나예요. 다른 종목 내 팀을 추가하면 여기에 다음 경기가 나와요.</p>';
+}
+$('other-list').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b){useSport(b.dataset.sport);scrollTo(0,0)}});
 
 // 종목이 바뀔 때만 다시 그리는 부분 (팀과 상관없는 것)
 function renderSportPages(){
@@ -657,7 +670,7 @@ function renderTicket(t){
 function renderClubs(me){
   $('clubs').innerHTML=D.teams.map(t=>{const [name,url,open]=D.book[t[1]];
     return `<div class="row${t===me?' me':''}"><span class="dot" style="background:${t[2]}"></span>
-      <div><b>${esc(t[0])}</b><span>${esc(D.parkShort[t[3]])} · ${esc(t[3])}</span></div>
+      <div><b>${esc(t[0])}</b><span>${t[5]?esc(t[5])+' · ':''}${esc(D.parkShort[t[3]])} · ${esc(t[3])}</span></div>
       <div class="bk"><a href="${url}" target="_blank" rel="noopener">${name}</a>${open||'구단 공지 확인'}</div></div>`}).join('');
 }
 
@@ -688,14 +701,14 @@ const cheerTeam=e=>e.cheer?e[e.cheer]:null;
 const result=e=>{if(!e.cheer||!hasScore(e))return null;const [m,o]=e.cheer==='home'?[e.hs,e.as]:[e.as,e.hs];return m>o?'W':m<o?'L':'D'};
 const rate=(w,l)=>w+l?(w/(w+l)).toFixed(3).replace(/^0/,''):'---';
 // 기록이 없을 때 홈에만 보여 줄 예시 2장 (내 팀 홈경기, 상대는 내 팀에 맞춰 바뀜)
-const examples=()=>{const i=D.teams.indexOf(me),N=D.teams.length;
-  return D.diaryExamples.map(([date,off,hs,as,memo])=>({sport:cur,date,home:me[1],away:D.teams[(i+off)%N][1],park:me[3],hs,as,cheer:'home',memo}))};
+const examples=()=>{const pool=D.teams.filter(x=>x[5]===me[5]),i=pool.indexOf(me),N=pool.length;
+  return D.diaryExamples.map(([date,off,hs,as,memo])=>({sport:cur,date,home:me[1],away:pool[(i+off)%N][1],park:me[3],hs,as,cheer:'home',memo}))};
 function entryHTML(e,peel){
   const d=SPORT_DATA[e.sport],by=d?prepData(e.sport).teamBy:{},r=result(e),c=cheerTeam(e),t=by[c||e.home];
   const sc=hasScore(e)?`${e.hs}:${e.as}`:'',said=`${e.home} ${e.hs} 대 ${e.away} ${e.as}`;
   const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${esc(c)} ${{W:'승리',L:'패배',D:'무승부'}[r]}, ${esc(said)}">${r} ${sc}</span>`
     :sc?`<span class="led-chip" aria-label="${esc(said)}">${sc}</span>`:'';
-  return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'}"><div class="band">${ledDate(e.date)}</div>
+  return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'};--on-team:${onColor(t?t[2]:'#6b7177')}"><div class="band">${ledDate(e.date)}</div>
     <div class="in"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)} · ${c?esc(c)+' 응원':'그냥 구경'}</span>${chip}</div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
     ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
@@ -727,12 +740,16 @@ const form=$('add-form'),F=form.elements;
 F.date.value=todayISO;F.date.max=todayISO;
 function setDiaryTeam(t){
   me=t;
-  F.home.innerHTML=F.away.innerHTML=D.teams.map(x=>`<option value="${esc(x[1])}">${esc(x[0])}</option>`).join('');
-  F.home.value=t[1];F.away.value=D.teams.find(x=>x!==t)[1];
+  F.home.innerHTML=F.away.innerHTML=teamOptions(D.teams,x=>x[1]);
+  F.home.value=t[1];F.away.value=D.teams.find(x=>x!==t&&x[5]===t[5])[1];
+  $('score-legend').textContent=`${D.scoreLabel||'점수'} (선택)`;
   syncForm();renderDiary();
 }
 // 홈·원정을 고르면: 구장은 홈팀 구장으로, 점수 칸과 응원 버튼에 팀 이름. 내 팀이 나오면 내 팀 응원, 아니면 그냥 구경
-function syncForm(){
+function syncForm(e){
+  // 남자부·여자부처럼 리그가 다르면, 방금 고르지 않은 쪽을 같은 리그 팀으로 맞춤
+  const [mine,other]=e&&e.target===F.away?[F.away,F.home]:[F.home,F.away],M=D.teamBy[mine.value];
+  if(D.teamBy[other.value][5]!==M[5])other.value=D.teams.find(x=>x!==M&&x[5]===M[5])[1];
   const H=D.teamBy[F.home.value],A=D.teamBy[F.away.value];
   F.park.value=H[3];
   $('hs-label').textContent=`${H[1]} (홈)`;$('as-label').textContent=`${A[1]} (원정)`;
@@ -747,6 +764,7 @@ form.addEventListener('submit',ev=>{
   if(!/^\d{4}-\d{2}-\d{2}$/.test(F.date.value)){msg.textContent='날짜를 골라 주세요.';F.date.focus();return}
   if(F.date.value>todayISO){msg.textContent='오늘 이후 경기는 다녀온 뒤에 붙여 주세요.';F.date.focus();return}
   if(F.home.value===F.away.value){msg.textContent='홈팀과 원정팀을 다르게 골라 주세요.';F.away.focus();return}
+  if(D.teamBy[F.home.value][5]!==D.teamBy[F.away.value][5]){msg.textContent=`${D.teamBy[F.home.value][5]} 팀끼리, ${D.teamBy[F.away.value][5]} 팀끼리 골라 주세요.`;F.away.focus();return}
   if((hs==null)!==(as==null)||[hs,as].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.hs.focus();return}
   const cheer=F.cheer.value==='none'?null:F.cheer.value;
   DIARY.push({id:Date.now(),sport:cur,date:F.date.value,home:F.home.value,away:F.away.value,park:F.park.value,hs,as,cheer,memo:F.memo.value.trim().slice(0,30)});
@@ -765,7 +783,7 @@ let PREP_DONE={};
 const prepPark=$('prep-park');
 function renderPark(){
   const p=D.parkInfo[prepPark.value];
-  $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
+  $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go||'확인 필요. 지도 앱에서 경기장 이름으로 찾아 주세요'}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
     <dt>홈 응원석</dt><dd>${p.home||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>`;
 }
 prepPark.addEventListener('change',renderPark);
@@ -774,7 +792,8 @@ $('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.t
 function setPrepTeam(t){
   prepPark.value=t[3];renderPark();
   $('prep-cheer').innerHTML=[...D.cheer,
-    ['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
+    D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
+      :['응원가 미리 듣기',`<a href="${D.leagueSite[1]}" target="_blank" rel="noopener">${D.leagueSite[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`]
   ].map(([k,v])=>`<div class="row tip"><div><b>${k}</b><span>${v}</span></div></div>`).join('');
 }
 
@@ -809,7 +828,7 @@ async function openSetup(){
     if(!s.ready)return `<div class="pick off"><input type="checkbox" disabled aria-label="${s.name} (곧 열려요)"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · 곧 열려요</span></div></div>`;
     const d=prepData(s.id),on=!MY||s.id in MY;
     return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league}</span></div></label>
-      <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${d.teams.map((t,i)=>`<option value="${i}"${MY&&MY[s.id]==i?' selected':''}>${esc(t[0])}</option>`).join('')}</select></div>`;
+      <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${teamOptions(d.teams,(t,i)=>i,MY?MY[s.id]:0)}</select></div>`;
   }).join('');
   setup.showModal();
 }
