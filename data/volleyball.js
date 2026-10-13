@@ -78,6 +78,28 @@ const rules=[
   field:'상대 공격을 막다가 손에 맞고 우리 코트로 떨어지면, 그다음부터 다시 세 번을 쓸 수 있어요. 블로킹 뒤 첫 터치는 블로킹한 선수가 해도 돼요.',
   book:[['14.4.1','블록 접촉은 팀 타구로 세지 않음'],['14.4.2','블록 뒤 첫 타구는 블로커도 가능']]},
  {id:'rotation',name:'로테이션',cats:['포지션'],
+  figCap:'우리 코트를 뒤에서 본 모습 · 서브는 1번 자리 선수가 해요',
+  fig:`<svg viewBox="0 0 320 224" role="img" aria-label="코트 6개 자리. 서브권을 가져오면 2번이 1번으로, 1번이 6번으로 시계 방향으로 한 칸씩 돈다">
+<text class="tx" x="160" y="14" text-anchor="middle">네트</text>
+<line class="net" x1="40" y1="24" x2="280" y2="24"/>
+<rect class="ln" x="60" y="24" width="200" height="176"/>
+<path class="ln dash" d="M60 98 H260"/>
+<text class="tx" x="266" y="102">공격선</text>
+<circle class="spot" cx="100" cy="60" r="15"/><text class="num" x="100" y="60">4</text>
+<circle class="spot" cx="160" cy="60" r="15"/><text class="num" x="160" y="60">3</text>
+<circle class="spot" cx="220" cy="60" r="15"/><text class="num" x="220" y="60">2</text>
+<circle class="spot" cx="100" cy="150" r="15"/><text class="num" x="100" y="150">5</text>
+<circle class="spot" cx="160" cy="150" r="15"/><text class="num" x="160" y="150">6</text>
+<circle class="spot on" cx="220" cy="150" r="15"/><text class="num" x="220" y="150">1</text>
+<path class="ac" d="M246 74 L246 128"/><polygon class="ach" points="246,137 241,128 251,128"/>
+<path class="ac" d="M206 180 L176 180"/><polygon class="ach" points="168,180 177,175 177,185"/>
+<path class="ac" d="M146 180 L116 180"/><polygon class="ach" points="108,180 117,175 117,185"/>
+<path class="ac" d="M74 136 L74 82"/><polygon class="ach" points="74,73 69,82 79,82"/>
+<path class="ac" d="M114 36 L140 36"/><polygon class="ach" points="148,36 139,31 139,41"/>
+<path class="ac" d="M174 36 L200 36"/><polygon class="ach" points="208,36 199,31 199,41"/>
+<text class="tx em" x="220" y="216" text-anchor="middle">↑ 서브</text>
+<text class="tx" x="20" y="64">전위</text><text class="tx" x="20" y="154">후위</text>
+</svg>`,
   easy:'서브권을 가져올 때마다 선수들이 시계 방향으로 한 칸씩 돌아요.',
   field:'코트에는 6개 자리가 있고, 서브하는 순간에는 정해진 순서대로 서 있어야 해요. 자리가 틀리면 위치반칙으로 상대가 1점. 서브가 맞은 뒤에는 어디로든 움직일 수 있어서 선수들이 맡은 자리로 바로 옮겨 가요.',
   book:[['7.4','위치'],['7.4.4','서비스 뒤에는 자유롭게 이동'],['7.5','위치반칙'],['7.6','로테이션']]},

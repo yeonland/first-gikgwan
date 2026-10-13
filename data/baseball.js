@@ -73,6 +73,27 @@ const rules=[
   field:'KBO는 2024년부터 볼과 스트라이크를 기계(ABS)가 판정하고, 심판은 결과를 듣고 콜을 해요. 2026년 존은 위쪽이 선수 키의 55.75%, 아래쪽이 27.04% 높이. 좌우는 홈플레이트보다 양쪽 2cm씩 넓어요.',
   book:[['용어의 정의 73','스트라이크 존'],['KBO 리그 규정','ABS 존 기준 (2026)']]},
  {id:'dropk',name:'낫아웃',cats:['헷갈리는 룰','출루'],
+  figCap:'공이 땅에 먼저 닿거나 미트에서 빠지면, 1루에 먼저 닿는 쪽이 이겨요',
+  fig:`<svg viewBox="0 0 320 180" role="img" aria-label="포수가 세 번째 스트라이크 공을 놓치고, 타자가 1루로 달리는 그림">
+<text class="tx" x="10" y="20">1루가 비었거나 2아웃일 때</text>
+<path class="ln" d="M70 130 L270 50"/>
+<rect class="base" x="262" y="42" width="16" height="16" transform="rotate(-21.8 270 50)"/>
+<text class="tx" x="262" y="80" text-anchor="middle">1루</text>
+<polygon class="base" points="62,126 78,126 78,132 70,138 62,132"/>
+<path class="ln dash" d="M170 34 Q110 70 66 118"/>
+<path class="ln dash" d="M60 146 Q46 158 34 156"/>
+<circle class="ball" cx="30" cy="156" r="6"/>
+<circle class="head" cx="40" cy="108" r="7"/>
+<path class="body" d="M40 115 Q34 126 42 132 L52 140 M42 132 L34 142 M44 120 L56 114"/>
+<ellipse class="head" cx="60" cy="112" rx="6" ry="7"/>
+<text class="tx" x="10" y="176">포수가 공을 놓침</text>
+<text class="tx" x="26" y="94">포수</text><text class="tx" x="104" y="84">타자</text>
+<circle class="head" cx="112" cy="98" r="7"/>
+<path class="body" d="M112 105 L108 120 L100 130 M108 120 L118 128 M110 110 L122 104 M110 110 L100 112"/>
+<path class="ac dash" d="M128 108 L240 63"/>
+<polygon class="ach" points="252,58 244.6,66.3 240.9,57.1"/>
+<text class="tx em" x="168" y="118">타자가 1루로 달려요</text>
+</svg>`,
   easy:'세 번째 스트라이크를 포수가 못 잡으면 타자가 1루로 뛸 수 있어요.',
   field:'공이 땅에 먼저 닿거나 미트에서 빠지면 타자가 1루로 달려요. 수비가 타자를 태그하거나 1루로 먼저 공을 보내면 아웃. 무사나 1사에 1루 주자가 있으면 뛸 수 없고 그냥 아웃이에요. 2사라면 1루 주자가 있어도 뛸 수 있어요.',
   book:[['5.05(a)(2)','타자가 주자가 되는 경우'],['5.09(a)(3)','1루 주자가 있고 2아웃 전이면 아웃']]},

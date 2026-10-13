@@ -256,6 +256,25 @@ header{flex-wrap:wrap}
 .form-msg:empty{display:none}
 .submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
 input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
+/* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
+.fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
+.fig svg{width:100%;max-width:320px;height:auto;display:block}
+.fig .ln{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.fig .dash{stroke-dasharray:4 4}
+.fig .base{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.fig .body{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fig .head{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.fig .ball{fill:var(--surface);stroke:var(--seam);stroke-width:2}
+.fig .ac{fill:none;stroke:var(--team-ink);stroke-width:2.5;stroke-linecap:round}
+.fig .ach{fill:var(--team-ink)}
+.fig .net{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.fig .spot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.fig .spot.on{fill:var(--team-ink);stroke:var(--team-ink)}
+.fig .num{font-family:var(--sans);font-size:14px;font-weight:700;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.fig .spot.on+.num{fill:var(--on-team-ink)}
+.fig .tx{font-family:var(--sans);font-size:12px;fill:var(--pencil)}
+.fig .tx.em{fill:var(--team-ink);font-weight:700}
+.fig figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
 /* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기장 장면 + 규정집 조항 */
 .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -872,7 +891,7 @@ $('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 let ruleCat='전체';
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
-  <dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  ${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
