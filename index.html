@@ -373,7 +373,7 @@ const POSTSEASON={
   KT:{round:'KOREAN SERIES · G1',home:'KT wiz',away:'PO 승자',date:'2026-11-02',time:null,park:'수원KT위즈파크',book:'예매 일정 발표 전',note:'정규시즌 1위로 한국시리즈 직행 (7전 4선승)'}
 };
 // 구장 줄임말: 팬들이 부르는 이름 (Figma 일정표의 잠실·고척·문학·사직 표기를 따름)
-const PARK_SHORT={'잠실야구장':'잠실','고척스카이돔':'고척','인천SSG랜더스필드':'문학','수원KT위즈파크':'위팍','대전한화생명볼파크':'대전',
+const PARK_SHORT={'잠실야구장':'잠실','고척스카이돔':'고척','인천SSG랜더스필드':'문학','수원KT위즈파크':'위팍','대전한화생명볼파크':'볼파크',
   '대구삼성라이온즈파크':'라팍','광주기아챔피언스필드':'챔필','사직야구장':'사직','창원NC파크':'엔팍'};
 const DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const ledDate=iso=>{if(!iso)return 'TBA';const [y,m,d]=iso.split('-').map(Number);return `${pad(m)}.${pad(d)} ${DOW[new Date(y,m-1,d).getDay()]}`};
