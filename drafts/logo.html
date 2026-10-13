@@ -1,0 +1,305 @@
+<title>첫직관 로고 시안</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+@font-face{font-family:"OmuDaye";src:url("fonts/omyu_pretty.woff2") format("woff2");font-weight:normal;font-display:swap}
+@font-face{font-family:"GangwonEducationSaeum";src:url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
+/* Layout: one column of stamp sheets on grid paper; every option shown large, then at 64px and 32px */
+:root{
+  --paper:#f6f7f5; --grid:#e3e6e2; --sheet:#ffffff; --ink:#1d2024; --pencil:#6b7177; --line:#d6dad6;
+  --ball:#ffffff; --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55; --stamp:#e9ece8; --pick:#1f5a3c;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --logo:"OmuDaye","Gaegu",cursive;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15171a; --grid:#212429; --sheet:#1d2024; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d;
+  --ball:#1d2024; --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a; --stamp:#2a2e33; --pick:#7fc79c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#15171a; --grid:#212429; --sheet:#1d2024; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d;
+  --ball:#1d2024; --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a; --stamp:#2a2e33; --pick:#7fc79c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:28px 48px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1{margin:0;font-size:22px;text-wrap:balance}
+.lead{margin:6px 0 0;color:var(--pencil);max-width:62ch}
+.sheet{background:var(--sheet);border:1px solid var(--line);padding:20px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:600px){.sheet{grid-template-columns:1fr}}
+.stage{display:flex;justify-content:center;min-width:0}
+.stage svg{width:100%;max-width:220px;height:auto}
+.info{display:flex;flex-direction:column;gap:10px;min-width:0}
+.tag{font-size:12px;font-weight:700;color:var(--pencil);letter-spacing:.06em}
+.tag b{color:var(--pick)}
+.info h2{margin:0;font-size:18px;text-wrap:balance}
+.info p{margin:0;font-size:14px}
+.pc{margin:0;padding-left:18px;font-size:13px;color:var(--pencil)}
+.small{display:flex;align-items:flex-end;gap:16px;padding-top:8px;border-top:1px dashed var(--line)}
+.small figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--pencil)}
+.wm{font-family:var(--logo);fill:var(--ink)}
+.date{font-family:var(--mono);font-weight:600;fill:var(--ink)}
+/* 흐름 미리보기 */
+.flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:600px){.flow{grid-template-columns:1fr}}
+.phone{border:1.5px solid var(--ink);border-radius:22px;aspect-ratio:9/16;max-width:200px;width:100%;margin:0 auto;position:relative;overflow:hidden;background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px}
+.phone .splash{position:absolute;inset:0;display:grid;place-items:center}
+.phone .splash svg{width:62%}
+.press{animation:press .55s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes press{from{transform:scale(1.35) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
+.phone .bar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:6px;padding:16px 12px;background:var(--sheet);border-bottom:1px solid var(--line)}
+.phone .bar svg{width:26px;height:26px}
+.phone .bar b{font-family:var(--logo);font-weight:normal;font-size:20px;line-height:1}
+.phone .ghost{position:absolute;left:12px;right:12px;height:60px;background:var(--sheet);border:1px solid var(--line)}
+.flow figcaption{text-align:center;font-size:12px;color:var(--pencil);margin-top:8px}
+.flow figure{margin:0}
+.replay{align-self:flex-start;font-family:var(--sans);font-size:13px;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:6px 12px;cursor:pointer}
+.replay:focus-visible{outline:2px solid var(--pick);outline-offset:2px}
+/* 글자 비교 */
+.locks{display:flex;flex-direction:column;gap:12px}
+.lock{display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:center;border:1px solid var(--line);padding:12px 14px}
+@media (max-width:520px){.lock{grid-template-columns:48px minmax(0,1fr)}.lock .note{grid-column:1/-1}}
+.lock svg{width:56px;height:56px}
+.lock .name{font-size:40px;line-height:1.1}
+.lock .note{font-size:13px;color:var(--pencil)}
+.lock .note b{color:var(--ink);display:block;font-size:14px}
+@media (prefers-reduced-motion:reduce){.press{animation:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 공 다섯 개 + 퍽: 같은 좌표계(-50~50) -->
+    <symbol id="basket" viewBox="-50 -50 100 100">
+      <g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round">
+        <circle r="44" fill="var(--ball)"/><path d="M0 -44V44M-44 0H44"/>
+        <path d="M-22 -38C-4 -14 -4 14 -22 38M22 -38C4 -14 4 14 22 38"/>
+      </g>
+    </symbol>
+    <symbol id="soccer" viewBox="-50 -50 100 100">
+      <g stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+        <circle r="44" fill="var(--ball)"/>
+        <polygon points="0,-14 13.3,-4.3 8.2,11.3 -8.2,11.3 -13.3,-4.3" fill="var(--ink)"/>
+        <path fill="none" d="M0 -14V-32M13.3 -4.3L30.4 -9.9M8.2 11.3L18.8 25.9M-8.2 11.3L-18.8 25.9M-13.3 -4.3L-30.4 -9.9"/>
+      </g>
+    </symbol>
+    <symbol id="volley" viewBox="-50 -50 100 100">
+      <g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round">
+        <circle r="44" fill="var(--ball)"/>
+        <path d="M2 -2C2 -22 14 -38 32 -30"/><path d="M2 -2C20 8 38 4 43 -12"/><path d="M2 -2C-16 10 -22 30 -12 42"/>
+        <path d="M-20 -39C-10 -22 -10 -8 -24 4M-40 -18C-30 -6 -30 8 -42 14"/>
+      </g>
+    </symbol>
+    <symbol id="hand" viewBox="-50 -50 100 100">
+      <g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <circle r="44" fill="var(--ball)"/>
+        <path d="M-12 -16L12 -16L20 6L0 20L-20 6Z"/>
+        <path d="M-12 -16L-22 -38M12 -16L22 -38M20 6L42 10M0 20L0 44M-20 6L-42 10"/>
+      </g>
+    </symbol>
+    <symbol id="base" viewBox="-50 -50 100 100">
+      <circle r="44" fill="var(--ball)" stroke="var(--ink)" stroke-width="4"/>
+      <g fill="none" stroke="var(--seam)" stroke-width="4" stroke-linecap="round">
+        <path d="M-28 -34C-10 -14 -10 14 -28 34M28 -34C10 -14 10 14 28 34"/>
+        <path stroke-width="3" stroke-dasharray="2 6" d="M-36 -26C-20 -10 -20 10 -36 26M36 -26C20 -10 20 10 36 26"/>
+      </g>
+    </symbol>
+    <symbol id="puck" viewBox="-50 -50 100 100">
+      <path d="M-44 -6V10A44 16 0 0 0 44 10V-6Z" fill="var(--puck)" stroke="var(--ink)" stroke-width="3"/>
+      <ellipse cy="-6" rx="44" ry="16" fill="var(--puck-top)" stroke="var(--ink)" stroke-width="3"/>
+    </symbol>
+
+    <!-- 1. 원안: 글씨 있는 도장 -->
+    <symbol id="L1" viewBox="0 0 200 200">
+      <g transform="rotate(-6 100 100)">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <use href="#basket" x="25" y="69" width="30" height="30"/><use href="#soccer" x="41" y="41" width="30" height="30"/>
+        <use href="#volley" x="69" y="25" width="30" height="30"/><use href="#hand" x="101" y="25" width="30" height="30"/>
+        <use href="#base" x="129" y="41" width="30" height="30"/><use href="#puck" x="145" y="69" width="30" height="30"/>
+        <text class="wm" x="100" y="140" font-size="46" text-anchor="middle">첫직관</text>
+        <path d="M60 152H140" stroke="var(--ink)" stroke-width="1.5"/>
+      </g>
+    </symbol>
+
+    <!-- 2. 글씨 없이 공만: 야구공을 가운데, 다섯 개가 꽃잎처럼 -->
+    <symbol id="L2" viewBox="0 0 200 200">
+      <g transform="rotate(-6 100 100)">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <use href="#basket" x="76" y="30" width="48" height="48"/>
+        <use href="#soccer" x="120" y="62" width="48" height="48"/>
+        <use href="#volley" x="103" y="113" width="48" height="48"/>
+        <use href="#hand" x="49" y="113" width="48" height="48"/>
+        <use href="#puck" x="32" y="62" width="48" height="48"/>
+        <use href="#base" x="76" y="76" width="48" height="48"/>
+      </g>
+    </symbol>
+
+    <!-- 3. 날짜 소인: 가운데 띠에 직관 날짜가 찍힘 -->
+    <symbol id="L3" viewBox="0 0 200 200">
+      <g transform="rotate(-6 100 100)">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <use href="#basket" x="34" y="61" width="24" height="24"/><use href="#soccer" x="52" y="42" width="24" height="24"/>
+        <use href="#volley" x="75" y="31" width="24" height="24"/><use href="#hand" x="101" y="31" width="24" height="24"/>
+        <use href="#base" x="124" y="42" width="24" height="24"/><use href="#puck" x="142" y="61" width="24" height="24"/>
+        <path d="M17 92H183M17 126H183" stroke="var(--ink)" stroke-width="2.5"/>
+        <text class="date" x="100" y="117" font-size="22" text-anchor="middle" letter-spacing="1">2026.10.13</text>
+        <text class="wm" x="100" y="164" font-size="30" text-anchor="middle">첫직관</text>
+      </g>
+    </symbol>
+
+    <!-- 4. 한 공 여섯 조각 -->
+    <clipPath id="s0"><path d="M100 100L100 20A80 80 0 0 1 169.3 60Z"/></clipPath>
+    <clipPath id="s1"><path d="M100 100L169.3 60A80 80 0 0 1 169.3 140Z"/></clipPath>
+    <clipPath id="s2"><path d="M100 100L169.3 140A80 80 0 0 1 100 180Z"/></clipPath>
+    <clipPath id="s3"><path d="M100 100L100 180A80 80 0 0 1 30.7 140Z"/></clipPath>
+    <clipPath id="s4"><path d="M100 100L30.7 140A80 80 0 0 1 30.7 60Z"/></clipPath>
+    <clipPath id="s5"><path d="M100 100L30.7 60A80 80 0 0 1 100 20Z"/></clipPath>
+    <symbol id="L4" viewBox="0 0 200 200">
+      <g transform="rotate(-6 100 100)">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+        <circle cx="100" cy="100" r="80" fill="var(--ball)"/>
+        <g clip-path="url(#s0)"><use href="#volley" x="9" y="9" width="182" height="182"/></g>
+        <g clip-path="url(#s1)"><use href="#basket" x="9" y="9" width="182" height="182"/></g>
+        <g clip-path="url(#s2)"><use href="#soccer" x="9" y="9" width="182" height="182"/></g>
+        <g clip-path="url(#s3)"><use href="#hand" x="9" y="9" width="182" height="182"/></g>
+        <g clip-path="url(#s4)"><use href="#base" x="9" y="9" width="182" height="182"/></g>
+        <path clip-path="url(#s5)" d="M100 100L30.7 60A80 80 0 0 1 100 20Z" fill="var(--puck-top)"/>
+        <g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round">
+          <path d="M100 20V180M30.7 60L169.3 140M169.3 60L30.7 140"/>
+          <circle cx="100" cy="100" r="80"/>
+        </g>
+      </g>
+    </symbol>
+
+    <!-- 5. 우표: 톱니 테두리, 오른쪽 아래 액면가 자리에 7 -->
+    <mask id="perf"><rect x="20" y="20" width="160" height="160" fill="#fff"/><g id="holes" fill="#000"></g></mask>
+    <symbol id="L5" viewBox="0 0 200 200">
+      <g transform="rotate(-4 100 100)">
+        <rect x="20" y="20" width="160" height="160" fill="var(--stamp)" mask="url(#perf)"/>
+        <rect x="34" y="34" width="132" height="132" fill="var(--ball)" stroke="var(--ink)" stroke-width="2"/>
+        <use href="#basket" x="42" y="52" width="40" height="40"/><use href="#soccer" x="80" y="52" width="40" height="40"/><use href="#volley" x="118" y="52" width="40" height="40"/>
+        <use href="#hand" x="42" y="94" width="40" height="40"/><use href="#base" x="80" y="94" width="40" height="40"/><use href="#puck" x="118" y="94" width="40" height="40"/>
+        <text class="date" x="156" y="160" font-size="18" text-anchor="end">7</text>
+        <text class="wm" x="44" y="160" font-size="20">첫직관</text>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>첫직관 로고 시안: 도장</h1>
+    <p class="lead">도장을 기준으로 다섯 가지를 만들었어요. 1번이 지난번 원안, 2번이 글씨를 뺀 안, 3~5번이 새 아이디어예요. 각 시안 아래에 앱 아이콘(64px)과 브라우저 탭(32px) 크기를 같이 넣었어요.</p>
+  </header>
+
+  <article class="sheet" style="grid-template-columns:1fr">
+    <div class="info">
+      <span class="tag">흐름 미리보기 · <b>3번 날짜 소인 → 2번 꽃 도장</b></span>
+      <h2>앱을 열면 오늘 날짜가 찍히고, 그 뒤로는 꽃 도장</h2>
+      <div class="flow">
+        <figure>
+          <div class="phone"><div class="splash"><svg viewBox="0 0 200 200" class="press" id="stampNow" aria-label="오늘 날짜가 찍힌 날짜 소인">
+            <g transform="rotate(-6 100 100)">
+              <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+              <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+              <use href="#basket" x="34" y="61" width="24" height="24"/><use href="#soccer" x="52" y="42" width="24" height="24"/>
+              <use href="#volley" x="75" y="31" width="24" height="24"/><use href="#hand" x="101" y="31" width="24" height="24"/>
+              <use href="#base" x="124" y="42" width="24" height="24"/><use href="#puck" x="142" y="61" width="24" height="24"/>
+              <path d="M17 92H183M17 126H183" stroke="var(--ink)" stroke-width="2.5"/>
+              <text class="date" id="today" x="100" y="117" font-size="22" text-anchor="middle" letter-spacing="1">2026.10.13</text>
+              <text class="wm" x="100" y="164" font-size="30" text-anchor="middle">첫직관</text>
+            </g></svg></div></div>
+          <figcaption>① 첫 화면: 오늘 날짜로 도장이 쾅</figcaption>
+        </figure>
+        <figure>
+          <div class="phone">
+            <div class="bar"><svg viewBox="0 0 200 200"><use href="#L2"/></svg><b>첫직관</b></div>
+            <div class="ghost" style="top:76px;height:96px"></div>
+            <div class="ghost" style="top:184px"></div>
+            <div class="ghost" style="top:256px"></div>
+          </div>
+          <figcaption>② 그다음부터: 상단에 꽃 도장 + 이름</figcaption>
+        </figure>
+      </div>
+      <button class="replay" type="button" id="replay">도장 다시 찍기</button>
+      <p>직관 기록을 남길 때도 같은 날짜 소인이 그 경기 날짜로 찍혀요. 앱 아이콘은 꽃 도장이에요.</p>
+    </div>
+  </article>
+
+  <article class="sheet" style="grid-template-columns:1fr">
+    <div class="info">
+      <span class="tag">로고 글자 비교</span>
+      <h2>꽃 도장 옆에 붙였을 때</h2>
+      <div class="locks">
+        <div class="lock"><svg viewBox="0 0 200 200"><use href="#L2"/></svg><span class="name" style="font-family:'GangwonEducationSaeum',cursive">첫직관</span><span class="note"><b>강원교육새음</b>반듯하고 단정한 손글씨. 셋 중 가장 잘 읽혀요.</span></div>
+        <div class="lock"><svg viewBox="0 0 200 200"><use href="#L2"/></svg><span class="name" style="font-family:'OmuDaye',cursive">첫직관</span><span class="note"><b>오뮤 다예쁨</b>다이어리에 쓴 글씨. 가장 일기장 같아요.</span></div>
+        <div class="lock"><svg viewBox="0 0 200 200"><use href="#L2"/></svg><span class="name" style="font-family:'Gaegu',cursive;font-weight:700">첫직관</span><span class="note"><b>개구 Bold</b>굵고 동글동글. 작은 크기에서 가장 진해요.</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="sheet">
+    <div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="공 다섯 개와 퍽, 첫직관 글씨가 있는 원형 도장"><use href="#L1"/></svg></div>
+    <div class="info">
+      <span class="tag">1 · 원안</span>
+      <h2>글씨 있는 도장</h2>
+      <p>위쪽 둘레에 공 다섯 개와 퍽, 가운데 "첫직관".</p>
+      <ul class="pc"><li>이름이 바로 읽혀요</li><li>32px에서는 글씨가 뭉개져요</li></ul>
+      <div class="small"><figure><svg width="64" height="64"><use href="#L1"/></svg>64px</figure><figure><svg width="32" height="32"><use href="#L1"/></svg>32px</figure></div>
+    </div>
+  </article>
+
+  <article class="sheet">
+    <div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="야구공을 가운데 두고 다섯 개가 꽃잎처럼 둘러싼 도장"><use href="#L2"/></svg></div>
+    <div class="info">
+      <span class="tag">2 · 글씨 없이 공만</span>
+      <h2>꽃 도장</h2>
+      <p>글씨를 빼니 공이 커질 수 있어서, 처음 시작한 야구공을 가운데 두고 나머지를 꽃잎처럼 둘렀어요.</p>
+      <ul class="pc"><li>공이 커서 작은 크기에서도 종목이 보여요</li><li>글씨가 없으니 이름은 옆에 따로 붙여야 해요</li><li>앱 아이콘으로 쓰기 가장 좋아요</li></ul>
+      <div class="small"><figure><svg width="64" height="64"><use href="#L2"/></svg>64px</figure><figure><svg width="32" height="32"><use href="#L2"/></svg>32px</figure></div>
+    </div>
+  </article>
+
+  <article class="sheet">
+    <div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="가운데 띠에 날짜가 찍힌 우체국 소인 모양 도장"><use href="#L3"/></svg></div>
+    <div class="info">
+      <span class="tag">3 · 날짜 소인</span>
+      <h2>직관한 날짜가 찍히는 도장</h2>
+      <p>우체국 소인처럼 가운데 띠에 날짜가 들어가요. 직관 기록을 남기면 그날 날짜로 이 도장이 찍혀요. 로고이면서 앱 기능이 되는 안이에요.</p>
+      <ul class="pc"><li>"직관 일기장" 콘셉트와 가장 딱 맞아요</li><li>날짜가 바뀌는 로고라 앱 아이콘에는 날짜 없는 버전이 필요해요</li></ul>
+      <div class="small"><figure><svg width="64" height="64"><use href="#L3"/></svg>64px</figure><figure><svg width="32" height="32"><use href="#L3"/></svg>32px</figure></div>
+    </div>
+  </article>
+
+  <article class="sheet">
+    <div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="공 하나를 여섯 조각으로 나눠 각 조각에 종목 무늬를 넣은 도장"><use href="#L4"/></svg></div>
+    <div class="info">
+      <span class="tag">4 · 한 공 여섯 조각</span>
+      <h2>공 하나에 7종목</h2>
+      <p>공 하나를 여섯 조각으로 나누고 조각마다 다른 종목의 무늬를 넣었어요. 어두운 조각이 아이스하키 퍽이에요.</p>
+      <ul class="pc"><li>모양이 단순해서 32px에서도 형태가 살아요</li><li>조각이 작아서 어느 종목인지는 크게 봐야 알아요</li></ul>
+      <div class="small"><figure><svg width="64" height="64"><use href="#L4"/></svg>64px</figure><figure><svg width="32" height="32"><use href="#L4"/></svg>32px</figure></div>
+    </div>
+  </article>
+
+  <article class="sheet">
+    <div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="톱니 테두리 우표 안에 공 여섯 개와 숫자 7"><use href="#L5"/></svg></div>
+    <div class="info">
+      <span class="tag">5 · 우표</span>
+      <h2>모으는 맛이 있는 우표</h2>
+      <p>티켓을 모으는 앱이라 수집품인 우표 모양으로 했어요. 오른쪽 아래 액면가 자리에는 종목 수 7을 넣었어요.</p>
+      <ul class="pc"><li>도장이 아니라 네모라서 다른 안과 확실히 달라 보여요</li><li>나중에 종목별 우표를 하나씩 모으는 기능으로 이어갈 수 있어요</li></ul>
+      <div class="small"><figure><svg width="64" height="64"><use href="#L5"/></svg>64px</figure><figure><svg width="32" height="32"><use href="#L5"/></svg>32px</figure></div>
+    </div>
+  </article>
+</div>
+
+<script>
+// 우표 톱니 구멍
+const g=document.getElementById('holes'),ns='http://www.w3.org/2000/svg';
+for(let i=28;i<=172;i+=16){[[i,20],[i,180],[20,i],[180,i]].forEach(([x,y])=>{const c=document.createElementNS(ns,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',5);g.appendChild(c);});}
+// 날짜 소인에 오늘 날짜
+const d=new Date(),p=n=>String(n).padStart(2,'0');
+document.getElementById('today').textContent=`${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())}`;
+const st=document.getElementById('stampNow');
+document.getElementById('replay').addEventListener('click',()=>{st.classList.remove('press');void st.getBoundingClientRect();st.classList.add('press');});
+</script>
