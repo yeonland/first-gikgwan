@@ -1,6 +1,15 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>첫직관</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap">
 <style>
+/* 기본 리셋: hidden 속성이 display 규칙에 덮이지 않게 */
+[hidden]{display:none!important}
+body{margin:0}
+img,svg{max-width:100%}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
 /* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 로컬 파일이 없으면 눈누 CDN에서 불러옴 */
@@ -66,7 +75,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 /* 전광판 숫자 */
 .led{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px;background:var(--led-bg);padding:2px;border-radius:3px}
 .led>span{display:flex;flex-direction:column;gap:3px;padding:7px 10px 8px;background-color:var(--led-bg);background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.4px);background-size:4px 4px;min-width:0}
-.led small{font-size:var(--fs-cap);letter-spacing:.12em;color:var(--led-dim)}
+.led small{font-size:var(--fs-cap);letter-spacing:.08em;color:var(--led-dim);white-space:nowrap}
 .led b,.led-chip{font-family:var(--dot);font-weight:400;color:var(--led);text-shadow:0 0 6px rgba(255,178,56,.55);line-height:1;white-space:nowrap}
 .led b{font-size:var(--fs-em)}
 .led .dd{align-items:flex-end;text-align:right}
@@ -137,8 +146,35 @@ nav li{padding:9px 0;color:var(--pencil);border-radius:8px}
 nav li.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
 
 button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+
+/* ── 반응형: 휴대폰(~767) 한 쪽 → 태블릿(768~) 펼친 일기장 두 쪽 → PC(1100~) 왼쪽 세로 메뉴 ── */
+@media (min-width:768px){
+  body{padding-inline:32px;padding-block:32px 112px}
+  /* 왼쪽 쪽: 다음 경기 / 오른쪽 쪽: 다른 종목 + 기록. 가운데 세로선이 제본선 */
+  .app{max-width:860px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:0;row-gap:0;
+       grid-template-areas:"head head" "next other" "next diary"}
+  .app>header{grid-area:head;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+  .app>section{padding-bottom:36px}
+  .app>section[aria-labelledby="h-next"]{grid-area:next;padding-right:36px}
+  .app>section[aria-labelledby="h-other"]{grid-area:other}
+  .app>section[aria-labelledby="h-diary"]{grid-area:diary}
+  .app>section[aria-labelledby="h-other"],.app>section[aria-labelledby="h-diary"]{padding-left:36px;border-left:1px solid var(--line)}
+  nav ul{max-width:520px}
+}
+@media (min-width:1100px){
+  /* 하단 메뉴를 왼쪽 세로 메뉴로 */
+  body{padding-left:calc(112px + 40px);padding-right:40px;padding-block:40px}
+  nav{top:0;right:auto;width:112px;border-top:0;border-right:1px solid var(--line);padding:40px 12px}
+  nav ul{grid-template-columns:1fr;gap:8px;max-width:none;font-size:var(--fs-body)}
+  nav li{padding:12px 0}
+  .app{max-width:1000px}
+  .app>section[aria-labelledby="h-next"]{padding-right:48px}
+  .app>section[aria-labelledby="h-other"],.app>section[aria-labelledby="h-diary"]{padding-left:48px}
+}
 @media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
 </style>
+</head>
+<body>
 
 <!-- 로고용 공 다섯 개 + 퍽 (좌표계 -50~50) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -340,3 +376,5 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
 }));
 $('rb').textContent=RULES[0][1];
 </script>
+</body>
+</html>

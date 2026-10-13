@@ -2,3 +2,6 @@
 # (앱에서는 눈누 CDN 주소로 불러옴)
 drafts/fonts/
 fonts/GangwonEduSaeeum_OTFMediumA.woff
+
+# 로컬 미리보기 설정
+.claude/
