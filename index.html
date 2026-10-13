@@ -62,7 +62,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 
 /* 날짜 소인: 한 색 잉크 도장 */
 .ink-stamp{--ball:transparent;--puck:var(--ink);--puck-top:transparent;--seam:var(--ink)}
-.mini-stamp{position:absolute;right:-6px;bottom:-18px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
+.mini-stamp{position:absolute;right:-8px;bottom:-46px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
 .mini-stamp svg{width:100%;height:100%}
 
 /* 첫 화면: 하루 첫 실행 때 오늘 날짜 소인 */
@@ -124,7 +124,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .entry:nth-child(even) .mini{transform:rotate(1.5deg)}
 .mini::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(-3deg)}
 .mini .band{padding:4px 10px;font-size:var(--fs-cap)}
-.mini .in{padding:8px 10px 10px;font-size:var(--fs-cap);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.mini .in{padding:10px 10px 16px;min-height:88px;font-size:var(--fs-cap);display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center}   /* 티켓처럼 가운데 */
 .mini .in b{font-size:var(--fs-body)}
 .memo{font-family:var(--hand);font-size:var(--fs-title);line-height:1.3;color:var(--ink);padding-inline:2px}
 .slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:var(--fs-cap);padding:14px;text-align:center;cursor:pointer}
@@ -207,8 +207,11 @@ header{flex-wrap:wrap}
 /* 직관 기록 */
 .mini .pk{color:var(--tk-faint)}
 /* 기록 티켓: 1줄 "홈 vs 원정 구장", 2줄 결과 칩 + 응원 */
-.mini .mt,.mini .rs{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
-.mini .rs{align-items:center;padding-right:52px}   /* 오른쪽 아래 날짜 소인 자리 */
+.mini .mt,.mini .rs{margin:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:2px 6px}
+.mini .rs{align-items:center}
+/* 날짜 소인은 티켓 오른쪽 아래에 걸쳐 찍힘 → 아래 손글씨 메모는 오른쪽을 비움 */
+.entry .memo{padding-right:56px}
+.diary .entry{padding-bottom:12px}
 .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #log-led{grid-template-columns:repeat(3,minmax(0,1fr))}
 .add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
