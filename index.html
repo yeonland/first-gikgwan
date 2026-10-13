@@ -208,21 +208,18 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
   </header>
 
   <section aria-labelledby="h-next">
-    <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note">예시 경기</span></div>
+    <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note">10.13 기준 실제 일정</span></div>
     <article class="ticket">
       <div class="t-main">
-        <div class="band"><span>KBO POSTSEASON</span><span>ADMIT ONE</span></div>
+        <div class="band"><span id="tk-round">WILD CARD · G1</span><span>ADMIT ONE</span></div>
         <div class="t-body">
-          <div class="match"><span id="home">LG 트윈스</span><i>VS</i><span id="away">두산 베어스</span></div>
-          <div class="led" id="led" data-date="2026-10-15">
-            <span><small>DATE</small><b>10.15 THU</b></span>
-            <span><small>TIME</small><b>18:30</b></span>
-            <span class="dd"><small>D-DAY</small><b class="js-dday"></b></span>
+          <div class="match"><span id="home">LG 트윈스</span><i id="vs">VS</i><span id="away">두산 베어스</span></div>
+          <div class="led">
+            <span><small>DATE</small><b id="tk-date">10.14 WED</b></span>
+            <span><small>TIME</small><b id="tk-time">TBA</b></span>
+            <span class="dd"><small>D-DAY</small><b id="tk-dday"></b></span>
           </div>
-          <dl class="info">
-            <dt>장소</dt><dd id="park">잠실야구장</dd>
-            <dt>좌석</dt><dd>1루 응원석 208블록 12열 7</dd>
-          </dl>
+          <dl class="info" id="tk-info"></dl>
         </div>
       </div>
       <div class="stub"><div class="barcode" aria-hidden="true"></div><small>NO. 0001</small></div>
@@ -358,8 +355,37 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  $('home').textContent=t[0];$('away').textContent=o1[0];$('park').textContent=t[3];
+  renderTicket(t);
   $('d1').textContent='vs '+o2[1];$('d2').textContent='vs '+o3[1];
+}
+
+// 2026 포스트시즌 (10.13 기준, KBO 발표·보도). 시간·날짜가 발표되지 않은 건 null로 두고 TBA로 표시
+const STANDINGS={KT:[1,'90승 5무 49패'],'삼성':[2,'83승 3무 58패'],KIA:[3,'79승 2무 63패'],LG:[4,'78승 1무 65패'],'두산':[5,'73승 5무 66패'],
+  SSG:[6,'65승 5무 74패'],'롯데':[7,'64승 3무 77패'],NC:[8,'64승 2무 78패'],'한화':[9,'57승 4무 83패'],'키움':[10,'50승 4무 90패']};
+const WC_BOOK='NOL 티켓 · 10.13(화) 14:00 오픈 · 1인 4매';
+const POSTSEASON={
+  LG:{round:'WILD CARD · G1',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장',book:WC_BOOK,note:'4위 LG는 1승 또는 무승부면 준PO 진출'},
+  '두산':{round:'WILD CARD · G1',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장 (LG 홈, 두산 원정)',book:WC_BOOK,note:'5위 두산은 2연승해야 준PO 진출'},
+  KIA:{round:'SEMI-PO · G1',home:'KIA 타이거즈',away:'WC 승자',date:null,time:null,park:'광주기아챔피언스필드',book:'예매 일정 발표 전',note:'LG-두산 와일드카드 승자와 대결 (5전 3선승)'},
+  '삼성':{round:'PLAYOFF · G1',home:'삼성 라이온즈',away:'준PO 승자',date:null,time:null,park:'대구삼성라이온즈파크',book:'예매 일정 발표 전',note:'정규시즌 2위로 플레이오프 직행 (5전 3선승)'},
+  KT:{round:'KOREAN SERIES · G1',home:'KT wiz',away:'PO 승자',date:'2026-11-02',time:null,park:'수원KT위즈파크',book:'예매 일정 발표 전',note:'정규시즌 1위로 한국시리즈 직행 (7전 4선승)'}
+};
+const DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const ledDate=iso=>{if(!iso)return 'TBA';const [y,m,d]=iso.split('-').map(Number);return `${pad(m)}.${pad(d)} ${DOW[new Date(y,m-1,d).getDay()]}`};
+function renderTicket(t){
+  const short=t[1],[rank,record]=STANDINGS[short],g=POSTSEASON[short];
+  const rows=[];
+  if(g){
+    $('tk-round').textContent=g.round;$('home').textContent=g.home;$('vs').hidden=false;$('away').textContent=g.away;
+    $('tk-date').textContent=ledDate(g.date);$('tk-time').textContent=g.time||'TBA';$('tk-dday').textContent=g.date?dday(g.date):'--';
+    rows.push(['장소',g.park],['예매',g.book],['참고',g.note]);
+  }else{
+    // 가을야구 탈락: 시즌 종료 티켓 + 지금 볼 수 있는 가을야구 안내
+    $('tk-round').textContent='2026 SEASON';$('home').textContent=t[0];$('vs').hidden=true;$('away').textContent='시즌 종료';
+    $('tk-date').textContent='2027.03';$('tk-time').textContent='OPEN';$('tk-dday').textContent='OFF';
+    rows.push(['순위',`${rank}위 · ${record}`],['가을야구','LG vs 두산 와일드카드 · 10.14 잠실'],['예매',WC_BOOK]);
+  }
+  $('tk-info').innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
 let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved=s}catch(e){}
 sel.value=saved;apply(saved);
