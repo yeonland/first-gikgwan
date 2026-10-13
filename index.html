@@ -533,11 +533,11 @@ function apply(i){
   renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);
 }
 
-// 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 오픈 시각은 확인된 구단만
-const BOOK={LG:['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],'두산':['NOL 티켓','https://nol.yanolja.com/ticket',null],
-  '키움':['NOL 티켓','https://nol.yanolja.com/ticket','연간회원 3시간 선예매'],SSG:['SSG 티켓','https://ticket.ssg.com',null],
-  KT:['티켓링크','https://www.ticketlink.co.kr',null],'한화':['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],
-  '삼성':['티켓링크','https://www.ticketlink.co.kr',null],KIA:['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],
+// 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 링크는 예매처의 구단 페이지. 오픈 시각은 확인된 구단만
+const BOOK={LG:['티켓링크','https://www.ticketlink.co.kr/sports/137/59','경기 7일 전 11:00'],'두산':['NOL 티켓','https://nol.yanolja.com/ticket/genre/sports/bears',null],
+  '키움':['NOL 티켓','https://nol.yanolja.com/ticket/genre/sports/heroes','연간회원 3시간 선예매'],SSG:['SSG 티켓','https://ticket.ssg.com',null],
+  KT:['티켓링크','https://www.ticketlink.co.kr/sports/137/62',null],'한화':['티켓링크','https://www.ticketlink.co.kr/sports/137/63','경기 7일 전 11:00'],
+  '삼성':['티켓링크','https://www.ticketlink.co.kr/sports/137/57',null],KIA:['티켓링크','https://www.ticketlink.co.kr/sports/137/58','경기 7일 전 11:00'],
   '롯데':['자이언츠 티켓','https://ticket.giantsclub.com',null],NC:['NC 티켓','https://ticket.ncdinos.com',null]};
 function renderClubs(me){
   $('clubs').innerHTML=TEAMS.map(t=>{const [name,url,open]=BOOK[t[1]];
