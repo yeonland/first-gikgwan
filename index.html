@@ -300,6 +300,14 @@ input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
 .chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
 .chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .rule-list{display:flex;flex-direction:column}
+/* 이 종목 한눈에: 룰 카드 위 세 칸 (선수 수 · 경기 시간 · 이기는 법). 휴대폰에서는 한 줄씩 */
+.glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px;background:var(--surface);border:1px solid var(--line)}
+.glance div{padding:10px 12px;border-left:1px dashed var(--line)}
+.glance div:first-child{border-left:0}
+.glance dt{font-size:var(--fs-cap);color:var(--pencil)}
+.glance dd{margin:2px 0 0;font-size:var(--fs-body);font-weight:700}
+.glance dd small{display:block;font-size:var(--fs-cap);font-weight:400;color:var(--pencil)}
+@media (max-width:560px){.glance{grid-template-columns:minmax(0,1fr)}.glance div{border-left:0;border-top:1px dashed var(--line)}.glance div:first-child{border-top:0}}
 .rule-list>.list+.list{border-top:0}
 .rcard{border-top:1px solid var(--line);border-left:3px solid transparent}
 .rcard:first-child{border-top:0}
@@ -474,6 +482,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <section aria-labelledby="h-rule">
       <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note" id="rule-count"></span></div>
       <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기 장면과 규정집 조항이 보여요.</p>
+      <dl class="glance" id="rule-glance" aria-label="이 종목 한눈에"></dl>
       <div class="chips" role="group" aria-label="분류별로 보기" id="rule-chips"></div>
       <div class="rule-list" id="rule-list"></div>
       <p class="fine" id="rule-fine"></p>
@@ -716,6 +725,9 @@ function renderSportPages(){
   $('home-rules-sub').textContent=`${SP.name} ${D.homeRules.length}장`;$('more-rules').textContent=`룰 카드 ${D.rules.length}장 모두 보기`;
   $('home-tabs').innerHTML=D.homeRules.map(id=>`<button class="tab" role="tab" type="button" data-id="${id}">${esc(D.ruleBy[id].name)}</button>`).join('');
   showHomeRule(D.homeRules[0]);
+  // 이 종목 한눈에: [이름표, 큰 글씨, 작은 설명]
+  $('rule-glance').hidden=!D.glance;
+  $('rule-glance').innerHTML=(D.glance||[]).map(([k,v,sub])=>`<div><dt>${k}</dt><dd>${v}${sub?`<small>${sub}</small>`:''}</dd></div>`).join('');
   ruleCat='전체';
   $('rule-chips').innerHTML=['전체',...D.ruleCats].map(c=>`<button class="chip" type="button">${c}</button>`).join('');
   $('rule-list').innerHTML='';renderRules();

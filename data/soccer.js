@@ -151,6 +151,9 @@ const leagueSite=['K리그 공식 홈페이지','https://www.kleague.com'];
 const diaryExamples=[['2026-09-20',2,2,1,'처음 간 축구장. 응원가 90분 내내'],['2026-08-30',5,0,0,'0:0이어도 재밌었음']];
 const scoreLabel='골';
 
-return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
+const glance=[['선수','한 팀 11명','골키퍼 1명 포함'],['경기 시간','전반 45분 + 후반 45분','끝날 때 추가시간이 붙어요'],['이기는 법','골이 많은 팀','K리그는 비기면 그대로 무승부 (승점 1)']];
+
+return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

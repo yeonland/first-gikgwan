@@ -177,6 +177,9 @@ const leagueSites={KBL:leagueSite,WKBL:['WKBL 공식 홈페이지','https://www.
 const diaryExamples=[['2026-10-11',2,84,79,'처음 간 농구장. 덩크 소리가 진짜 큼'],['2026-03-15',4,71,77,'4쿼터 역전패. 그래도 재밌었음']];
 const scoreLabel='점수';
 
-return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
+const glance=[['선수','한 팀 5명','벤치 선수와 몇 번이든 교체'],['경기 시간','10분 × 4쿼터','공이 죽으면 시계도 멈춰요'],['이기는 법','점수가 많은 팀','동점이면 5분 연장. 비기는 경기는 없어요']];
+
+return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,leagueSites,diaryExamples,scoreLabel};
 })();

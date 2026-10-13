@@ -178,6 +178,9 @@ const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.co
 // 직관 기록: 기록이 없을 때 홈에 보여 줄 예시 2장 [날짜, 상대(내 팀에서 몇 번째 뒤 팀), 홈 점수, 원정 점수, 메모]. 내 팀 홈경기로 보여 줌
 const diaryExamples=[['2026-09-14',3,5,3,'처음 간 날. 응원가 하나 외움'],['2026-08-23',7,2,4,'비 와서 우비 삼. 7회까지 봄']];
 
-return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
+const glance=[['선수','한 팀 9명','수비할 때 9명이 다 나가요'],['경기 시간','9회','시간 제한 없이 3아웃씩 번갈아 공격'],['이기는 법','점수가 많은 팀','동점이면 연장. KBO 정규시즌은 11회까지 하고 그래도 같으면 무승부']];
+
+return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
 })();

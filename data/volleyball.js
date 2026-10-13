@@ -186,6 +186,9 @@ const leagueSite=['KOVO 공식 홈페이지',KOVO];
 const diaryExamples=[['2026-04-01',1,3,1,'처음 본 배구. 랠리가 길어서 놀람'],['2026-03-15',3,2,3,'5세트까지 감. 목 쉼']];
 const scoreLabel='세트';
 
-return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
+const glance=[['선수','한 팀 6명','수비만 하는 리베로가 따로 있어요'],['경기 시간','세트제','시간 제한 없이 25점 한 세트 (5세트는 15점)'],['이기는 법','세 세트를 먼저 따는 팀','비기는 경기는 없어요']];
+
+return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();
