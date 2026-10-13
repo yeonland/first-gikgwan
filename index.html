@@ -206,6 +206,9 @@ header{flex-wrap:wrap}
 .check:has(input:focus-visible){outline:2px solid var(--team-ink);outline-offset:-2px}
 /* 직관 기록 */
 .mini .pk{color:var(--tk-faint)}
+/* 기록 티켓: 1줄 "홈 vs 원정 구장", 2줄 결과 칩 + 응원 */
+.mini .mt,.mini .rs{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
+.mini .rs{align-items:center;padding-right:52px}   /* 오른쪽 아래 날짜 소인 자리 */
 .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #log-led{grid-template-columns:repeat(3,minmax(0,1fr))}
 .add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
@@ -709,7 +712,7 @@ function entryHTML(e,peel){
   const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${esc(c)} ${{W:'승리',L:'패배',D:'무승부'}[r]}, ${esc(said)}">${r} ${sc}</span>`
     :sc?`<span class="led-chip" aria-label="${esc(said)}">${sc}</span>`:'';
   return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'};--on-team:${onColor(t?t[2]:'#6b7177')}"><div class="band">${ledDate(e.date)}</div>
-    <div class="in"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)} · ${c?esc(c)+' 응원':'그냥 구경'}</span>${chip}</div>
+    <div class="in"><p class="mt"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)}</span></p><p class="rs">${chip}<span class="pk">${c?esc(c)+' 응원':'그냥 구경'}</span></p></div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
     ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
 }
