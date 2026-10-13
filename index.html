@@ -3,6 +3,8 @@
 <style>
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
 @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
+/* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 로컬 파일이 없으면 눈누 CDN에서 불러옴 */
+@font-face{font-family:"GangwonEducationSaeum";src:url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
 /* Layout: one phone column on grid-notebook paper; every game is a printed ticket, every memo is handwriting */
 :root{
   --team:#C30452;               /* 내 팀 컬러, JS가 바꿈 */
@@ -13,14 +15,18 @@
   --sans:"KBO Dia Gothic","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
   --mono:var(--sans);           /* 티켓 숫자도 같은 글꼴, 폭만 맞춤 */
   --hand:"Gaegu","Nanum Pen Script",cursive;
+  --logo:"GangwonEducationSaeum","Gaegu",cursive;
+  --ball:var(--paper); --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55;   /* 로고 속 공 */
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
   --paper:#15171a; --grid:#212429; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+  --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
   --tape:rgba(190,182,150,.55); color-scheme:dark}}
 :root[data-theme="dark"]{
   --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
   --paper:#15171a; --grid:#212429; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+  --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
   --tape:rgba(190,182,150,.55); color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -40,9 +46,22 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.02em}
 /* header */
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .mark{display:flex;align-items:center;gap:10px}
-/* 로고(워드마크)는 KBO 다이아고딕 사용 금지(라이선스 CI/BI 항목) → 손글씨 글꼴 */
-.mark-stamp{width:38px;height:38px;border-radius:50%;border:2px solid var(--team-ink);color:var(--team-ink);display:grid;place-items:center;font-family:var(--hand);font-size:15px;font-weight:700;transform:rotate(-8deg)}
-.mark b{display:block;font-family:var(--hand);font-size:28px;font-weight:700;line-height:1}
+/* 로고: 꽃 도장 + 강원교육새음. KBO 다이아고딕은 로고(CI/BI)에 쓸 수 없음 */
+.mark>svg{width:44px;height:44px;flex:none}
+.mark b{display:block;font-family:var(--logo);font-weight:normal;font-size:28px;line-height:1}
+
+/* 날짜 소인: 한 색 잉크 도장 */
+.ink-stamp{--ball:transparent;--puck:var(--ink);--puck-top:transparent;--seam:var(--ink)}
+.mini-stamp{position:absolute;right:-14px;bottom:-18px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
+.mini-stamp svg{width:100%;height:100%}
+
+/* 첫 화면: 하루 첫 실행 때 오늘 날짜 소인 */
+.splash{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-content:center;gap:14px;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;transition:opacity .4s;cursor:pointer}
+.splash.out{opacity:0;pointer-events:none}
+.splash-in svg{width:min(56vw,220px);height:auto;display:block;animation:press .55s cubic-bezier(.2,.9,.3,1.2) both}
+.splash p{margin:0;font-size:13px;color:var(--pencil)}
+@keyframes press{from{transform:scale(1.35) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}.splash{transition:none}}
 .mark span{font-size:12px;color:var(--pencil)}
 select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
 
@@ -113,10 +132,32 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
+<!-- 로고용 공 다섯 개 + 퍽 (좌표계 -50~50) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="basket" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><path d="M0 -44V44M-44 0H44"/><path d="M-22 -38C-4 -14 -4 14 -22 38M22 -38C4 -14 4 14 22 38"/></g></symbol>
+    <symbol id="soccer" viewBox="-50 -50 100 100"><g stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><polygon points="0,-14 13.3,-4.3 8.2,11.3 -8.2,11.3 -13.3,-4.3" fill="var(--ink)"/><path fill="none" d="M0 -14V-32M13.3 -4.3L30.4 -9.9M8.2 11.3L18.8 25.9M-8.2 11.3L-18.8 25.9M-13.3 -4.3L-30.4 -9.9"/></g></symbol>
+    <symbol id="volley" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><path d="M2 -2C2 -22 14 -38 32 -30"/><path d="M2 -2C20 8 38 4 43 -12"/><path d="M2 -2C-16 10 -22 30 -12 42"/><path d="M-20 -39C-10 -22 -10 -8 -24 4M-40 -18C-30 -6 -30 8 -42 14"/></g></symbol>
+    <symbol id="hand" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle r="44" fill="var(--ball)"/><path d="M-12 -16L12 -16L20 6L0 20L-20 6Z"/><path d="M-12 -16L-22 -38M12 -16L22 -38M20 6L42 10M0 20L0 44M-20 6L-42 10"/></g></symbol>
+    <symbol id="base" viewBox="-50 -50 100 100"><circle r="44" fill="var(--ball)" stroke="var(--ink)" stroke-width="4"/><g fill="none" stroke="var(--seam)" stroke-width="4" stroke-linecap="round"><path d="M-28 -34C-10 -14 -10 14 -28 34M28 -34C10 -14 10 14 28 34"/><path stroke-width="3" stroke-dasharray="2 6" d="M-36 -26C-20 -10 -20 10 -36 26M36 -26C20 -10 20 10 36 26"/></g></symbol>
+    <symbol id="puck" viewBox="-50 -50 100 100"><path d="M-44 -6V10A44 16 0 0 0 44 10V-6Z" fill="var(--puck)" stroke="var(--ink)" stroke-width="3"/><ellipse cy="-6" rx="44" ry="16" fill="var(--puck-top)" stroke="var(--ink)" stroke-width="3"/></symbol>
+    <!-- 꽃 도장: 앱 로고·아이콘 -->
+    <symbol id="flower" viewBox="0 0 200 200"><g transform="rotate(-6 100 100)">
+      <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="5"/>
+      <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <use href="#basket" x="76" y="30" width="48" height="48"/><use href="#soccer" x="120" y="62" width="48" height="48"/>
+      <use href="#volley" x="103" y="113" width="48" height="48"/><use href="#hand" x="49" y="113" width="48" height="48"/>
+      <use href="#puck" x="32" y="62" width="48" height="48"/><use href="#base" x="76" y="76" width="48" height="48"/>
+    </g></symbol>
+  </defs>
+</svg>
+
+<div class="splash" id="splash" hidden aria-hidden="true"><div class="splash-in ink-stamp"></div><p>오늘의 직관 일기</p></div>
+
 <div class="app">
   <header>
     <div class="mark">
-      <div class="mark-stamp" aria-hidden="true">1st</div>
+      <svg viewBox="0 0 200 200" role="img" aria-label="첫직관 로고"><use href="#flower"/></svg>
       <div><b>첫직관</b><span>직관 일기장</span></div>
     </div>
     <select id="team" aria-label="내 팀"></select>
@@ -152,11 +193,11 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
     <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note">기록 2장 · 예시</span></div>
     <div class="diary">
       <div class="entry">
-        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span>승 5 : 3</span></div></div>
+        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span>승 5 : 3</span></div><span class="mini-stamp ink-stamp" data-date="2026.09.14"></span></div>
         <div class="memo">처음 간 날. 응원가 하나 외움</div>
       </div>
       <div class="entry">
-        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span>패 2 : 4</span></div></div>
+        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span>패 2 : 4</span></div><span class="mini-stamp ink-stamp" data-date="2026.08.23"></span></div>
         <div class="memo">비 와서 우비 삼. 7회까지 봄</div>
       </div>
       <button class="slot" type="button">다음 티켓 붙이기</button>
@@ -192,6 +233,33 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
 </ul></nav>
 
 <script>
+// 날짜 소인: 첫 화면과 직관 기록에 같은 도장을 날짜만 바꿔 찍음
+const BALLS=[['basket',34,61],['soccer',52,42],['volley',75,31],['hand',101,31],['base',124,42],['puck',142,61]];
+function dateStamp(date){
+  return `<svg viewBox="0 0 200 200" aria-hidden="true"><g transform="rotate(-6 100 100)">
+    <circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="4"/>
+    <circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+    ${BALLS.map(([id,x,y])=>`<use href="#${id}" x="${x}" y="${y}" width="24" height="24"/>`).join('')}
+    <path d="M17 92H183M17 126H183" stroke="var(--ink)" stroke-width="2.5"/>
+    <text x="100" y="117" font-size="22" text-anchor="middle" fill="var(--ink)" letter-spacing="1" style="font-family:var(--mono);font-weight:700">${date}</text>
+    <text x="100" y="164" font-size="30" text-anchor="middle" fill="var(--ink)" style="font-family:var(--logo)">첫직관</text>
+  </g></svg>`;
+}
+document.querySelectorAll('.mini-stamp').forEach(el=>el.innerHTML=dateStamp(el.dataset.date));
+
+// 하루 첫 실행 때만 오늘 날짜 소인
+const now=new Date(),pad=n=>String(n).padStart(2,'0');
+const today=`${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+const splash=document.getElementById('splash');
+let seen=null;try{seen=localStorage.getItem('splashDay')}catch(e){}
+if(seen!==today){
+  splash.querySelector('.splash-in').innerHTML=dateStamp(today);
+  splash.hidden=false;
+  try{localStorage.setItem('splashDay',today)}catch(e){}
+  const close=()=>{splash.classList.add('out');setTimeout(()=>{splash.hidden=true},400);};
+  setTimeout(close,1500);splash.addEventListener('click',close);
+}
+
 const TEAMS=[
  ["LG 트윈스","LG","#C30452","잠실야구장"],["두산 베어스","두산","#1A1748","잠실야구장"],
  ["키움 히어로즈","키움","#820024","고척스카이돔"],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드"],
