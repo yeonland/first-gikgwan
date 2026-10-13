@@ -169,6 +169,28 @@ a{color:inherit;text-underline-offset:3px}
 .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+/* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기장 장면 + 규정집 조항 */
+.more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
+.rule-list{display:flex;flex-direction:column}
+.rule-list>.list+.list{border-top:0}
+.rcard{border-top:1px solid var(--line);border-left:3px solid transparent}
+.rcard:first-child{border-top:0}
+.rcard[open]{border-left-color:var(--team-ink)}
+.rcard summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px 12px 11px;cursor:pointer}
+.rcard summary::-webkit-details-marker{display:none}
+.rcard summary>*{grid-column:1}
+.rcard summary::after{content:"+";grid-column:2;grid-row:1/span 3;align-self:center;font-size:var(--fs-title);line-height:1;color:var(--pencil)}
+.rcard[open] summary::after{content:"−"}
+.rcard summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
+.rcard .lb{font-size:var(--fs-cap);color:var(--pencil);letter-spacing:.04em}
+.rcard dl{margin:0;padding:0 14px 14px 11px;display:flex;flex-direction:column;gap:10px}
+.rcard dt{font-size:var(--fs-cap);color:var(--pencil)}
+.rcard dd{margin:2px 0 0}
+.rcard .src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:var(--fs-cap);color:var(--pencil)}
+.rcard .src b{color:var(--ink);margin-right:6px}
 button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 
 /* ── 반응형: 휴대폰(~767) 한 쪽 → 태블릿(768~) 펼친 일기장 두 쪽 → PC(1100~) 왼쪽 세로 메뉴 ── */
@@ -187,6 +209,9 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   .page{grid-column:1/-1}
   #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
   #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
+  /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
+  .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
+  .rule-list>.list+.list{border-top:1px solid var(--line)}
 }
 @media (min-width:1100px){
   /* 하단 메뉴를 왼쪽 세로 메뉴로 */
@@ -255,12 +280,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <details class="rules">
       <summary><span><b>경기 전 1분 룰</b> · 야구 3장</span></summary>
       <div class="rules-body">
-        <div class="tabs" role="tablist">
-          <button class="tab" role="tab" aria-selected="true" data-i="0">득점</button>
-          <button class="tab" role="tab" aria-selected="false" data-i="1">삼진·볼넷</button>
-          <button class="tab" role="tab" aria-selected="false" data-i="2">낫아웃</button>
-        </div>
-        <div class="card" role="tabpanel"><span class="k" id="rk">점수</span><p id="rb"></p></div>
+        <div class="tabs" role="tablist" id="home-tabs"></div>
+        <div class="card" role="tabpanel"><span class="k" id="rk"></span><p id="rb"></p><button type="button" class="more" data-go="rule">룰 카드 10장 모두 보기</button></div>
       </div>
     </details>
   </section>
@@ -334,8 +355,18 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     </section>
   </div>
 
+  <!-- 룰 카드: 규정집을 쉽게 풀어 주는 카드 -->
+  <div class="page" id="p-rule" hidden>
+    <section aria-labelledby="h-rule">
+      <div class="sec-head"><h2 id="h-rule">야구 룰 카드</h2><span class="note" id="rule-count"></span></div>
+      <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기장 장면과 규정집 조항이 보여요.</p>
+      <div class="chips" role="group" aria-label="분류별로 보기" id="rule-chips"></div>
+      <div class="rule-list" id="rule-list"></div>
+      <p class="fine">조항 번호는 공식야구규칙(2016년 개편 번호 체계) 기준이고, 문장은 규칙서를 옮기지 않고 풀어 썼어요. KBO 규정은 <a href="https://www.koreabaseball.com/Kbo/League/GameManage2026.aspx" target="_blank" rel="noopener">KBO 2026 주요 규정·규칙</a>(2026.10.13 확인) 기준이에요.</p>
+    </section>
+  </div>
+
   <!-- 아직 만들지 않은 탭 -->
-  <div class="page" id="p-rule" hidden><section aria-labelledby="h-rule"><div class="sec-head"><h2 id="h-rule">룰 카드</h2></div><p class="empty">야구 룰 카드 10장을 준비하고 있어요. 지금은 홈의 "경기 전 1분 룰"에서 3장을 볼 수 있어요.</p></section></div>
   <div class="page" id="p-prep" hidden><section aria-labelledby="h-prep"><div class="sec-head"><h2 id="h-prep">직관 준비</h2></div><p class="empty">구장 가는 법, 좌석 고르기, 준비물, 응원 방법을 준비하고 있어요.</p></section></div>
   <div class="page" id="p-log" hidden><section aria-labelledby="h-log"><div class="sec-head"><h2 id="h-log">직관 기록</h2></div><p class="empty">다녀온 경기를 티켓으로 모으는 기능을 준비하고 있어요.</p></section></div>
 
@@ -479,16 +510,81 @@ let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved
 sel.value=saved;apply(saved);
 sel.addEventListener('change',()=>{apply(sel.value);try{localStorage.setItem('team',sel.value)}catch(e){}});
 
+// 룰 카드 10장: 데이터는 여기 한 곳. 홈 "경기 전 1분 룰"은 HOME_RULES 3장만 꺼내 씀
+// book: [조항, 무엇에 관한 조항]. 공식야구규칙 조항 번호는 확인된 것만, 번호 없는 정의·KBO 규정은 이름만
+const RULE_CATS=['점수','아웃','출루','헷갈리는 룰','KBO 규정'];
 const RULES=[
- ["점수","주자가 1루, 2루, 3루를 돌아 홈을 밟으면 1점. 홈런은 한 번에 네 베이스를 도는 것."],
- ["아웃 / 출루","스트라이크 3개면 삼진 아웃. 볼 4개면 볼넷으로 1루에 나간다."],
- ["헷갈리는 룰","세 번째 스트라이크를 포수가 놓치면 타자가 1루로 뛸 수 있다. 단, 1루에 주자가 있고 아웃이 2개 미만이면 그냥 아웃."]
+ {id:'score',name:'득점',cats:['점수'],
+  easy:'주자가 1·2·3루를 차례로 밟고 홈까지 오면 1점이에요.',
+  field:'홈런은 타자가 네 베이스를 한 번에 돌아 들어오는 것. 주자가 홈을 밟는 사이 세 번째 아웃이 포스아웃으로 나오면 그 점수는 인정되지 않아요.',
+  book:[['5.08(a)','점수가 나는 경우와 인정되지 않는 경우']]},
+ {id:'inning',name:'아웃 3개와 이닝',cats:['아웃'],
+  easy:'아웃 3개면 공격과 수비가 바뀌어요.',
+  field:'초에는 원정팀, 말에는 홈팀이 공격해요. 9회까지 해서 동점이면 연장전. KBO 정규시즌은 11회까지 해도 같으면 무승부, 포스트시즌은 15회까지 해요. 9회초가 끝났을 때 홈팀이 앞서 있으면 9회말은 하지 않아요.',
+  book:[['5.09(e)','아웃 3개면 공수 교대'],['7.01','9이닝 정식 경기와 연장전'],['KBO 리그 규정','정규시즌 연장은 11회까지 (2025년부터)']]},
+ {id:'kbb',name:'삼진과 볼넷',cats:['아웃','출루'],
+  easy:'스트라이크 3개면 삼진 아웃, 볼 4개면 볼넷으로 1루에 나가요.',
+  field:'투 스트라이크 뒤의 파울은 스트라이크로 세지 않아서, 파울이 이어지면 타석이 길어져요. 볼넷을 얻은 타자는 아웃될 걱정 없이 1루로 걸어가요.',
+  book:[['5.09(a)(2)','세 번째 스트라이크를 포수가 잡으면 아웃'],['5.05(b)(1)','볼 4개면 1루로']]},
+ {id:'zone',name:'스트라이크존과 ABS',cats:['KBO 규정'],
+  easy:'타자 몸에 맞춘 가상의 상자를 공이 지나가면 스트라이크예요.',
+  field:'KBO는 2024년부터 볼과 스트라이크를 기계(ABS)가 판정하고, 심판은 결과를 듣고 콜을 해요. 2026년 존은 위쪽이 선수 키의 55.75%, 아래쪽이 27.04% 높이. 좌우는 홈플레이트보다 양쪽 2cm씩 넓어요.',
+  book:[['용어의 정의','스트라이크 존'],['KBO 리그 규정','ABS 존 기준 (2026)']]},
+ {id:'dropk',name:'낫아웃',cats:['헷갈리는 룰','출루'],
+  easy:'세 번째 스트라이크를 포수가 못 잡으면 타자가 1루로 뛸 수 있어요.',
+  field:'공이 땅에 먼저 닿거나 미트에서 빠지면 타자가 1루로 달려요. 수비가 타자를 태그하거나 1루로 먼저 공을 보내면 아웃. 무사나 1사에 1루 주자가 있으면 뛸 수 없고 그냥 아웃이에요. 2사라면 1루 주자가 있어도 뛸 수 있어요.',
+  book:[['5.05(a)(2)','타자가 주자가 되는 경우'],['5.09(a)(3)','1루 주자가 있고 2아웃 전이면 아웃']]},
+ {id:'ifly',name:'인필드 플라이',cats:['헷갈리는 룰'],
+  easy:'내야에 높이 뜬 공은 잡기 전에 타자 아웃을 미리 선언해요.',
+  field:'무사나 1사에 1·2루 또는 만루일 때, 내야수가 쉽게 잡을 뜬공이 오르면 심판이 손을 들어 선언해요. 수비가 일부러 공을 떨어뜨려 병살을 만드는 걸 막으려는 룰이에요. 라인드라이브와 번트는 해당하지 않아요.',
+  book:[['용어의 정의','인필드 플라이'],['5.09(a)(5)','인필드 플라이가 선언되면 타자 아웃']]},
+ {id:'balk',name:'보크',cats:['헷갈리는 룰'],
+  easy:'주자가 있을 때 투수가 속이는 동작을 하면 주자가 한 베이스씩 가요.',
+  field:'투구판을 밟은 투수가 던지려다 멈추거나, 멈춤 동작 없이 바로 던지면 심판이 보크를 선언해요. 모든 주자가 아웃 걱정 없이 한 베이스씩 가고, 3루 주자는 그대로 홈인해서 1점이에요.',
+  book:[['6.02(a)','주자가 있을 때의 보크와 벌칙']]},
+ {id:'tagup',name:'태그업',cats:['아웃','점수'],
+  easy:'뜬공이 잡히면 주자는 원래 베이스를 다시 밟고 나서 뛰어야 해요.',
+  field:'외야 뜬공이 잡힌 순간 3루 주자가 베이스를 밟고 있다가 홈으로 달리면 희생플라이로 1점. 공이 잡히기 전에 먼저 출발했다면, 수비가 그 베이스에 공을 보내 어필할 때 아웃이에요.',
+  book:[['5.09(b)(5)','뜬공이 잡힌 뒤 베이스를 다시 밟지 않으면 아웃'],['5.09(c)(1)','어필 플레이']]},
+ {id:'force',name:'포스아웃과 태그아웃',cats:['아웃'],
+  easy:'밀려서 뛰는 주자는 베이스만 밟아도 아웃, 아니면 공으로 몸을 태그해야 아웃이에요.',
+  field:'땅볼이 나오면 1루 주자는 타자에게 자리를 내줘야 해서 2루로 뛸 수밖에 없어요. 이때는 공을 든 수비가 2루를 밟기만 해도 아웃(포스아웃). 뒤에서 미는 주자가 없으면 공을 쥔 글러브로 주자를 건드려야 아웃(태그아웃)이에요.',
+  book:[['5.09(b)(6)','포스아웃'],['5.09(b)(4)','베이스를 떠난 주자를 태그하면 아웃']]},
+ {id:'clock',name:'피치클락',cats:['KBO 규정'],
+  easy:'투수와 타자 모두 정해진 시간 안에 준비해야 해요.',
+  field:'2026년 KBO는 주자가 없으면 18초, 있으면 23초 안에 투구를 시작해야 해요. 투수가 늦으면 볼, 타자가 8초 남았을 때까지 타석에서 준비하지 않으면 스트라이크. 타자 사이 간격은 33초예요. 1군은 견제 횟수 제한이 없어요.',
+  book:[['KBO 리그 규정','피치클락 (2026년 18초·23초로 단축)']]}
 ];
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
-  b.setAttribute('aria-selected','true');$('rk').textContent=RULES[b.dataset.i][0];$('rb').textContent=RULES[b.dataset.i][1];
-}));
-$('rb').textContent=RULES[0][1];
+const RULE=Object.fromEntries(RULES.map(r=>[r.id,r]));
+const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// 홈: 경기 전 1분 룰 3장
+const HOME_RULES=['score','kbb','dropk'];
+function showHomeRule(id){
+  document.querySelectorAll('#home-tabs .tab').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.id===id)));
+  $('rk').textContent=RULE[id].cats.join(' · ');$('rb').textContent=RULE[id].easy;
+}
+$('home-tabs').innerHTML=HOME_RULES.map(id=>`<button class="tab" role="tab" type="button" data-id="${id}">${esc(RULE[id].name)}</button>`).join('');
+document.querySelectorAll('#home-tabs .tab').forEach(b=>b.addEventListener('click',()=>showHomeRule(b.dataset.id)));
+showHomeRule(HOME_RULES[0]);
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+
+// 룰 탭: 분류 칩 + 카드 목록 (태블릿부터는 왼쪽·오른쪽 두 묶음)
+let ruleCat='전체';
+const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
+  <dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
+function renderRules(){
+  const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
+  const list=RULES.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
+  document.querySelectorAll('#rule-chips .chip').forEach(b=>b.setAttribute('aria-pressed',String(b.textContent===ruleCat)));
+  $('rule-count').textContent=`${list.length}장`;
+  $('rule-list').innerHTML=[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('');
+  document.querySelectorAll('#rule-list .rcard').forEach(d=>{if(open.has(d.dataset.id))d.open=true});
+}
+$('rule-chips').innerHTML=['전체',...RULE_CATS].map(c=>`<button class="chip" type="button">${c}</button>`).join('');
+$('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.textContent;renderRules()});
+renderRules();
 
 // 하단 메뉴: 페이지 전환 (#book 같은 주소로 바로 열 수 있음)
 const PAGES=['home','book','rule','prep','log'];
