@@ -100,7 +100,7 @@ const rules=[
 const homeRules=['score','kbb','dropk'];
 const ruleFine='조항 번호는 <a href="https://6ptotvmi5753.edge.naverncp.com/KBO_FILE/ebook/pdf/2026_%EC%95%BC%EA%B5%AC%EA%B7%9C%EC%B9%99.pdf" target="_blank" rel="noopener">KBO 2026 공식야구규칙</a>과 대조했고, 문장은 규칙서를 옮기지 않고 풀어 썼어요. KBO 규정은 <a href="https://www.koreabaseball.com/Kbo/League/GameManage2026.aspx" target="_blank" rel="noopener">KBO 2026 주요 규정·규칙</a>(2026.10.13 확인) 기준이에요.';
 
-// 직관 준비: 구장 가는 법 (구단 안내·보도 기준 2026.10.13). 응원석 방향을 확인 못 한 구장은 null
+// 직관 준비: 구장 가는 법 (구단 안내·보도 기준 2026.10.13). 홈 응원석은 라팍·챔필만 3루, 나머지는 1루 (3루는 원정). 확인 못 한 구장은 null
 const parkInfo={
   '잠실야구장':{go:'지하철 2·9호선 종합운동장역',home:'1루 (LG·두산 모두 홈경기 때 1루)'},
   '고척스카이돔':{go:'지하철 1호선 구일역에서 걸어서 약 3분',car:'경기 날은 구장 일반 주차가 안 돼요. 대중교통을 이용하세요',home:'1루'},
@@ -109,7 +109,7 @@ const parkInfo={
   '대전한화생명볼파크':{go:'시내버스 한밭종합운동장 정류장',home:'1루'},
   '대구삼성라이온즈파크':{go:'대구 2호선 대공원역',home:'3루 (대부분의 구장과 반대)'},
   '광주기아챔피언스필드':{go:'시내버스 챔피언스필드 정류장. 광주역·광천터미널·광주송정역에서 버스나 택시',home:'3루 (대부분의 구장과 반대)'},
-  '사직야구장':{go:'부산 3호선 사직역·종합운동장역',car:'경기가 끝나면 역 주변이 붐벼요. 여유 있게 움직이세요',home:null},
+  '사직야구장':{go:'부산 3호선 사직역·종합운동장역',car:'경기가 끝나면 역 주변이 붐벼요. 여유 있게 움직이세요',home:'1루'},
   '창원NC파크':{go:'시내버스 창원NC파크·마산회원구청 정류장',car:'주말 셔틀버스는 구단 공지를 확인하세요',home:'1루'}
 };
 const seats=[
