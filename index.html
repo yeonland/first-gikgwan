@@ -260,6 +260,15 @@ header{flex-wrap:wrap}
 .form-msg:empty{display:none}
 .submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
 input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
+/* 룰 영상: 공식 채널 영상만. 썸네일 → 누르면 재생 */
+.vid{margin:0 14px 12px 11px;display:flex;flex-direction:column;gap:6px}
+.vid-btn,.vid-frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:var(--led-bg);overflow:hidden}
+.vid-btn{cursor:pointer}
+.vid-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.vid-btn .play{position:absolute;left:50%;top:50%;width:56px;height:40px;margin:-20px 0 0 -28px;border-radius:10px;background:rgba(0,0,0,.72)}
+.vid-btn .play::after{content:"";position:absolute;left:23px;top:12px;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #fff}
+.vid-btn:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+.vid-cap{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
 /* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
 .fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
 .fig svg{width:100%;max-width:320px;height:auto;display:block}
@@ -895,7 +904,7 @@ $('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 let ruleCat='전체';
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
-  ${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}<br>${esc(r.video.title)}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
@@ -905,6 +914,10 @@ function renderRules(){
   $('rule-list').innerHTML=[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('');
   document.querySelectorAll('#rule-list .rcard').forEach(d=>{if(open.has(d.dataset.id))d.open=true});
 }
+$('rule-list').addEventListener('click',e=>{
+  const b=e.target.closest('.vid-btn');if(!b)return;
+  b.outerHTML=`<iframe class="vid-frame" src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0" title="${b.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+});
 $('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.textContent;renderRules()});
 
 // 처음 설정: 종목 여러 개 + 종목마다 내 팀. 홈 "종목별 내 팀 추가"로 다시 열 수 있음
