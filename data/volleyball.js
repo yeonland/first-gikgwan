@@ -119,6 +119,22 @@ const parkInfo={
   '김천실내체육관':{go:'김천종합운동장 안. 김천역에서 차로 약 10분, 경기 날 구단 셔틀버스 확인',home:null},
   '숲 스타디움':{go:null,home:null}
 };
+// 지도 좌표 [위도, 경도] (OpenStreetMap 2026.10.13). 평택은 이충동 중심, 부산강서·화성은 체육공원·경기타운 기준, 숲 스타디움은 염주체육관 자리
+const parkGeo={
+  '인천계양체육관':[37.5323,126.7495],
+  '천안유관순체육관':[36.8209,127.1142],
+  '부산강서체육관':[35.2094,128.9716],
+  '대전충무체육관':[36.318,127.4305],
+  '수원체육관':[37.2984,127.01],
+  '평택이충문화체육관':[37.0605,127.0684],
+  '서울장충체육관':[37.559,127.0058],
+  '인천삼산월드체육관':[37.5077,126.7376],
+  '화성종합실내체육관':[37.1373,126.9247],
+  '김천실내체육관':[36.143,128.0869],
+  '숲 스타디움':[35.1382,126.8774]
+};
+// 지도 앱 검색어가 경기장 이름과 다른 곳
+const mapQuery={"평택이충문화체육관":"평택 이충문화체육센터","숲 스타디움":"광주 숲 스타디움","부산강서체육관":"부산 강서실내체육관","수원체육관":"수원실내체육관","화성종합실내체육관":"화성종합경기타운 실내체육관"};
 const seats=[
   ['응원석','응원단 앞. 응원가에 맞춰 일어나 응원해요',true],
   ['코트 옆 좌석','선수가 바로 앞에 보여요. 공이 날아오기도 하니 조심',],
@@ -145,5 +161,5 @@ const diaryExamples=[['2026-04-01',1,3,1,'처음 본 배구. 랠리가 길어서
 const scoreLabel='세트';
 
 return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
+  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

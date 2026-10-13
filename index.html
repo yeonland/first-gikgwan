@@ -191,6 +191,19 @@ header{flex-wrap:wrap}
 .pick.off{color:var(--pencil)}
 .pick.off svg{opacity:.45}
 /* 직관 준비 */
+/* 구장 지도: 종이 위 약도. 내 팀 구장은 팀 색 점선 도장, 고른 구장은 팀 색으로 채운 점 */
+.park-map{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px 12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.park-map svg{width:100%;max-width:300px;height:auto;display:block;overflow:visible}
+.park-map .land{fill:var(--paper);stroke:var(--pencil);stroke-width:1;stroke-linejoin:round}
+.pin{cursor:pointer;outline:none}
+.pin .hit{fill:transparent}
+.pin .dot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.pin.mine .ring{fill:none;stroke:var(--team-ink);stroke-width:2;stroke-dasharray:2.5 2}
+.pin.on .dot{fill:var(--team-ink);stroke:var(--team-ink)}
+.pin:focus-visible .hit{stroke:var(--team-ink);stroke-width:2}
+.park-map .lb{font-family:var(--sans);font-size:var(--fs-cap);font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3;stroke-linejoin:round}
+.park-map figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
+
 .pg{display:flex;flex-direction:column;gap:30px;min-width:0}
 .prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
 .prep-park dt{color:var(--pencil)}
@@ -429,6 +442,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <div class="pg">
       <section aria-labelledby="h-go">
         <div class="sec-head"><h2 id="h-go">구장 가는 법</h2><select id="prep-park" aria-label="구장"></select></div>
+        <figure class="park-map" id="park-map"></figure>
         <dl class="info prep-park" id="prep-park-info"></dl>
         <p class="fine">구단 안내와 보도 기준(2026.10.13 확인)이에요. 노선과 주차는 바뀔 수 있으니 출발 전에 지도 앱으로 한 번 더 확인하세요.</p>
       </section>
@@ -795,15 +809,34 @@ document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()
 let PREP_DONE={};
 const prepPark=$('prep-park');
 function renderPark(){
-  const p=D.parkInfo[prepPark.value];
+  const p=D.parkInfo[prepPark.value],q=D.mapQuery[prepPark.value]||prepPark.value;
   $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go||'확인 필요. 지도 앱에서 경기장 이름으로 찾아 주세요'}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
-    <dt>홈 응원석</dt><dd>${p.home||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>`;
+    <dt>홈 응원석</dt><dd>${p.home||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>
+    <dt>지도</dt><dd><a href="https://map.kakao.com/link/search/${encodeURIComponent(q)}" target="_blank" rel="noopener">카카오맵</a> · <a href="https://map.naver.com/p/search/${encodeURIComponent(q)}" target="_blank" rel="noopener">네이버지도</a>에서 길 찾기</dd>`;
 }
-prepPark.addEventListener('change',renderPark);
+prepPark.addEventListener('change',()=>{renderPark();renderMap()});
+// 구장 지도: 대한민국 윤곽(Natural Earth 50m, 퍼블릭 도메인)을 위도 36도 기준 등장방형으로 그린 약도
+const KOREA={d:'M96.1 50.7L97.6 49.6L97.6 48.0L97.6 42.8L101.8 39.2L107.6 31.8L110.5 27.7L113.9 23.9L117.7 21.3L121.4 20.2L127.3 19.7L138.6 20.1L140.8 19.7L148.6 19.3L150.5 20.0L156.1 20.4L162.6 19.9L165.6 18.8L168.7 17.0L171.2 13.6L173.8 7.3L176.7 2.5L178.4 1.6L189.9 27.7L200.8 44.5L210.3 56.8L223.8 80.3L227.7 92.9L228.0 100.7L230.2 111.5L228.4 117.5L228.9 127.3L228.0 132.2L226.5 135.9L226.3 143.0L226.8 146.7L227.0 151.7L228.0 153.6L229.6 154.3L231.9 152.5L235.0 151.8L234.5 157.8L230.8 173.0L227.7 184.0L223.4 193.7L218.0 202.5L211.5 205.9L206.9 207.3L198.3 207.7L191.0 206.1L184.8 207.3L182.3 209.1L180.4 212.2L181.8 217.1L181.6 220.7L178.9 220.4L173.6 218.3L167.8 218.1L165.1 217.0L162.4 211.8L159.5 212.0L154.6 215.2L147.1 215.8L144.5 217.5L143.7 219.6L144.7 222.3L148.4 225.8L147.2 229.5L143.3 231.3L140.1 226.8L138.1 222.5L135.8 222.3L132.4 223.5L131.8 228.1L133.5 231.4L136.0 235.0L132.3 239.3L131.4 242.3L128.7 244.5L121.6 239.7L122.6 236.3L125.6 232.9L126.2 229.5L125.1 227.4L114.8 236.2L108.5 245.9L105.2 245.2L103.7 242.6L101.8 241.6L95.0 248.0L93.7 253.0L91.3 253.2L90.1 251.1L90.1 246.5L88.9 242.7L81.9 237.1L78.7 232.2L80.4 229.5L86.2 231.0L90.9 230.8L89.9 228.4L88.4 227.3L91.6 226.1L94.2 223.4L92.0 222.7L88.7 224.2L86.0 223.5L85.0 217.1L81.6 210.5L79.9 204.1L83.1 200.5L84.8 194.8L87.9 186.6L89.4 183.8L93.7 181.9L95.2 179.8L92.8 178.7L89.1 177.8L89.2 175.3L91.8 174.1L94.5 171.5L100.0 168.2L101.7 162.2L100.1 160.7L96.7 159.3L97.6 156.3L98.9 153.9L98.4 152.5L94.3 148.7L91.6 145.0L92.5 141.0L91.8 134.9L92.1 129.7L92.0 126.9L90.1 120.6L89.2 114.2L86.5 115.2L84.5 116.7L77.0 114.5L74.6 114.4L73.8 109.6L76.3 103.9L82.8 98.8L86.4 98.2L89.1 95.9L93.5 95.2L98.6 98.7L103.2 99.4L105.7 105.4L107.3 106.6L107.6 104.4L111.4 101.8L112.2 99.9L111.5 98.8L107.3 97.8L103.4 90.4L102.9 87.1L101.3 85.1L103.5 79.1L99.1 72.3L96.9 70.2L97.2 64.2L94.9 60.3L93.5 58.1L92.8 54.5L93.5 52.9L95.5 52.3L96.1 50.7ZM195.7 224.9L191.1 228.5L185.2 223.7L183.8 221.0L188.2 217.1L192.1 212.6L194.7 212.3L195.7 224.9ZM163.7 224.5L163.2 230.2L159.8 230.5L158.0 226.8L155.7 228.5L153.0 224.1L152.7 220.4L156.6 217.8L159.0 219.4L162.4 220.2L163.7 224.5ZM77.2 249.9L74.1 250.8L72.4 248.8L71.2 248.2L71.9 245.6L76.8 240.4L77.9 238.7L82.4 239.7L84.1 242.4L81.9 246.7L77.2 249.9ZM90.8 53.4L90.4 61.1L87.9 60.7L86.2 60.0L85.3 58.4L83.6 51.2L85.5 48.3L89.4 50.6L90.8 53.4ZM101.7 251.5L102.5 254.2L98.8 253.7L96.7 251.1L96.9 248.7L99.3 248.4L101.7 251.5ZM151.2 235.6L150.6 237.5L148.3 234.7L150.6 231.7L151.2 235.6ZM85.8 126.0L85.2 129.8L82.1 127.3L81.3 119.0L84.5 121.4L85.8 126.0ZM74.3 228.9L73.6 230.3L71.6 229.9L69.5 225.8L68.7 222.7L66.5 220.8L69.9 218.1L74.1 223.1L74.3 228.9ZM298.4 68.4L296.2 70.2L293.7 68.4L293.3 66.5L294.7 65.0L297.8 64.0L299.3 65.4L298.4 68.4ZM81.6 316.8L79.4 318.2L77.5 317.4L74.6 313.4L73.9 311.7L75.6 308.4L82.1 303.1L98.9 297.9L102.0 297.7L108.6 299.8L110.2 304.1L109.0 307.6L107.4 310.1L99.6 314.1L93.7 316.0L81.6 316.8Z',H:324,K:58.3969,LNG0:124.6,LAT0:38.65};
+const COS36=Math.cos(36*Math.PI/180);
+const proj=([lat,lng])=>[(lng-KOREA.LNG0)*COS36*KOREA.K,(KOREA.LAT0-lat)*KOREA.K];
+function renderMap(){
+  const mine=me&&me[3],picked=prepPark.value;
+  const parks=D.parks.filter(p=>D.parkGeo[p]).sort((a,b)=>(a===picked)-(b===picked));   // 고른 구장을 맨 위에
+  const pins=parks.map(p=>{const [x,y]=proj(D.parkGeo[p]),cls=(p===picked?' on':'')+(p===mine?' mine':'');
+    return `<g class="pin${cls}" data-park="${esc(p)}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" tabindex="0" role="button" aria-label="${esc(p)}${p===mine?' (내 팀 홈)':''}${p===picked?', 선택됨':''}"><circle class="hit" r="11"/>${p===mine?'<circle class="ring" r="8.5"/>':''}<circle class="dot" r="4"/></g>`}).join('');
+  const [lx,ly]=D.parkGeo[picked]?proj(D.parkGeo[picked]):[0,0];
+  const label=D.parkGeo[picked]?`<text class="lb" x="${lx.toFixed(1)}" y="${(ly-13).toFixed(1)}" text-anchor="middle">${esc(D.parkShort[picked])}</text>`:'';
+  $('park-map').innerHTML=`<svg viewBox="-8 -8 316 ${KOREA.H+16}" role="group" aria-label="${SP.name} 경기장 지도"><path class="land" d="${KOREA.d}"/>${pins}${label}</svg>
+    <figcaption>점을 누르면 아래 가는 길이 바뀌어요. 점선 동그라미는 내 팀 홈. 지도: Natural Earth</figcaption>`;
+}
+const pickPin=e=>{const g=e.target.closest('.pin');if(!g)return;prepPark.value=g.dataset.park;renderPark();renderMap();
+  const n=$('park-map').querySelector(`.pin[data-park="${CSS.escape(g.dataset.park)}"]`);n&&n.focus()};
+$('park-map').addEventListener('click',pickPin);
+$('park-map').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickPin(e)}});
 const prepCount=()=>{$('prep-count').textContent=`${D.prep.filter(([id])=>PREP_DONE[id]).length}/${D.prep.length} 챙김`};
 $('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();store('prep-'+cur,PREP_DONE)});
 function setPrepTeam(t){
-  prepPark.value=t[3];renderPark();
+  prepPark.value=t[3];renderPark();renderMap();
   $('prep-cheer').innerHTML=[...D.cheer,
     D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
       :['응원가 미리 듣기',`<a href="${D.leagueSite[1]}" target="_blank" rel="noopener">${D.leagueSite[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`]

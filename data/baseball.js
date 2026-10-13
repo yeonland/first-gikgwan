@@ -112,6 +112,19 @@ const parkInfo={
   '사직야구장':{go:'부산 3호선 사직역·종합운동장역',car:'경기가 끝나면 역 주변이 붐벼요. 여유 있게 움직이세요',home:'1루'},
   '창원NC파크':{go:'시내버스 창원NC파크·마산회원구청 정류장',car:'주말 셔틀버스는 구단 공지를 확인하세요',home:'1루'}
 };
+// 지도 좌표 [위도, 경도] (OpenStreetMap 2026.10.13). 구장 건물 기준
+const parkGeo={
+  '잠실야구장':[37.5122,127.0727],
+  '고척스카이돔':[37.4982,126.8671],
+  '인천SSG랜더스필드':[37.4369,126.6934],
+  '수원KT위즈파크':[37.2998,127.009],
+  '대전한화생명볼파크':[36.3161,127.4308],
+  '대구삼성라이온즈파크':[35.841,128.6813],
+  '광주기아챔피언스필드':[35.1681,126.8883],
+  '사직야구장':[35.1942,129.0615],
+  '창원NC파크':[35.2227,128.5814]
+};
+const mapQuery={};
 const seats=[
   ['응원석','응원단상 앞. 서서 응원가를 따라 부르며 봐요',true],
   ['내야석','투수와 타자가 가까이 보여서 경기 흐름을 보기 좋아요'],
@@ -138,5 +151,5 @@ const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.co
 const diaryExamples=[['2026-09-14',3,5,3,'처음 간 날. 응원가 하나 외움'],['2026-08-23',7,2,4,'비 와서 우비 삼. 7회까지 봄']];
 
 return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
+  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
 })();
