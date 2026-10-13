@@ -1,0 +1,173 @@
+<title>첫직관 야구 홈</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a phone-sized app column, ticket-stub cards on a chalk-line field */
+:root{
+  --bg:#eef1ee; --surface:#ffffff; --ink:#14233a; --muted:#5c6b78; --line:#d5ddd8;
+  --accent:#c8501e; --accent-soft:#fbe9df; --field:#1f5a3c; --field-soft:#e1efe6;
+  --display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1714; --surface:#17221e; --ink:#e8eee9; --muted:#9aaba3; --line:#2a3832;
+  --accent:#f0814f; --accent-soft:#3a2219; --field:#7fc79c; --field-soft:#1c3328; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1714; --surface:#17221e; --ink:#e8eee9; --muted:#9aaba3; --line:#2a3832;
+  --accent:#f0814f; --accent-soft:#3a2219; --field:#7fc79c; --field-soft:#1c3328; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:20px 96px}
+.app{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.sample{font-size:12px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.brand{font-family:var(--display);font-size:30px;line-height:1;letter-spacing:.5px}
+.brand small{display:block;font-family:var(--body);font-size:12px;font-weight:500;color:var(--muted);margin-top:6px;letter-spacing:0}
+.myteam{font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font-family:var(--body)}
+h2{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin:0 0 10px}
+section{min-width:0}
+
+/* ticket card */
+.ticket{background:var(--surface);border-radius:14px;display:grid;grid-template-columns:1fr auto;overflow:hidden;border:1px solid var(--line)}
+.ticket .main{padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ticket .stub{border-left:2px dashed var(--line);padding:16px 14px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:var(--field-soft);color:var(--field);min-width:84px}
+.stub b{font-family:var(--mono);font-size:22px;line-height:1}
+.stub span{font-size:11px;font-weight:500}
+.vs{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;flex-wrap:wrap}
+.vs i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.meta{font-size:13px;color:var(--muted)}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+
+.alert{display:flex;gap:12px;align-items:center;background:var(--accent);color:#fff;border-radius:14px;padding:14px 16px}
+.alert .t{flex:1;min-width:0}
+.alert .t b{display:block;font-size:15px}
+.alert .t span{font-size:13px;opacity:.9}
+.alert button{background:#fff;color:#14233a;border:0;border-radius:999px;padding:8px 12px;font-weight:700;font-family:var(--body);font-size:13px;cursor:pointer}
+
+.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .m{font-size:12px;color:var(--muted)}
+.score{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* rule cards */
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;font-family:var(--body);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.rule .k{font-size:11px;font-weight:700;color:var(--field)}
+.rule .n{font-weight:700;font-size:14px}
+.rule[aria-pressed="true"]{border-color:var(--field);box-shadow:inset 0 0 0 1px var(--field)}
+.rule-body{margin-top:10px;background:var(--field-soft);border-radius:12px;padding:14px 16px;font-size:14px}
+.rule-body b{color:var(--field)}
+
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.quiz p{margin:0;font-weight:500}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px;font-family:var(--body);font-size:14px;cursor:pointer}
+.opts button.ok{border-color:var(--field);background:var(--field-soft);color:var(--field);font-weight:700}
+.opts button.no{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.fb{font-size:13px;color:var(--muted);margin:0}
+
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px))}
+nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:12px}
+nav li{padding:6px 0;color:var(--muted)}
+nav li.on{color:var(--ink);font-weight:700}
+nav li.on::before{content:"";display:block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin:0 auto 4px}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="app">
+  <div class="sample">화면 샘플이에요. 경기·시간·좌석 정보는 모두 예시 데이터예요.</div>
+
+  <header>
+    <div class="brand">첫직관<small>슬기로운 직관생활 · 처음 가는 야구장</small></div>
+    <select class="myteam" id="team" aria-label="내 팀 선택">
+      <option>LG 트윈스</option><option>두산 베어스</option><option>키움 히어로즈</option>
+      <option>SSG 랜더스</option><option>KT wiz</option><option>한화 이글스</option>
+      <option>삼성 라이온즈</option><option>KIA 타이거즈</option><option>롯데 자이언츠</option><option>NC 다이노스</option>
+    </select>
+  </header>
+
+  <section>
+    <h2>오늘 내 팀 경기</h2>
+    <div class="ticket">
+      <div class="main">
+        <span class="chip" id="tag">정규시즌 막바지</span>
+        <div class="vs"><span id="home">LG 트윈스</span><i>VS</i><span>상대팀</span></div>
+        <div class="meta" id="park">잠실야구장 · 홈 1루 응원석</div>
+      </div>
+      <div class="stub"><b>17:00</b><span>경기 시작</span></div>
+    </div>
+  </section>
+
+  <div class="alert">
+    <div class="t"><b>포스트시즌 예매 오픈 알림</b><span>오픈 시각을 놓치지 않게 알려드려요</span></div>
+    <button type="button" id="bell" aria-pressed="false">알림 받기</button>
+  </div>
+
+  <section>
+    <h2>처음이라면 이것부터</h2>
+    <div class="list">
+      <div class="row"><div><b>예매는 어디서?</b><div class="m">구단 앱 또는 지정 예매처 · 보통 1주 전 오픈</div></div><span aria-hidden="true">›</span></div>
+      <div class="row"><div><b>어느 자리가 좋을까?</b><div class="m">응원석 · 테이블석 · 외야 비교</div></div><span aria-hidden="true">›</span></div>
+      <div class="row"><div><b>챙겨 갈 것</b><div class="m">모바일 티켓 · 얇은 겉옷 · 응원 도구</div></div><span aria-hidden="true">›</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>오늘의 룰 카드</h2>
+    <div class="rules" role="group" aria-label="룰 카드">
+      <button class="rule" type="button" data-i="0" aria-pressed="true"><span class="k">점수</span><span class="n">득점</span></button>
+      <button class="rule" type="button" data-i="1" aria-pressed="false"><span class="k">아웃</span><span class="n">삼진</span></button>
+      <button class="rule" type="button" data-i="2" aria-pressed="false"><span class="k">헷갈리는 룰</span><span class="n">낫아웃</span></button>
+    </div>
+    <div class="rule-body" id="rb"></div>
+  </section>
+
+  <section>
+    <h2>1분 퀴즈</h2>
+    <div class="quiz">
+      <p>한 이닝의 공격은 아웃이 몇 개가 되면 끝날까요?</p>
+      <div class="opts" id="opts">
+        <button type="button" data-a="0">2개</button>
+        <button type="button" data-a="1">3개</button>
+        <button type="button" data-a="0">4개</button>
+      </div>
+      <p class="fb" id="fb" aria-live="polite">답을 골라 보세요.</p>
+    </div>
+  </section>
+</div>
+
+<nav aria-label="메인 메뉴"><ul>
+  <li class="on">홈</li><li>예매</li><li>룰 카드</li><li>직관 준비</li><li>퀴즈</li>
+</ul></nav>
+
+<script>
+const parks={"LG 트윈스":"잠실야구장","두산 베어스":"잠실야구장","키움 히어로즈":"고척스카이돔","SSG 랜더스":"인천SSG랜더스필드","KT wiz":"수원KT위즈파크","한화 이글스":"대전한화생명볼파크","삼성 라이온즈":"대구삼성라이온즈파크","KIA 타이거즈":"광주기아챔피언스필드","롯데 자이언츠":"사직야구장","NC 다이노스":"창원NC파크"};
+const team=document.getElementById('team');
+function setTeam(){document.getElementById('home').textContent=team.value;document.getElementById('park').textContent=parks[team.value]+' · 홈 응원석';}
+team.addEventListener('change',()=>{setTeam();try{localStorage.setItem('team',team.value)}catch(e){}});
+try{const t=localStorage.getItem('team');if(t&&parks[t])team.value=t}catch(e){}
+setTeam();
+
+const bell=document.getElementById('bell');
+bell.addEventListener('click',()=>{const on=bell.getAttribute('aria-pressed')!=='true';bell.setAttribute('aria-pressed',on);bell.textContent=on?'알림 켜짐':'알림 받기';});
+
+const rules=[
+ '타자가 1루, 2루, 3루를 거쳐 <b>홈 플레이트를 밟으면 1점</b>이에요. 홈런은 공을 담장 밖으로 쳐서 한 번에 다 도는 거예요.',
+ '<b>스트라이크 3개</b>면 삼진 아웃이에요. 볼이 4개면 타자는 걸어서 1루로 나가요(볼넷).',
+ '세 번째 스트라이크를 <b>포수가 공을 놓치면</b> 타자가 1루로 뛸 수 있어요. 단, 1루에 주자가 있고 아웃이 2개 미만이면 해당하지 않아요.'
+];
+const rb=document.getElementById('rb');
+document.querySelectorAll('.rule').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.rule').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');rb.innerHTML=rules[b.dataset.i];
+}));
+rb.innerHTML=rules[0];
+
+const fb=document.getElementById('fb');
+document.querySelectorAll('#opts button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#opts button').forEach(x=>x.className='');
+  if(b.dataset.a==='1'){b.className='ok';fb.textContent='정답! 아웃 3개면 공수가 바뀌어요. 이걸 9번 반복하면 9이닝이에요.';}
+  else{b.className='no';fb.textContent='아쉬워요. 다시 골라 보세요.';}
+}));
+</script>

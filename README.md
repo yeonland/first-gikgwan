@@ -106,7 +106,7 @@
 first-gikgwan/
 ├─ index.html   홈 화면 시안
 ├─ DESIGN.md    디자인 기준
-├─ drafts/      로고 시안
+├─ drafts/      로고 시안, 첫 홈 화면 시안(first-jikgwan.html)
 └─ fonts/       KBO 다이아고딕 (woff)
 ```
 
@@ -128,6 +128,7 @@ first-gikgwan/
 ## 참고
 - 화면의 경기, 좌석, 기록 정보는 모두 예시 데이터입니다.
 - 구단 컬러는 Figma에 정리한 색 스타일(구단별 메인·서브)을 따릅니다.
+- 룰 카드의 조항 번호는 [KBO 2026 공식야구규칙](https://6ptotvmi5753.edge.naverncp.com/KBO_FILE/ebook/pdf/2026_%EC%95%BC%EA%B5%AC%EA%B7%9C%EC%B9%99.pdf)(KBO 발행)과 대조했습니다. 규칙서는 [한국야구소프트볼심판아카데미 야구규칙서 게시판](http://www.umpire.or.kr/?act=board&bbs_code=sub5_5)에서 찾았고, 저작권 때문에 PDF는 저장소에 넣지 않습니다. 카드 문장은 규칙서를 옮기지 않고 풀어 썼습니다.
 - 이 프로젝트는 KBO 및 각 구단과 관계없는 개인 프로젝트입니다.
 
 ## 글꼴 라이선스: KBO 다이아고딕
