@@ -1,0 +1,232 @@
+<title>첫직관</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap">
+<style>
+@font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
+@font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
+/* Layout: one phone column on grid-notebook paper; every game is a printed ticket, every memo is handwriting */
+:root{
+  --team:#C30452;               /* 내 팀 컬러, JS가 바꿈 */
+  --team-ink:var(--team);       /* 글자로 쓸 때 */
+  --paper:#f6f7f5; --grid:#e3e6e2; --ink:#1d2024; --pencil:#6b7177; --line:#cfd3cf; --surface:#ffffff;
+  --tk-paper:#fdfdfb; --tk-ink:#1d2024; --tk-faint:#8a8f93;   /* 티켓은 실물 종이라 두 테마 모두 밝게 */
+  --tape:rgba(214,206,170,.72);
+  --sans:"KBO Dia Gothic","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:var(--sans);           /* 티켓 숫자도 같은 글꼴, 폭만 맞춤 */
+  --hand:"Gaegu","Nanum Pen Script",cursive;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
+  --paper:#15171a; --grid:#212429; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+  --tape:rgba(190,182,150,.55); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --team-ink:color-mix(in srgb,var(--team) 45%,#fff);
+  --paper:#15171a; --grid:#212429; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+  --tape:rgba(190,182,150,.55); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums;
+  padding-inline:16px;padding-block:20px 104px;
+}
+.app{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+section{min-width:0;display:flex;flex-direction:column;gap:12px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.02em}
+.note{font-size:12px;color:var(--pencil)}
+
+/* header */
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.mark{display:flex;align-items:center;gap:10px}
+.mark-stamp{width:38px;height:38px;border-radius:50%;border:2px solid var(--team-ink);color:var(--team-ink);display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:600;transform:rotate(-8deg)}
+.mark b{display:block;font-size:20px;letter-spacing:-.02em;line-height:1.1}
+.mark span{font-size:12px;color:var(--pencil)}
+select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+
+/* ticket */
+.ticket-wrap{position:relative;padding-top:6px}
+.ticket{background:var(--tk-paper);color:var(--tk-ink);display:grid;grid-template-columns:1fr 72px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 14px -8px rgba(0,0,0,.35);transform:rotate(-.6deg)}
+.t-main{min-width:0;display:flex;flex-direction:column}
+.band{background:var(--team);color:#fff;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;padding:6px 14px;display:flex;justify-content:space-between;gap:8px}
+.t-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:12px}
+.match{font-size:19px;font-weight:700;letter-spacing:-.01em;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+.match i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--tk-faint)}
+.info{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:13px}
+.info dt{color:var(--tk-faint);font-size:12px}
+.info dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500}
+.stub{position:relative;border-left:2px dashed #c9ccc8;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 0}
+.stub::before,.stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--paper)}
+.stub::before{top:-8px}.stub::after{bottom:-8px}
+.barcode{width:34px;flex:1;margin:4px 0 8px;background:repeating-linear-gradient(0deg,var(--tk-ink) 0 2px,transparent 2px 4px,var(--tk-ink) 4px 5px,transparent 5px 8px,var(--tk-ink) 8px 11px,transparent 11px 13px)}
+.stub small{font-family:var(--mono);font-size:10px;color:var(--tk-faint);writing-mode:vertical-rl;letter-spacing:.1em}
+.stamp{position:absolute;right:58px;top:-6px;width:74px;height:74px;border-radius:50%;border:2.5px solid var(--team-ink);color:var(--team-ink);display:grid;place-items:center;text-align:center;font-family:var(--mono);font-weight:600;line-height:1.1;transform:rotate(12deg);opacity:.85;pointer-events:none;background:transparent}
+.stamp b{font-size:17px;display:block}
+.stamp span{font-size:9px;letter-spacing:.06em}
+
+/* alert row */
+.alert{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+.alert .t{flex:1;min-width:0;font-size:14px}
+.alert .t b{font-family:var(--mono);color:var(--team-ink)}
+.btn{font-family:var(--sans);font-size:13px;font-weight:700;border:1.5px solid var(--team-ink);color:var(--team-ink);background:transparent;padding:6px 12px;border-radius:2px;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--team);border-color:var(--team);color:#fff}
+
+/* diary */
+.diary{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;padding-top:6px}
+.entry{display:flex;flex-direction:column;gap:6px;min-width:0}
+.mini{position:relative;background:var(--tk-paper);color:var(--tk-ink);box-shadow:0 4px 10px -6px rgba(0,0,0,.35)}
+.entry:nth-child(1) .mini{transform:rotate(-2deg)}
+.entry:nth-child(2) .mini{transform:rotate(1.5deg)}
+.mini::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(-3deg)}
+.mini .band{padding:4px 10px;font-size:10px}
+.mini .in{padding:8px 10px 10px;font-size:12px;display:flex;flex-direction:column;gap:2px}
+.mini .in b{font-size:14px}
+.mini .in span{font-family:var(--mono);font-size:11px;color:var(--tk-faint)}
+.memo{font-family:var(--hand);font-size:18px;line-height:1.25;color:var(--ink);padding-inline:2px}
+.slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:13px;padding:14px;text-align:center;cursor:pointer}
+
+/* rule card */
+.tabs{display:flex;gap:0;border-bottom:1.5px solid var(--ink)}
+.tab{font-family:var(--sans);font-size:13px;color:var(--pencil);background:transparent;border:0;padding:8px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
+.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team)}
+.card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.card .k{font-family:var(--mono);font-size:11px;color:var(--team-ink);letter-spacing:.06em}
+.card p{margin:0;font-size:14px}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:10px}
+.quiz p{margin:0;font-weight:500}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opts button{font-family:var(--mono);font-size:15px;font-weight:600;padding:12px 0;background:var(--surface);color:var(--ink);border:1px solid var(--line);cursor:pointer}
+.opts button.ok{border-color:var(--team);background:var(--team);color:#fff}
+.opts button.no{text-decoration:line-through;color:var(--pencil)}
+.fb{font-size:13px;color:var(--pencil);margin:0;min-height:1.5em}
+
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px))}
+nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:12px}
+nav li{padding:8px 0;color:var(--pencil)}
+nav li.on{color:var(--ink);font-weight:700;box-shadow:inset 0 2px 0 var(--team)}
+
+button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <header>
+    <div class="mark">
+      <div class="mark-stamp" aria-hidden="true">1st</div>
+      <div><b>첫직관</b><span>직관 일기장</span></div>
+    </div>
+    <select id="team" aria-label="내 팀"></select>
+  </header>
+
+  <section aria-labelledby="h-today">
+    <div class="sec-head"><h2 id="h-today">다음 직관</h2><span class="note">예시 경기</span></div>
+    <div class="ticket-wrap">
+      <article class="ticket">
+        <div class="t-main">
+          <div class="band"><span>KBO POSTSEASON</span><span>ADMIT ONE</span></div>
+          <div class="t-body">
+            <div class="match"><span id="home">LG 트윈스</span><i>VS</i><span id="away">두산 베어스</span></div>
+            <dl class="info">
+              <dt>일시</dt><dd>10.15 (목) 18:30</dd>
+              <dt>장소</dt><dd id="park">잠실야구장</dd>
+              <dt>좌석</dt><dd>1루 응원석 208블록 12열 7</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="stub"><div class="barcode" aria-hidden="true"></div><small>NO. 0001</small></div>
+      </article>
+      <div class="stamp" aria-hidden="true"><div><b>D-2</b><span>첫직관</span></div></div>
+    </div>
+  </section>
+
+  <div class="alert">
+    <div class="t">다음 경기 예매 오픈 <b>D-1</b></div>
+    <button class="btn" id="bell" type="button" aria-pressed="false">알림 받기</button>
+  </div>
+
+  <section aria-labelledby="h-diary">
+    <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note">기록 2장 · 예시</span></div>
+    <div class="diary">
+      <div class="entry">
+        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span>승 5 : 3</span></div></div>
+        <div class="memo">처음 간 날. 응원가 하나 외움</div>
+      </div>
+      <div class="entry">
+        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span>패 2 : 4</span></div></div>
+        <div class="memo">비 와서 우비 삼. 7회까지 봄</div>
+      </div>
+      <button class="slot" type="button">다음 티켓 붙이기</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-rule">
+    <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note">3 / 10장</span></div>
+    <div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-i="0">득점</button>
+        <button class="tab" role="tab" aria-selected="false" data-i="1">삼진·볼넷</button>
+        <button class="tab" role="tab" aria-selected="false" data-i="2">낫아웃</button>
+      </div>
+      <div class="card" role="tabpanel"><span class="k" id="rk">점수</span><p id="rb"></p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-quiz">
+    <div class="sec-head"><h2 id="h-quiz">오늘의 퀴즈</h2></div>
+    <div class="quiz">
+      <p>공격이 끝나는 아웃 수는?</p>
+      <div class="opts" id="opts">
+        <button type="button">2</button><button type="button" data-ok>3</button><button type="button">4</button>
+      </div>
+      <p class="fb" id="fb" aria-live="polite"></p>
+    </div>
+  </section>
+</div>
+
+<nav aria-label="메뉴"><ul>
+  <li class="on">홈</li><li>예매</li><li>룰</li><li>준비</li><li>기록</li>
+</ul></nav>
+
+<script>
+const TEAMS=[
+ ["LG 트윈스","LG","#C30452","잠실야구장"],["두산 베어스","두산","#1A1748","잠실야구장"],
+ ["키움 히어로즈","키움","#820024","고척스카이돔"],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드"],
+ ["KT wiz","KT","#231F20","수원KT위즈파크"],["한화 이글스","한화","#F37321","대전한화생명볼파크"],
+ ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크"],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드"],
+ ["롯데 자이언츠","롯데","#041E42","사직야구장"],["NC 다이노스","NC","#315288","창원NC파크"]
+];
+const sel=document.getElementById('team');
+TEAMS.forEach((t,i)=>sel.add(new Option(t[0],i)));
+const $=id=>document.getElementById(id);
+function apply(i){
+  const t=TEAMS[i],o1=TEAMS[(+i+1)%10],o2=TEAMS[(+i+3)%10],o3=TEAMS[(+i+7)%10];
+  document.documentElement.style.setProperty('--team',t[2]);
+  $('home').textContent=t[0];$('away').textContent=o1[0];$('park').textContent=t[3];
+  $('d1').textContent='vs '+o2[1];$('d2').textContent='vs '+o3[1];
+}
+let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved=s}catch(e){}
+sel.value=saved;apply(saved);
+sel.addEventListener('change',()=>{apply(sel.value);try{localStorage.setItem('team',sel.value)}catch(e){}});
+
+const bell=$('bell');
+bell.addEventListener('click',()=>{const on=bell.getAttribute('aria-pressed')!=='true';bell.setAttribute('aria-pressed',on);bell.textContent=on?'알림 켜짐':'알림 받기';});
+
+const RULES=[
+ ["점수","주자가 1루, 2루, 3루를 돌아 홈을 밟으면 1점. 홈런은 한 번에 네 베이스를 도는 것."],
+ ["아웃 / 출루","스트라이크 3개면 삼진 아웃. 볼 4개면 볼넷으로 1루에 나간다."],
+ ["헷갈리는 룰","세 번째 스트라이크를 포수가 놓치면 타자가 1루로 뛸 수 있다. 단, 1루에 주자가 있고 아웃이 2개 미만이면 그냥 아웃."]
+];
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
+  b.setAttribute('aria-selected','true');$('rk').textContent=RULES[b.dataset.i][0];$('rb').textContent=RULES[b.dataset.i][1];
+}));
+$('rb').textContent=RULES[0][1];
+
+document.querySelectorAll('#opts button').forEach(b=>b.addEventListener('click',()=>{
+  if('ok' in b.dataset){document.querySelectorAll('#opts button').forEach(x=>x.className='');b.className='ok';$('fb').textContent='정답. 아웃 3개면 공수 교대, 이걸 9번 하면 9이닝.';}
+  else{b.className='no';$('fb').textContent='다시.';}
+}));
+</script>
