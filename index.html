@@ -526,7 +526,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
         <div class="vs-in"><label>홈팀<select name="home"></select></label><span aria-hidden="true">vs</span><label>원정팀<select name="away"></select></label></div>
         <label>경기장<select name="park"></select></label>
         <fieldset><legend id="score-legend">점수 (선택)</legend>
-          <div class="score-in"><label><span id="hs-label">홈</span><input type="number" name="hs" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label><span id="as-label">원정</span><input type="number" name="as" min="0" max="99" inputmode="numeric"></label></div>
+          <div class="score-in"><label><span id="hs-label">홈</span><input type="number" name="hs" min="0" max="199" inputmode="numeric"></label><span aria-hidden="true">:</span><label><span id="as-label">원정</span><input type="number" name="as" min="0" max="199" inputmode="numeric"></label></div>
         </fieldset>
         <fieldset><legend>응원한 팀</legend>
           <div class="seg" id="cheer-seg"></div>
@@ -624,7 +624,7 @@ function pickInk(main,sub,bg){
 const SPORTS=[
   {id:'baseball',name:'야구',league:'KBO',icon:'base',ready:true},
   {id:'volleyball',name:'배구',league:'V-리그',icon:'volley',ready:true},
-  {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket'},
+  {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket',ready:true},
   {id:'hockey',name:'아이스하키',league:'아시아리그',icon:'puck'},
   {id:'handball',name:'핸드볼',league:'H리그',icon:'hand'},
   {id:'soccer',name:'축구',league:'K리그1',icon:'soccer',ready:true}
@@ -751,7 +751,7 @@ function renderClubs(me){
 // 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저(localStorage 'diary')에만 저장
 // 한 장 = {id, sport, date, home:'KIA', away:'LG', park, hs:3, as:1(홈·원정 점수), cheer:'home'|'away'|null(그냥 구경), mate:'민지, 동생'(같이 간 사람), memo}
 // 직관 승률: 응원한 팀이 있고 점수를 적은 경기만 센다. 무승부는 승률 계산에서 뺀다 (KBO 승률 계산과 같음)
-const score=v=>Number.isInteger(v)&&v>=0&&v<=99?v:null;
+const score=v=>Number.isInteger(v)&&v>=0&&v<=199?v:null;
 const RAW_DIARY=load('diary',[]);
 let DIARY=[];
 // 종목 데이터를 불러온 뒤에 정리함. 예전 기록 {me, opp, my, op}은 내 팀 응원으로 옮기고, 구장이 상대 홈구장이면 내 팀을 원정으로
@@ -909,7 +909,7 @@ function setPrepTeam(t){
   prepPark.value=t[3];renderPark();renderMap();
   $('prep-cheer').innerHTML=[...D.cheer,
     D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
-      :['응원가 미리 듣기',`<a href="${D.leagueSite[1]}" target="_blank" rel="noopener">${D.leagueSite[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`]
+      :['응원가 미리 듣기',`<a href="${(D.leagueSites&&D.leagueSites[t[5]]||D.leagueSite)[1]}" target="_blank" rel="noopener">${(D.leagueSites&&D.leagueSites[t[5]]||D.leagueSite)[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`]
   ].map(([k,v])=>`<div class="row tip"><div><b>${k}</b><span>${v}</span></div></div>`).join('');
 }
 
