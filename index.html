@@ -244,6 +244,10 @@ header{flex-wrap:wrap}
 .seg span{display:block;padding:8px 6px;text-align:center;font-size:var(--fs-cap);color:var(--pencil);background:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .seg input:checked+span{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
 .seg input:focus-visible+span{outline:2px solid var(--team-ink);outline-offset:-2px}
+.entry .mate{margin:0;font-size:var(--fs-cap);color:var(--pencil);padding-right:56px}
+#log-mates .row{grid-template-columns:minmax(0,1fr) auto}
+#log-mates .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
+#log-mates .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
 #log-teams .row{grid-template-columns:10px minmax(0,1fr) auto}
 #log-teams .dot{width:10px;height:10px;border-radius:50%}
 #log-teams .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
@@ -470,6 +474,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <div class="led" id="log-led" aria-label="직관 성적"></div>
       <p class="fine" id="log-sum"></p>
       <div class="list" id="log-teams" aria-label="팀별 직관 승률"></div>
+      <p class="fine" id="log-mates-h">같이 간 사람</p>
+      <div class="list" id="log-mates" aria-label="같이 간 사람"></div>
       <div class="diary"><div class="diary-in" id="log-diary"></div></div>
       <p class="empty" id="log-empty">아직 붙인 티켓이 없어요. 다녀온 경기를 붙여 보세요.</p>
     </section>
@@ -485,6 +491,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
         <fieldset><legend>응원한 팀</legend>
           <div class="seg" id="cheer-seg"></div>
         </fieldset>
+        <label>같이 간 사람 (선택)<input type="text" name="mate" maxlength="30" placeholder="민지, 동생 (혼자 갔으면 비워 두세요)" autocomplete="off"></label>
         <label>한 줄 메모 (선택)<input type="text" name="memo" maxlength="30" placeholder="처음 간 날. 응원가 하나 외움"></label>
         <p class="form-msg" id="form-msg" role="status"></p>
         <button type="submit" class="submit">티켓 붙이기</button>
@@ -697,7 +704,7 @@ function renderClubs(me){
 }
 
 // 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저(localStorage 'diary')에만 저장
-// 한 장 = {id, sport, date, home:'KIA', away:'LG', park, hs:3, as:1(홈·원정 점수), cheer:'home'|'away'|null(그냥 구경), memo}
+// 한 장 = {id, sport, date, home:'KIA', away:'LG', park, hs:3, as:1(홈·원정 점수), cheer:'home'|'away'|null(그냥 구경), mate:'민지, 동생'(같이 간 사람), memo}
 // 직관 승률: 응원한 팀이 있고 점수를 적은 경기만 센다. 무승부는 승률 계산에서 뺀다 (KBO 승률 계산과 같음)
 const score=v=>Number.isInteger(v)&&v>=0&&v<=99?v:null;
 const RAW_DIARY=load('diary',[]);
@@ -706,7 +713,7 @@ let DIARY=[];
 function normDiary(raw){
   let old=false;
   const list=(Array.isArray(raw)?raw:[]).filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)).map(e=>{
-    const sport=SPORT[e.sport]?e.sport:'baseball',base={id:Number(e.id)||0,sport,date:e.date,park:String(e.park||''),memo:String(e.memo||'').slice(0,30)};
+    const sport=SPORT[e.sport]?e.sport:'baseball',base={id:Number(e.id)||0,sport,date:e.date,park:String(e.park||''),mate:cleanMates(e.mate),memo:String(e.memo||'').slice(0,30)};
     if(typeof e.home==='string')return {...base,home:e.home,away:String(e.away||''),hs:score(e.hs),as:score(e.as),cheer:e.cheer==='home'||e.cheer==='away'?e.cheer:null};
     old=true;
     const by=SPORT_DATA[sport]?prepData(sport).teamBy:{},meT=by[e.me],opT=by[e.opp];
@@ -717,6 +724,9 @@ function normDiary(raw){
   return {list,old};
 }
 const saveDiary=()=>store('diary',DIARY);
+// 같이 간 사람: 쉼표·공백으로 나눠 정리 ("민지,동생 " → "민지, 동생"), 같은 이름은 한 번만
+function cleanMates(v){return [...new Set(String(v||'').split(/[,，、]/).map(x=>x.trim()).filter(Boolean))].join(', ').slice(0,30)}
+const mates=e=>e.mate?e.mate.split(', '):[];
 let me=null;
 const hasScore=e=>e.hs!=null&&e.as!=null;
 const cheerTeam=e=>e.cheer?e[e.cheer]:null;
@@ -733,7 +743,7 @@ function entryHTML(e,peel){
   return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'};--on-team:${onColor(t?t[2]:'#6b7177')}"><div class="band">${ledDate(e.date)}</div>
     <div class="in"><p class="mt"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)}</span></p><p class="rs">${chip}<span class="pk">${c?esc(c)+' 응원':'그냥 구경'}</span></p></div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
-    ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
+    ${e.mate?`<p class="mate">함께 · ${esc(e.mate)}</p>`:''}${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
 }
 function renderDiary(){
   const list=[...DIARY].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),has=list.length>0;
@@ -762,6 +772,14 @@ function renderDiary(){
     return `<div class="row"><span class="dot" style="background:${t?t[2]:'#6b7177'}"></span>
       <div><b>${esc(t?t[0]:x.team)}</b><span>${SPORT[x.sport].name} · 직관 ${x.W+x.L+x.D}경기</span></div>
       <div class="wl"><span class="led-chip">${rate(x.W,x.L)}</span>${x.W}승 ${x.L}패${x.D?` ${x.D}무`:''}</div></div>`}).join('');
+  // 같이 간 사람: 함께 간 경기 수 많은 순. 승률은 그 사람과 간 날 응원한 팀 성적
+  const pm={};
+  view.forEach(e=>mates(e).forEach(n=>{const x=pm[n]=pm[n]||{n,g:0,W:0,L:0,D:0};x.g++;const r=result(e);if(r)x[r]++}));
+  const ps=Object.values(pm).sort((a,b)=>b.g-a.g||b.W-a.W),solo=view.filter(e=>!e.mate).length;
+  $('log-mates').hidden=$('log-mates-h').hidden=!ps.length;
+  $('log-mates-h').textContent=`같이 간 사람${solo?` · 혼자 또는 안 적은 경기 ${solo}`:''}`;
+  $('log-mates').innerHTML=ps.map(x=>`<div class="row"><div><b>${esc(x.n)}</b><span>같이 직관 ${x.g}경기</span></div>
+    <div class="wl">${x.W+x.L?`<span class="led-chip">${rate(x.W,x.L)}</span>${x.W}승 ${x.L}패${x.D?` ${x.D}무`:''}`:'승패 기록 없음'}</div></div>`).join('');
 }
 const form=$('add-form'),F=form.elements;
 F.date.value=todayISO;F.date.max=todayISO;
@@ -794,9 +812,9 @@ form.addEventListener('submit',ev=>{
   if(D.teamBy[F.home.value][5]!==D.teamBy[F.away.value][5]){msg.textContent=`${D.teamBy[F.home.value][5]} 팀끼리, ${D.teamBy[F.away.value][5]} 팀끼리 골라 주세요.`;F.away.focus();return}
   if((hs==null)!==(as==null)||[hs,as].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.hs.focus();return}
   const cheer=F.cheer.value==='none'?null:F.cheer.value;
-  DIARY.push({id:Date.now(),sport:cur,date:F.date.value,home:F.home.value,away:F.away.value,park:F.park.value,hs,as,cheer,memo:F.memo.value.trim().slice(0,30)});
+  DIARY.push({id:Date.now(),sport:cur,date:F.date.value,home:F.home.value,away:F.away.value,park:F.park.value,hs,as,cheer,mate:cleanMates(F.mate.value),memo:F.memo.value.trim().slice(0,30)});
   msg.textContent=saveDiary()?'티켓을 붙였어요.':'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.';
-  F.hs.value=F.as.value=F.memo.value='';
+  F.hs.value=F.as.value=F.memo.value='';   // 같이 간 사람은 다음 티켓에도 그대로 둠 (같은 사람과 자주 가니까)
   renderDiary();
 });
 $('log-diary').addEventListener('click',ev=>{
