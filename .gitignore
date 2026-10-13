@@ -5,3 +5,6 @@ fonts/GangwonEduSaeeum_OTFMediumA.woff
 
 # 로컬 미리보기 설정
 .claude/
+
+# 공식야구규칙 PDF: 조항 번호 대조용. 저작권 때문에 저장소에 올리지 않음
+*.pdf
