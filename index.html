@@ -269,6 +269,7 @@ input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
 .vid-btn .play::after{content:"";position:absolute;left:23px;top:12px;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #fff}
 .vid-btn:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 .vid-cap{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+.vid-lb{margin:0;font-size:var(--fs-cap);font-weight:700;color:var(--ink)}
 /* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
 .fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
 .fig svg{width:100%;max-width:320px;height:auto;display:block}
@@ -903,8 +904,11 @@ function showHomeRule(id){
 $('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)showHomeRule(b.dataset.id)});
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 let ruleCat='전체';
+// 룰 카드 영상 한 개: 썸네일 → 누르면 재생. label이 있으면 위에 "포스아웃 장면"처럼
+const vidHTML=v=>`<div class="vid">${v.label?`<p class="vid-lb">${esc(v.label)}</p>`:''}<button type="button" class="vid-btn" data-yt="${esc(v.id)}" data-start="${v.start||0}" aria-label="영상 재생: ${esc(v.title)}"><img src="https://i.ytimg.com/vi/${esc(v.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+  <p class="vid-cap">영상으로 보기 · ${esc(v.by)} · ${esc(v.len)}${v.start?` · ${v.start>=60?`${Math.floor(v.start/60)}분 ${v.start%60}초`:`${v.start}초`}부터`:''}<br>${esc(v.title)}${v.game?`<br>경기: ${esc(v.game)}`:''}</p></div>`;
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
-  ${r.video?`<div class="vid"><button type="button" class="vid-btn" data-yt="${esc(r.video.id)}" data-start="${r.video.start||0}" aria-label="영상 재생: ${esc(r.video.title)}"><img src="https://i.ytimg.com/vi/${esc(r.video.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"></span></button><p class="vid-cap">영상으로 보기 · ${esc(r.video.by)} · ${esc(r.video.len)}${r.video.start?` · ${r.video.start}초부터`:""}<br>${esc(r.video.title)}${r.video.game?`<br>경기: ${esc(r.video.game)}`:''}</p></div>`:''}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기에서 보면</dt><dd>${esc(r.field)}</dd></div>
+  ${(r.videos||(r.video?[r.video]:[])).map(vidHTML).join('')}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
