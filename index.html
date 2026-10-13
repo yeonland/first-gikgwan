@@ -723,17 +723,22 @@ function entryHTML(e,peel){
 }
 function renderDiary(){
   const list=[...DIARY].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),has=list.length>0;
-  const counted=list.filter(result),n=k=>counted.filter(e=>result(e)===k).length,w=n('W'),l=n('L');
+  // 전광판: 기록이 여러 종목이면 지금 보는 종목만, 한 종목이면 전체. 모든 종목 합계는 아래 한 줄에
+  const multi=new Set(list.map(e=>e.sport)).size>1,view=multi?list.filter(e=>e.sport===cur):list;
+  const tally=arr=>{const c=arr.filter(result),n=k=>c.filter(e=>result(e)===k).length;return {c,W:n('W'),L:n('L'),D:n('D')}};
+  const all=tally(list),v=tally(view),counted=all.c;
   $('home-diary').innerHTML=(has?list.slice(0,2):examples()).map(e=>entryHTML(e,false)).join('');
-  $('home-diary-note').textContent=has?`기록 ${list.length}장${counted.length?` · 직관 승률 ${rate(w,l)}`:''}`:'예시 2장';
+  $('home-diary-note').textContent=has?`기록 ${list.length}장${v.c.length?` · ${multi?SP.name+' ':''}직관 승률 ${rate(v.W,v.L)}`:''}`:'예시 2장';
   $('log-diary').innerHTML=list.map(e=>entryHTML(e,true)).join('');
   $('log-empty').hidden=has;$('log-led').hidden=$('log-sum').hidden=!has;
   $('log-count').textContent=`기록 ${list.length}장`;
-  $('log-led').innerHTML=`<span><small>GAMES</small><b>${list.length}</b></span><span><small>W-L-D</small><b>${w}-${l}-${n('D')}</b></span>
-    <span class="dd"><small>WIN%</small><b>${rate(w,l)}</b></span>`;
-  const watch=list.filter(e=>!e.cheer).length,noScore=list.filter(e=>e.cheer&&!hasScore(e)).length;
+  $('log-led').setAttribute('aria-label',multi?`${SP.name} 직관 성적`:'직관 성적');
+  $('log-led').innerHTML=`<span><small>${multi?esc(SP.name)+' ':''}GAMES</small><b>${view.length}</b></span><span><small>W-L-D</small><b>${v.W}-${v.L}-${v.D}</b></span>
+    <span class="dd"><small>WIN%</small><b>${rate(v.W,v.L)}</b></span>`;
+  const watch=view.filter(e=>!e.cheer).length,noScore=view.filter(e=>e.cheer&&!hasScore(e)).length;
   const rest=[watch&&`그냥 구경 ${watch}경기`,noScore&&`점수 없는 ${noScore}경기`].filter(Boolean);
-  $('log-sum').textContent=`직관 승률은 응원한 팀이 있고 점수를 적은 ${counted.length}경기로 계산해요.`+(rest.length?` ${rest.join('와 ')}는 경기 수에만 들어가요.`:'');
+  $('log-sum').textContent=(multi?`전광판은 ${SP.name} 기록이에요. 모든 종목을 합치면 ${list.length}경기 · ${all.W}승 ${all.L}패${all.D?` ${all.D}무`:''} · 승률 ${rate(all.W,all.L)}. `:'')
+    +`직관 승률은 응원한 팀이 있고 점수를 적은 ${v.c.length}경기로 계산해요.`+(rest.length?` ${rest.join('와 ')}는 경기 수에만 들어가요.`:'');
   // 팀별 직관 승률 (종목이 달라도 응원한 팀마다)
   const by={};
   counted.forEach(e=>{const k=e.sport+'|'+cheerTeam(e);(by[k]=by[k]||{sport:e.sport,team:cheerTeam(e),W:0,L:0,D:0})[result(e)]++});
