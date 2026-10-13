@@ -66,6 +66,9 @@ select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--
 .led b{font-size:22px}
 .led .dd{align-items:flex-end;text-align:right}
 .led-chip{display:inline-block;background:var(--led-bg);font-size:14px;padding:4px 7px 3px;border-radius:2px}
+/* 승패는 전광판 관례대로 초록·빨강 고정 (두 테마 같음) */
+.led-chip.win{color:#5fe38a;text-shadow:0 0 6px rgba(95,227,138,.55)}
+.led-chip.loss{color:#ff5b4d;text-shadow:0 0 6px rgba(255,91,77,.55)}
 
 /* ticket */
 .ticket{background:var(--tk-paper);color:var(--tk-ink);display:grid;grid-template-columns:1fr 64px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 14px -8px rgba(0,0,0,.35);transform:rotate(-.6deg)}
@@ -105,11 +108,20 @@ select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--
 .memo{font-family:var(--hand);font-size:18px;line-height:1.25;color:var(--ink);padding-inline:2px}
 .slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:13px;padding:14px;text-align:center;cursor:pointer}
 
-/* rule card */
+/* rule card: 홈에서는 접어 두고 다음 경기 바로 아래에 */
+.rules{border:1px solid var(--line);background:var(--surface)}
+.rules summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;font-size:14px}
+.rules summary::-webkit-details-marker{display:none}
+.rules summary b{font-weight:700}
+.rules summary span{font-size:12px;color:var(--pencil)}
+.rules summary::after{content:"+";font-size:18px;line-height:1;color:var(--pencil)}
+.rules[open] summary::after{content:"−"}
+.rules summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
+.rules-body{padding:0 14px 14px}
 .tabs{display:flex;border-bottom:1.5px solid var(--ink)}
 .tab{font-family:var(--sans);font-size:13px;color:var(--pencil);background:transparent;border:0;padding:8px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
 .tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team)}
-.card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.card{padding:12px 2px 0;display:flex;flex-direction:column;gap:6px}
 .card .k{font-size:11px;color:var(--team-ink);letter-spacing:.06em}
 .card p{margin:0;font-size:14px}
 
@@ -173,6 +185,17 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
       </div>
       <div class="stub"><div class="barcode" aria-hidden="true"></div><small>NO. 0001</small></div>
     </article>
+    <details class="rules">
+      <summary><span><b>경기 전 1분 룰</b> · 야구 3장</span></summary>
+      <div class="rules-body">
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-i="0">득점</button>
+          <button class="tab" role="tab" aria-selected="false" data-i="1">삼진·볼넷</button>
+          <button class="tab" role="tab" aria-selected="false" data-i="2">낫아웃</button>
+        </div>
+        <div class="card" role="tabpanel"><span class="k" id="rk">점수</span><p id="rb"></p></div>
+      </div>
+    </details>
   </section>
 
   <section aria-labelledby="h-other">
@@ -196,28 +219,17 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
     <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note">기록 2장 · 예시</span></div>
     <div class="diary">
       <div class="entry">
-        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span class="led-chip">W 5:3</span></div><span class="mini-stamp ink-stamp" data-date="2026.09.14"></span></div>
+        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span class="led-chip win" aria-label="승리 5 대 3">W 5:3</span></div><span class="mini-stamp ink-stamp" data-date="2026.09.14"></span></div>
         <div class="memo">처음 간 날. 응원가 하나 외움</div>
       </div>
       <div class="entry">
-        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span class="led-chip">L 2:4</span></div><span class="mini-stamp ink-stamp" data-date="2026.08.23"></span></div>
+        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span class="led-chip loss" aria-label="패배 2 대 4">L 2:4</span></div><span class="mini-stamp ink-stamp" data-date="2026.08.23"></span></div>
         <div class="memo">비 와서 우비 삼. 7회까지 봄</div>
       </div>
       <button class="slot" type="button">다음 티켓 붙이기</button>
     </div>
   </section>
 
-  <section aria-labelledby="h-rule">
-    <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note">야구 3 / 10장</span></div>
-    <div>
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" data-i="0">득점</button>
-        <button class="tab" role="tab" aria-selected="false" data-i="1">삼진·볼넷</button>
-        <button class="tab" role="tab" aria-selected="false" data-i="2">낫아웃</button>
-      </div>
-      <div class="card" role="tabpanel"><span class="k" id="rk">점수</span><p id="rb"></p></div>
-    </div>
-  </section>
 </div>
 
 <nav aria-label="메뉴"><ul>
