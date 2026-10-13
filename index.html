@@ -7,7 +7,7 @@
 @font-face{font-family:"GangwonEducationSaeum";src:url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
 /* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
 :root{
-  --team:#C30452;               /* 내 팀 컬러, JS가 바꿈 */
+  --team:#000000;               /* 내 팀 컬러, JS가 바꿈 */
   /* 바탕 위에 선·글자로 쓸 팀 색. JS가 바탕과 대비 3:1 이상인 색을 골라 넣음 (주색 → 보조색 → 밝게 섞은 주색) */
   --team-ink-light:var(--team); --team-ink-dark:#e7e9ea;
   --team-ink:var(--team-ink-light);
@@ -279,13 +279,13 @@ document.querySelectorAll('.js-dday').forEach(el=>{
   el.textContent=dday(iso);
 });
 
-// [이름, 줄임, 주색, 구장, 보조색] — 구단 컬러는 근사값, 출시 전 BI 가이드로 확인
+// [이름, 줄임, 메인, 구장, 서브] — Figma "야구 일정" 파일의 색 스타일(구단-메인 / 구단-서브)
 const TEAMS=[
- ["LG 트윈스","LG","#C30452","잠실야구장",null],["두산 베어스","두산","#1A1748","잠실야구장","#ED1C24"],
- ["키움 히어로즈","키움","#820024","고척스카이돔",null],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드",null],
- ["KT wiz","KT","#231F20","수원KT위즈파크","#EB1C24"],["한화 이글스","한화","#F37321","대전한화생명볼파크",null],
- ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크",null],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드",null],
- ["롯데 자이언츠","롯데","#041E42","사직야구장","#D00F31"],["NC 다이노스","NC","#315288","창원NC파크","#AF917B"]
+ ["LG 트윈스","LG","#000000","잠실야구장","#C30452"],["두산 베어스","두산","#131230","잠실야구장","#ED1C24"],
+ ["키움 히어로즈","키움","#820024","고척스카이돔","#A7A9AC"],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드","#FABD06"],
+ ["KT wiz","KT","#000000","수원KT위즈파크","#EC1C24"],["한화 이글스","한화","#FF6600","대전한화생명볼파크","#595959"],
+ ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크","#C0C0C0"],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드","#06141F"],
+ ["롯데 자이언츠","롯데","#041E42","사직야구장","#DC0330"],["NC 다이노스","NC","#071D3F","창원NC파크","#D1B280"]
 ];
 
 // 대비 계산 (WCAG): 선·아이콘은 3:1 이상이면 구분됨
@@ -294,9 +294,15 @@ const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const lum=h=>{const [r,g,b]=rgb(h).map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*r+.7152*g+.0722*b};
 const contrast=(a,b)=>{const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p);return (x+.05)/(y+.05)};
 const mix=(h,to,t)=>'#'+rgb(h).map(v=>Math.round(v+(to-v)*t).toString(16).padStart(2,'0')).join('');
+// 순서: 메인 → 메인 살짝 조정 → 서브(유채색일 때) → 서브 살짝 조정 → 메인 더 조정 → 회색 서브
+// 남색 메인을 많이 밝히면 탁한 회청색이 되므로, 그 전에 빨강·골드 같은 서브를 먼저 씀
+const isGray=h=>{const c=rgb(h);return (Math.max(...c)-Math.min(...c))/255<.15};
 function pickInk(main,sub,bg){
   const to=lum(bg)>.5?0:255;   // 밝은 바탕이면 어둡게, 어두운 바탕이면 밝게 섞음
-  const tries=[main,sub,...[.2,.35,.5,.65].map(t=>mix(main,to,t))].filter(Boolean);
+  const colorSub=sub&&!isGray(sub)?sub:null;
+  const tries=[main,mix(main,to,.2),
+    ...(colorSub?[colorSub,mix(colorSub,to,.2),mix(colorSub,to,.35)]:[]),
+    mix(main,to,.35),mix(main,to,.5),...(sub&&!colorSub?[sub]:[]),mix(main,to,.65)];
   return tries.find(c=>contrast(c,bg)>=3)||mix(main,to,.8);
 }
 const sel=document.getElementById('team');
