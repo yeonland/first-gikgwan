@@ -144,10 +144,32 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px))}
 nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:var(--fs-cap)}
 nav ul{gap:6px}
-nav li{padding:9px 0;color:var(--pencil);border-radius:8px}
-nav li.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
+nav button{width:100%;font:inherit;color:var(--pencil);background:transparent;border:0;padding:9px 0;border-radius:8px;cursor:pointer}
+nav button.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
 
-button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+/* 페이지 */
+#p-home{display:contents}
+.page{display:flex;flex-direction:column;gap:30px;min-width:0}
+.empty{margin:0;padding:20px 16px;border:1.5px dashed var(--line);color:var(--pencil);font-size:var(--fs-body)}
+.fine{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+a{color:inherit;text-underline-offset:3px}
+/* 예매 */
+.book-card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.bc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.book-card .info dd a{font-weight:700}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;background:var(--surface);border:1px solid var(--line)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;background:var(--led-bg);color:var(--led);font-family:var(--dot);font-size:var(--fs-body);border-radius:2px}
+.steps b{display:block}
+.steps span{font-size:var(--fs-cap);color:var(--pencil)}
+.clubs .row{grid-template-columns:10px minmax(0,1fr) auto}
+.clubs .dot{width:10px;height:10px;border-radius:50%}
+.clubs .bk{text-align:right;font-size:var(--fs-cap);color:var(--pencil);max-width:9.5em}
+.clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
+.clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
+.clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 
 /* ── 반응형: 휴대폰(~767) 한 쪽 → 태블릿(768~) 펼친 일기장 두 쪽 → PC(1100~) 왼쪽 세로 메뉴 ── */
 @media (min-width:768px){
@@ -156,22 +178,25 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
   .app{max-width:860px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:0;row-gap:0;
        grid-template-areas:"head head" "next other" "next diary"}
   .app>header{grid-area:head;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
-  .app>section{padding-bottom:36px}
-  .app>section[aria-labelledby="h-next"]{grid-area:next;padding-right:36px}
-  .app>section[aria-labelledby="h-other"]{grid-area:other}
-  .app>section[aria-labelledby="h-diary"]{grid-area:diary}
-  .app>section[aria-labelledby="h-other"],.app>section[aria-labelledby="h-diary"]{padding-left:36px;border-left:1px solid var(--line)}
+  #p-home>section{padding-bottom:36px}
+  #p-home>section[aria-labelledby="h-next"]{grid-area:next;padding-right:36px}
+  #p-home>section[aria-labelledby="h-other"]{grid-area:other}
+  #p-home>section[aria-labelledby="h-diary"]{grid-area:diary}
+  #p-home>section[aria-labelledby="h-other"],#p-home>section[aria-labelledby="h-diary"]{padding-left:36px;border-left:1px solid var(--line)}
   nav ul{max-width:520px}
+  .page{grid-column:1/-1}
+  #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
+  #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
 }
 @media (min-width:1100px){
   /* 하단 메뉴를 왼쪽 세로 메뉴로 */
   body{padding-left:calc(112px + 40px);padding-right:40px;padding-block:40px}
   nav{top:0;right:auto;width:112px;border-top:0;border-right:1px solid var(--line);padding:40px 12px}
   nav ul{grid-template-columns:1fr;gap:8px;max-width:none;font-size:var(--fs-body)}
-  nav li{padding:12px 0}
+  nav button{padding:12px 0}
   .app{max-width:1000px}
-  .app>section[aria-labelledby="h-next"]{padding-right:48px}
-  .app>section[aria-labelledby="h-other"],.app>section[aria-labelledby="h-diary"]{padding-left:48px}
+  #p-home>section[aria-labelledby="h-next"]{padding-right:48px}
+  #p-home>section[aria-labelledby="h-other"],#p-home>section[aria-labelledby="h-diary"]{padding-left:48px}
 }
 @media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
 </style>
@@ -209,6 +234,7 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
     <select id="team" aria-label="내 야구팀"></select>
   </header>
 
+  <div class="page" id="p-home">
   <section aria-labelledby="h-next">
     <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note">10.13 기준 실제 일정</span></div>
     <article class="ticket">
@@ -270,11 +296,53 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--team-ink);outl
       <button class="slot" type="button">다음 티켓 붙이기</button>
     </div>
   </section>
+  </div>
+
+  <!-- 예매 -->
+  <div class="page" id="p-book" hidden>
+    <section aria-labelledby="h-ps">
+      <div class="sec-head"><h2 id="h-ps">지금 예매할 수 있는 경기</h2><span class="note">10.13 기준</span></div>
+      <div class="book-card">
+        <div class="bc-top"><span class="led-chip js-dday" data-date="2026-10-14"></span><b>와일드카드 결정전 · LG vs 두산</b></div>
+        <dl class="info">
+          <dt>일정</dt><dd>1차전 10.14(수) 잠실. 2차전은 1차전에서 두산이 이겨야 열려요</dd>
+          <dt>예매처</dt><dd><a href="https://nol.yanolja.com/ticket" target="_blank" rel="noopener">NOL 티켓</a> 단독 (앱·웹·고객센터 1544-1555)</dd>
+          <dt>오픈</dt><dd>10.13(화) 14:00</dd>
+          <dt>매수</dt><dd>1인 최대 4매</dd>
+          <dt>현장</dt><dd>취소표만 경기 2시간 전부터 구장에서 판매</dd>
+        </dl>
+        <p class="fine">온라인 예매가 어려운 만 65세 이상(1962.1.1 이전 출생), 장애인 등록증·복지카드 소지자, 외국인(여권)은 현장에서 1인 1매 살 수 있어요.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-steps">
+      <div class="sec-head"><h2 id="h-steps">처음 예매하는 순서</h2></div>
+      <ol class="steps">
+        <li><div><b>홈팀부터 확인</b><span>예매처는 홈팀 기준이에요. 원정팀 팬도 홈팀 예매처에서 사요</span></div></li>
+        <li><div><b>예매처 가입·로그인</b><span>오픈 당일 가입하면 늦어요. 전날 미리 해 두세요</span></div></li>
+        <li><div><b>오픈 시각 확인</b><span>보통 경기 7~10일 전. 구단마다 달라요 (구단별 예매처 참고)</span></div></li>
+        <li><div><b>오픈 10분 전 접속</b><span>인기 경기는 대기열이 생기고 몇 분 만에 매진돼요</span></div></li>
+        <li><div><b>좌석 고르고 결제</b><span>처음이면 홈팀 쪽 응원석이 분위기를 느끼기 좋아요</span></div></li>
+        <li><div><b>모바일 티켓 확인</b><span>입장할 때 예매처 앱의 QR을 보여 주면 돼요</span></div></li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="h-clubs">
+      <div class="sec-head"><h2 id="h-clubs">구단별 예매처</h2><span class="note">정규시즌 홈경기</span></div>
+      <div class="list clubs" id="clubs"></div>
+      <p class="fine">예매처: KBO 공식 티켓 안내(2026.10.13 확인). 오픈 시각은 구단 안내·보도 기준이고, 비어 있는 곳은 구단 공지를 확인해 주세요.</p>
+    </section>
+  </div>
+
+  <!-- 아직 만들지 않은 탭 -->
+  <div class="page" id="p-rule" hidden><section aria-labelledby="h-rule"><div class="sec-head"><h2 id="h-rule">룰 카드</h2></div><p class="empty">야구 룰 카드 10장을 준비하고 있어요. 지금은 홈의 "경기 전 1분 룰"에서 3장을 볼 수 있어요.</p></section></div>
+  <div class="page" id="p-prep" hidden><section aria-labelledby="h-prep"><div class="sec-head"><h2 id="h-prep">직관 준비</h2></div><p class="empty">구장 가는 법, 좌석 고르기, 준비물, 응원 방법을 준비하고 있어요.</p></section></div>
+  <div class="page" id="p-log" hidden><section aria-labelledby="h-log"><div class="sec-head"><h2 id="h-log">직관 기록</h2></div><p class="empty">다녀온 경기를 티켓으로 모으는 기능을 준비하고 있어요.</p></section></div>
 
 </div>
 
 <nav aria-label="메뉴"><ul>
-  <li class="on">홈</li><li>예매</li><li>룰</li><li>준비</li><li>기록</li>
+  <li><button type="button" data-p="home">홈</button></li><li><button type="button" data-p="book">예매</button></li><li><button type="button" data-p="rule">룰</button></li><li><button type="button" data-p="prep">준비</button></li><li><button type="button" data-p="log">기록</button></li>
 </ul></nav>
 
 <script>
@@ -357,8 +425,21 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  renderTicket(t);
+  renderTicket(t);renderClubs(t);
   $('d1').textContent='vs '+o2[1];$('d2').textContent='vs '+o3[1];
+}
+
+// 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 오픈 시각은 확인된 구단만
+const BOOK={LG:['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],'두산':['NOL 티켓','https://nol.yanolja.com/ticket',null],
+  '키움':['NOL 티켓','https://nol.yanolja.com/ticket','연간회원 3시간 선예매'],SSG:['SSG 티켓','https://ticket.ssg.com',null],
+  KT:['티켓링크','https://www.ticketlink.co.kr',null],'한화':['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],
+  '삼성':['티켓링크','https://www.ticketlink.co.kr',null],KIA:['티켓링크','https://www.ticketlink.co.kr','경기 7일 전 11:00'],
+  '롯데':['자이언츠 티켓','https://ticket.giantsclub.com',null],NC:['NC 티켓','https://ticket.ncdinos.com',null]};
+function renderClubs(me){
+  $('clubs').innerHTML=TEAMS.map(t=>{const [name,url,open]=BOOK[t[1]];
+    return `<div class="row${t===me?' me':''}"><span class="dot" style="background:${t[2]}"></span>
+      <div><b>${t[0]}</b><span>${PARK_SHORT[t[3]]} · ${t[3]}</span></div>
+      <div class="bk"><a href="${url}" target="_blank" rel="noopener">${name}</a>${open||'구단 공지 확인'}</div></div>`}).join('');
 }
 
 // 2026 포스트시즌 (10.13 기준, KBO 발표·보도). 시간·날짜가 발표되지 않은 건 null로 두고 TBA로 표시
@@ -408,6 +489,17 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   b.setAttribute('aria-selected','true');$('rk').textContent=RULES[b.dataset.i][0];$('rb').textContent=RULES[b.dataset.i][1];
 }));
 $('rb').textContent=RULES[0][1];
+
+// 하단 메뉴: 페이지 전환 (#book 같은 주소로 바로 열 수 있음)
+const PAGES=['home','book','rule','prep','log'];
+function go(p){
+  document.querySelectorAll('.page').forEach(el=>{el.hidden=el.id!=='p-'+p});
+  document.querySelectorAll('nav button').forEach(b=>{const on=b.dataset.p===p;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
+  try{history.replaceState(null,'',p==='home'?location.pathname:'#'+p)}catch(e){}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.p)));
+const h=location.hash.slice(1);go(PAGES.includes(h)?h:'home');
 </script>
 </body>
 </html>
