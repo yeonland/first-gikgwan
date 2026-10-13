@@ -211,6 +211,20 @@ header{flex-wrap:wrap}
 .add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
 .score-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
 .score-in>span{font-size:var(--fs-title);padding-bottom:6px;color:var(--pencil)}
+.vs-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
+.vs-in>span{font-size:var(--fs-cap);padding-bottom:10px;color:var(--pencil)}
+/* 응원한 팀: 홈 / 원정 / 그냥 구경 중 하나 */
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg label{display:block;position:relative;cursor:pointer}
+.seg label+label{border-left:1px solid var(--line)}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg span{display:block;padding:8px 6px;text-align:center;font-size:var(--fs-cap);color:var(--pencil);background:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg input:checked+span{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
+.seg input:focus-visible+span{outline:2px solid var(--team-ink);outline-offset:-2px}
+#log-teams .row{grid-template-columns:10px minmax(0,1fr) auto}
+#log-teams .dot{width:10px;height:10px;border-radius:50%}
+#log-teams .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
+#log-teams .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
 .form-msg{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
 .form-msg:empty{display:none}
 .submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
@@ -442,6 +456,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <section aria-labelledby="h-log">
       <div class="sec-head"><h2 id="h-log">직관 기록</h2><span class="note" id="log-count"></span></div>
       <div class="led" id="log-led" aria-label="직관 성적"></div>
+      <p class="fine" id="log-sum"></p>
+      <div class="list" id="log-teams" aria-label="팀별 직관 승률"></div>
       <div class="diary"><div class="diary-in" id="log-diary"></div></div>
       <p class="empty" id="log-empty">아직 붙인 티켓이 없어요. 다녀온 경기를 붙여 보세요.</p>
     </section>
@@ -449,10 +465,13 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <div class="sec-head"><h2 id="h-add">티켓 붙이기</h2></div>
       <form class="add-form" id="add-form" novalidate>
         <label>날짜<input type="date" name="date" required></label>
-        <label>상대<select name="opp"></select></label>
+        <div class="vs-in"><label>홈팀<select name="home"></select></label><span aria-hidden="true">vs</span><label>원정팀<select name="away"></select></label></div>
         <label>구장<select name="park"></select></label>
         <fieldset><legend>점수 (선택)</legend>
-          <div class="score-in"><label>우리<input type="number" name="my" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label>상대<input type="number" name="op" min="0" max="99" inputmode="numeric"></label></div>
+          <div class="score-in"><label><span id="hs-label">홈</span><input type="number" name="hs" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label><span id="as-label">원정</span><input type="number" name="as" min="0" max="99" inputmode="numeric"></label></div>
+        </fieldset>
+        <fieldset><legend>응원한 팀</legend>
+          <div class="seg" id="cheer-seg"></div>
         </fieldset>
         <label>한 줄 메모 (선택)<input type="text" name="memo" maxlength="30" placeholder="처음 간 날. 응원가 하나 외움"></label>
         <p class="form-msg" id="form-msg" role="status"></p>
@@ -643,55 +662,96 @@ function renderClubs(me){
 }
 
 // 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저(localStorage 'diary')에만 저장
-// 한 장 = {id, sport:'baseball', date:'2026-09-14', me:'LG'(그때 내 팀), opp:'롯데', park:'잠실야구장', my:5, op:3, memo}
+// 한 장 = {id, sport, date, home:'KIA', away:'LG', park, hs:3, as:1(홈·원정 점수), cheer:'home'|'away'|null(그냥 구경), memo}
+// 직관 승률: 응원한 팀이 있고 점수를 적은 경기만 센다. 무승부는 승률 계산에서 뺀다 (KBO 승률 계산과 같음)
 const score=v=>Number.isInteger(v)&&v>=0&&v<=99?v:null;
+const RAW_DIARY=load('diary',[]);
 let DIARY=[];
-{const raw=load('diary',[]);
-  if(Array.isArray(raw))DIARY=raw.filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&typeof e.opp==='string')
-    .map(e=>({id:Number(e.id)||0,sport:SPORT[e.sport]?e.sport:'baseball',date:e.date,me:String(e.me||''),opp:e.opp,park:String(e.park||''),
-      my:score(e.my),op:score(e.op),memo:String(e.memo||'').slice(0,30)}))}
+// 종목 데이터를 불러온 뒤에 정리함. 예전 기록 {me, opp, my, op}은 내 팀 응원으로 옮기고, 구장이 상대 홈구장이면 내 팀을 원정으로
+function normDiary(raw){
+  let old=false;
+  const list=(Array.isArray(raw)?raw:[]).filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)).map(e=>{
+    const sport=SPORT[e.sport]?e.sport:'baseball',base={id:Number(e.id)||0,sport,date:e.date,park:String(e.park||''),memo:String(e.memo||'').slice(0,30)};
+    if(typeof e.home==='string')return {...base,home:e.home,away:String(e.away||''),hs:score(e.hs),as:score(e.as),cheer:e.cheer==='home'||e.cheer==='away'?e.cheer:null};
+    old=true;
+    const by=SPORT_DATA[sport]?prepData(sport).teamBy:{},meT=by[e.me],opT=by[e.opp];
+    const away=opT&&opT[3]===base.park&&(!meT||meT[3]!==base.park);
+    return away?{...base,home:String(e.opp||''),away:String(e.me||''),hs:score(e.op),as:score(e.my),cheer:'away'}
+      :{...base,home:String(e.me||''),away:String(e.opp||''),hs:score(e.my),as:score(e.op),cheer:'home'};
+  }).filter(e=>e.home&&e.away);
+  return {list,old};
+}
 const saveDiary=()=>store('diary',DIARY);
 let me=null;
-// 기록이 없을 때 홈에만 보여 줄 예시 2장 (상대는 내 팀에 맞춰 바뀜)
+const hasScore=e=>e.hs!=null&&e.as!=null;
+const cheerTeam=e=>e.cheer?e[e.cheer]:null;
+const result=e=>{if(!e.cheer||!hasScore(e))return null;const [m,o]=e.cheer==='home'?[e.hs,e.as]:[e.as,e.hs];return m>o?'W':m<o?'L':'D'};
+const rate=(w,l)=>w+l?(w/(w+l)).toFixed(3).replace(/^0/,''):'---';
+// 기록이 없을 때 홈에만 보여 줄 예시 2장 (내 팀 홈경기, 상대는 내 팀에 맞춰 바뀜)
 const examples=()=>{const i=D.teams.indexOf(me),N=D.teams.length;
-  return D.diaryExamples.map(([date,off,my,op,memo])=>({sport:cur,date,me:me[1],opp:D.teams[(i+off)%N][1],park:me[3],my,op,memo}))};
-const result=e=>e.my==null||e.op==null?null:e.my>e.op?'W':e.my<e.op?'L':'D';
+  return D.diaryExamples.map(([date,off,hs,as,memo])=>({sport:cur,date,home:me[1],away:D.teams[(i+off)%N][1],park:me[3],hs,as,cheer:'home',memo}))};
 function entryHTML(e,peel){
-  const d=SPORT_DATA[e.sport],t=d&&prepData(e.sport).teamBy[e.me],r=result(e);
-  const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${{W:'승리',L:'패배',D:'무승부'}[r]} ${e.my} 대 ${e.op}">${r} ${e.my}:${e.op}</span>`:'';
+  const d=SPORT_DATA[e.sport],by=d?prepData(e.sport).teamBy:{},r=result(e),c=cheerTeam(e),t=by[c||e.home];
+  const sc=hasScore(e)?`${e.hs}:${e.as}`:'',said=`${e.home} ${e.hs} 대 ${e.away} ${e.as}`;
+  const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${esc(c)} ${{W:'승리',L:'패배',D:'무승부'}[r]}, ${esc(said)}">${r} ${sc}</span>`
+    :sc?`<span class="led-chip" aria-label="${esc(said)}">${sc}</span>`:'';
   return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'}"><div class="band">${ledDate(e.date)}</div>
-    <div class="in"><b>vs ${esc(e.opp)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)}</span>${chip}</div>
+    <div class="in"><b>${esc(e.home)} vs ${esc(e.away)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)} · ${c?esc(c)+' 응원':'그냥 구경'}</span>${chip}</div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
     ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
 }
 function renderDiary(){
   const list=[...DIARY].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),has=list.length>0;
+  const counted=list.filter(result),n=k=>counted.filter(e=>result(e)===k).length,w=n('W'),l=n('L');
   $('home-diary').innerHTML=(has?list.slice(0,2):examples()).map(e=>entryHTML(e,false)).join('');
-  $('home-diary-note').textContent=has?`기록 ${list.length}장`:'예시 2장';
+  $('home-diary-note').textContent=has?`기록 ${list.length}장${counted.length?` · 직관 승률 ${rate(w,l)}`:''}`:'예시 2장';
   $('log-diary').innerHTML=list.map(e=>entryHTML(e,true)).join('');
-  $('log-empty').hidden=has;$('log-led').hidden=!has;
+  $('log-empty').hidden=has;$('log-led').hidden=$('log-sum').hidden=!has;
   $('log-count').textContent=`기록 ${list.length}장`;
-  const n=k=>list.filter(e=>result(e)===k).length,w=n('W'),l=n('L');
   $('log-led').innerHTML=`<span><small>GAMES</small><b>${list.length}</b></span><span><small>W-L-D</small><b>${w}-${l}-${n('D')}</b></span>
-    <span class="dd"><small>WIN%</small><b>${w+l?(w/(w+l)).toFixed(3).replace(/^0/,''):'---'}</b></span>`;
+    <span class="dd"><small>WIN%</small><b>${rate(w,l)}</b></span>`;
+  const watch=list.filter(e=>!e.cheer).length,noScore=list.filter(e=>e.cheer&&!hasScore(e)).length;
+  const rest=[watch&&`그냥 구경 ${watch}경기`,noScore&&`점수 없는 ${noScore}경기`].filter(Boolean);
+  $('log-sum').textContent=`직관 승률은 응원한 팀이 있고 점수를 적은 ${counted.length}경기로 계산해요.`+(rest.length?` ${rest.join('와 ')}는 경기 수에만 들어가요.`:'');
+  // 팀별 직관 승률 (종목이 달라도 응원한 팀마다)
+  const by={};
+  counted.forEach(e=>{const k=e.sport+'|'+cheerTeam(e);(by[k]=by[k]||{sport:e.sport,team:cheerTeam(e),W:0,L:0,D:0})[result(e)]++});
+  const rows=Object.values(by).sort((a,b)=>(b.W+b.L+b.D)-(a.W+a.L+a.D)||b.W-a.W);
+  $('log-teams').hidden=!rows.length;
+  $('log-teams').innerHTML=rows.map(x=>{const t=SPORT_DATA[x.sport]&&prepData(x.sport).teamBy[x.team];
+    return `<div class="row"><span class="dot" style="background:${t?t[2]:'#6b7177'}"></span>
+      <div><b>${esc(t?t[0]:x.team)}</b><span>${SPORT[x.sport].name} · 직관 ${x.W+x.L+x.D}경기</span></div>
+      <div class="wl"><span class="led-chip">${rate(x.W,x.L)}</span>${x.W}승 ${x.L}패${x.D?` ${x.D}무`:''}</div></div>`}).join('');
 }
 const form=$('add-form'),F=form.elements;
 F.date.value=todayISO;F.date.max=todayISO;
 function setDiaryTeam(t){
   me=t;
-  F.opp.innerHTML=D.teams.filter(x=>x!==t).map(x=>`<option value="${esc(x[1])}">${esc(x[0])}</option>`).join('');
-  F.park.value=t[3];
-  renderDiary();
+  F.home.innerHTML=F.away.innerHTML=D.teams.map(x=>`<option value="${esc(x[1])}">${esc(x[0])}</option>`).join('');
+  F.home.value=t[1];F.away.value=D.teams.find(x=>x!==t)[1];
+  syncForm();renderDiary();
 }
+// 홈·원정을 고르면: 구장은 홈팀 구장으로, 점수 칸과 응원 버튼에 팀 이름. 내 팀이 나오면 내 팀 응원, 아니면 그냥 구경
+function syncForm(){
+  const H=D.teamBy[F.home.value],A=D.teamBy[F.away.value];
+  F.park.value=H[3];
+  $('hs-label').textContent=`${H[1]} (홈)`;$('as-label').textContent=`${A[1]} (원정)`;
+  const pick=me[1]===H[1]?'home':me[1]===A[1]?'away':'none';
+  $('cheer-seg').innerHTML=[['home',H[1]],['away',A[1]],['none','그냥 구경']]
+    .map(([v,k])=>`<label><input type="radio" name="cheer" value="${v}"${v===pick?' checked':''}><span>${esc(k)}</span></label>`).join('');
+}
+F.home.addEventListener('change',syncForm);F.away.addEventListener('change',syncForm);
 form.addEventListener('submit',ev=>{
   ev.preventDefault();
-  const msg=$('form-msg'),num=v=>v===''?null:Number(v),my=num(F.my.value),op=num(F.op.value);
+  const msg=$('form-msg'),num=v=>v===''?null:Number(v),hs=num(F.hs.value),as=num(F.as.value);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(F.date.value)){msg.textContent='날짜를 골라 주세요.';F.date.focus();return}
   if(F.date.value>todayISO){msg.textContent='오늘 이후 경기는 다녀온 뒤에 붙여 주세요.';F.date.focus();return}
-  if((my==null)!==(op==null)||[my,op].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.my.focus();return}
-  DIARY.push({id:Date.now(),sport:cur,date:F.date.value,me:me[1],opp:F.opp.value,park:F.park.value,my,op,memo:F.memo.value.trim().slice(0,30)});
+  if(F.home.value===F.away.value){msg.textContent='홈팀과 원정팀을 다르게 골라 주세요.';F.away.focus();return}
+  if((hs==null)!==(as==null)||[hs,as].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.hs.focus();return}
+  const cheer=F.cheer.value==='none'?null:F.cheer.value;
+  DIARY.push({id:Date.now(),sport:cur,date:F.date.value,home:F.home.value,away:F.away.value,park:F.park.value,hs,as,cheer,memo:F.memo.value.trim().slice(0,30)});
   msg.textContent=saveDiary()?'티켓을 붙였어요.':'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.';
-  F.my.value=F.op.value=F.memo.value='';
+  F.hs.value=F.as.value=F.memo.value='';
   renderDiary();
 });
 $('log-diary').addEventListener('click',ev=>{
@@ -776,12 +836,13 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 
 // 시작: 고른 종목과 기록에 있는 종목 데이터만 불러온 뒤 그림
 (async()=>{
-  const want=new Set([...(MY?Object.keys(MY):['baseball']),...DIARY.map(e=>e.sport)].filter(id=>READY.includes(id)));
+  const want=new Set([...(MY?Object.keys(MY):['baseball']),...(Array.isArray(RAW_DIARY)?RAW_DIARY:[]).map(e=>e&&e.sport||'baseball')].filter(id=>READY.includes(id)));
   try{await Promise.all([...want].map(loadSport))}
   catch(e){document.querySelector('.app').insertAdjacentHTML('afterbegin','<p class="empty">경기 정보를 불러오지 못했어요. 새로고침해 주세요.</p>');return}
   const my=MY||{baseball:0};   // 처음 온 사람은 설정을 마칠 때까지 야구 1번 팀으로 보여 줌
   for(const id in my)if(!SPORT_DATA[id].teams[my[id]])my[id]=0;
   MY=my;if(!firstVisit)store('myTeams',MY);
+  const nd=normDiary(RAW_DIARY);DIARY=nd.list;if(nd.old)saveDiary();   // 예전 기록은 새 모양으로 한 번 옮겨 저장
   useSport(cur in MY?cur:Object.keys(MY)[0]);
   const h=location.hash.slice(1);go(PAGES.includes(h)?h:'home');
   if(firstVisit)setTimeout(openSetup,splashShown?1900:0);

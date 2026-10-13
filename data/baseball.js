@@ -134,7 +134,7 @@ const cheer=[
 const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
   '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
 
-// 직관 기록: 점수 칸 이름과 홈 예시 2장의 메모
+// 직관 기록: 기록이 없을 때 홈에 보여 줄 예시 2장 [날짜, 상대(내 팀에서 몇 번째 뒤 팀), 홈 점수, 원정 점수, 메모]. 내 팀 홈경기로 보여 줌
 const diaryExamples=[['2026-09-14',3,5,3,'처음 간 날. 응원가 하나 외움'],['2026-08-23',7,2,4,'비 와서 우비 삼. 7회까지 봄']];
 
 return {teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
