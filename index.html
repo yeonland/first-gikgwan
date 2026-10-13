@@ -170,6 +170,22 @@ a{color:inherit;text-underline-offset:3px}
 .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+/* 종목: 처음 설정(여러 종목 + 종목마다 내 팀), 고른 종목이 2개 이상이면 머리말 아래 종목 칩 */
+header{flex-wrap:wrap}
+.sport-bar{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px}
+.setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
+.setup::backdrop{background:rgba(0,0,0,.45)}
+.setup form{display:flex;flex-direction:column;gap:12px}
+.pick{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px 12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.pick:first-child{border-top:0}
+.pick label{display:contents;cursor:pointer}
+.pick input{width:18px;height:18px;margin:0;accent-color:var(--team-ink)}
+.pick svg{width:28px;height:28px}
+.pick b{display:block;font-weight:500}
+.pick span{font-size:var(--fs-cap);color:var(--pencil)}
+.pick select{grid-column:3;width:100%;font-size:var(--fs-body);padding:8px 10px}
+.pick.off{color:var(--pencil)}
+.pick.off svg{opacity:.45}
 /* 직관 준비 */
 .pg{display:flex;flex-direction:column;gap:30px;min-width:0}
 .prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
@@ -286,6 +302,16 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   </defs>
 </svg>
 
+<dialog class="setup" id="setup" aria-labelledby="setup-h">
+  <form method="dialog" id="setup-form">
+    <h2 id="setup-h">어떤 경기를 보러 가세요?</h2>
+    <p class="fine">여러 종목을 고를 수 있어요. 종목마다 내 팀을 고르면 홈에 다음 경기가 나와요.</p>
+    <div class="list" id="setup-list"></div>
+    <p class="form-msg" id="setup-msg" role="status"></p>
+    <button type="submit" class="submit" id="setup-ok">시작하기</button>
+  </form>
+</dialog>
+
 <div class="splash" id="splash" hidden aria-hidden="true"><div class="splash-in ink-stamp"></div><p>오늘의 직관 일기</p></div>
 
 <div class="app">
@@ -294,12 +320,13 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <svg viewBox="0 0 200 200" role="img" aria-label="첫직관 로고"><use href="#flower"/></svg>
       <div><b>첫직관</b><span>직관 일기장</span></div>
     </div>
-    <select id="team" aria-label="내 야구팀"></select>
+    <select id="team" aria-label="내 팀"></select>
+    <div class="sport-bar" id="sport-bar" role="group" aria-label="종목" hidden></div>
   </header>
 
   <div class="page" id="p-home">
   <section aria-labelledby="h-next">
-    <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note">10.13 기준 실제 일정</span></div>
+    <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note" id="next-note"></span></div>
     <article class="ticket">
       <div class="t-main">
         <div class="band"><span id="tk-round">WILD CARD · G1</span><span>ADMIT ONE</span></div>
@@ -316,10 +343,10 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <div class="stub"><div class="barcode" aria-hidden="true"></div><b class="park-stub" id="tk-park">잠실</b></div>
     </article>
     <details class="rules">
-      <summary><span><b>경기 전 1분 룰</b> · 야구 3장</span></summary>
+      <summary><span><b>경기 전 1분 룰</b> · <span id="home-rules-sub"></span></span></summary>
       <div class="rules-body">
         <div class="tabs" role="tablist" id="home-tabs"></div>
-        <div class="card" role="tabpanel"><span class="k" id="rk"></span><p id="rb"></p><button type="button" class="more" data-go="rule">룰 카드 10장 모두 보기</button></div>
+        <div class="card" role="tabpanel"><span class="k" id="rk"></span><p id="rb"></p><button type="button" class="more" data-go="rule" id="more-rules"></button></div>
       </div>
     </details>
   </section>
@@ -337,7 +364,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
         <div><b>KB스타즈 vs BNK 썸</b><span>WKBL 개막전 · 11.01 (일) · 청주체육관</span></div>
         <span class="led-chip js-dday" data-date="2026-11-01"></span>
       </div>
-      <button class="add" type="button">종목별 내 팀 추가</button>
+      <button class="add" type="button" data-setup>종목별 내 팀 추가</button>
     </div>
   </section>
 
@@ -350,18 +377,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   <!-- 예매 -->
   <div class="page" id="p-book" hidden>
     <section aria-labelledby="h-ps">
-      <div class="sec-head"><h2 id="h-ps">지금 예매할 수 있는 경기</h2><span class="note">10.13 기준</span></div>
-      <div class="book-card">
-        <div class="bc-top"><span class="led-chip js-dday" data-date="2026-10-14"></span><b>와일드카드 결정전 · LG vs 두산</b></div>
-        <dl class="info">
-          <dt>일정</dt><dd>1차전 10.14(수) 잠실. 2차전은 1차전에서 두산이 이겨야 열려요</dd>
-          <dt>예매처</dt><dd><a href="https://nol.yanolja.com/ticket" target="_blank" rel="noopener">NOL 티켓</a> 단독 (앱·웹·고객센터 1544-1555)</dd>
-          <dt>오픈</dt><dd>10.13(화) 14:00</dd>
-          <dt>매수</dt><dd>1인 최대 4매</dd>
-          <dt>현장</dt><dd>취소표만 경기 2시간 전부터 구장에서 판매</dd>
-        </dl>
-        <p class="fine">온라인 예매가 어려운 만 65세 이상(1962.1.1 이전 출생), 장애인 등록증·복지카드 소지자, 외국인(여권)은 현장에서 1인 1매 살 수 있어요.</p>
-      </div>
+      <div class="sec-head"><h2 id="h-ps">지금 예매할 수 있는 경기</h2><span class="note" id="book-now-note"></span></div>
+      <div class="book-card" id="book-now"></div>
     </section>
 
     <section aria-labelledby="h-steps">
@@ -377,20 +394,20 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     </section>
 
     <section aria-labelledby="h-clubs">
-      <div class="sec-head"><h2 id="h-clubs">구단별 예매처</h2><span class="note">정규시즌 홈경기</span></div>
+      <div class="sec-head"><h2 id="h-clubs">구단별 예매처</h2><span class="note" id="clubs-note"></span></div>
       <div class="list clubs" id="clubs"></div>
-      <p class="fine">예매처: KBO 공식 티켓 안내(2026.10.13 확인). 오픈 시각은 구단 안내·보도 기준이고, 비어 있는 곳은 구단 공지를 확인해 주세요.</p>
+      <p class="fine" id="clubs-fine"></p>
     </section>
   </div>
 
   <!-- 룰 카드: 규정집을 쉽게 풀어 주는 카드 -->
   <div class="page" id="p-rule" hidden>
     <section aria-labelledby="h-rule">
-      <div class="sec-head"><h2 id="h-rule">야구 룰 카드</h2><span class="note" id="rule-count"></span></div>
+      <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note" id="rule-count"></span></div>
       <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기장 장면과 규정집 조항이 보여요.</p>
       <div class="chips" role="group" aria-label="분류별로 보기" id="rule-chips"></div>
       <div class="rule-list" id="rule-list"></div>
-      <p class="fine">조항 번호는 <a href="https://6ptotvmi5753.edge.naverncp.com/KBO_FILE/ebook/pdf/2026_%EC%95%BC%EA%B5%AC%EA%B7%9C%EC%B9%99.pdf" target="_blank" rel="noopener">KBO 2026 공식야구규칙</a>과 대조했고, 문장은 규칙서를 옮기지 않고 풀어 썼어요. KBO 규정은 <a href="https://www.koreabaseball.com/Kbo/League/GameManage2026.aspx" target="_blank" rel="noopener">KBO 2026 주요 규정·규칙</a>(2026.10.13 확인) 기준이에요.</p>
+      <p class="fine" id="rule-fine"></p>
     </section>
   </div>
 
@@ -412,7 +429,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       <section aria-labelledby="h-bag">
         <div class="sec-head"><h2 id="h-bag">준비물</h2><span class="note" id="prep-count"></span></div>
         <div class="list" id="prep-check"></div>
-        <p class="fine">음료·주류 반입 기준은 구장마다 달라요. 유리병은 대부분 들고 갈 수 없고, 캔은 2023년부터 다시 들고 갈 수 있게 됐어요. 양 제한이 있으니 구단 공지를 확인하세요.</p>
+        <p class="fine" id="prep-fine"></p>
       </section>
       <section aria-labelledby="h-cheer">
         <div class="sec-head"><h2 id="h-cheer">응원 방법</h2></div>
@@ -467,11 +484,18 @@ function dateStamp(date){
 
 const now=new Date(),pad=n=>String(n).padStart(2,'0');
 const today=`${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+const todayISO=today.replace(/\./g,'-');
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// 브라우저 저장: 막혀 있어도 화면은 돌아가게
+const load=(k,fb)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??fb}catch(e){return fb}};
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
 
 // 하루 첫 실행 때만 오늘 날짜 소인
-const splash=document.getElementById('splash');
+const splash=$('splash');
 let seen=null;try{seen=localStorage.getItem('splashDay')}catch(e){}
-if(seen!==today){
+const splashShown=seen!==today;
+if(splashShown){
   splash.querySelector('.splash-in').innerHTML=dateStamp(today);
   splash.hidden=false;
   try{localStorage.setItem('splashDay',today)}catch(e){}
@@ -486,19 +510,13 @@ function dday(iso){
   const diff=Math.round((new Date(y,m-1,d)-midnight)/86400000);
   return diff>0?`D-${diff}`:diff===0?'D-DAY':'END';
 }
-document.querySelectorAll('.js-dday').forEach(el=>{
+const fillDday=root=>root.querySelectorAll('.js-dday').forEach(el=>{
   const iso=el.dataset.date||el.closest('[data-date]').dataset.date;
   el.textContent=dday(iso);
 });
-
-// [이름, 줄임, 메인, 구장, 서브] — Figma "야구 일정" 파일의 색 스타일(구단-메인 / 구단-서브)
-const TEAMS=[
- ["LG 트윈스","LG","#000000","잠실야구장","#C30452"],["두산 베어스","두산","#131230","잠실야구장","#ED1C24"],
- ["키움 히어로즈","키움","#820024","고척스카이돔","#A7A9AC"],["SSG 랜더스","SSG","#CE0E2D","인천SSG랜더스필드","#FABD06"],
- ["KT wiz","KT","#000000","수원KT위즈파크","#EC1C24"],["한화 이글스","한화","#FF6600","대전한화생명볼파크","#595959"],
- ["삼성 라이온즈","삼성","#074CA1","대구삼성라이온즈파크","#C0C0C0"],["KIA 타이거즈","KIA","#EA0029","광주기아챔피언스필드","#06141F"],
- ["롯데 자이언츠","롯데","#041E42","사직야구장","#DC0330"],["NC 다이노스","NC","#071D3F","창원NC파크","#D1B280"]
-];
+fillDday(document);
+const DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const ledDate=iso=>{if(!iso)return 'TBA';const [y,m,d]=iso.split('-').map(Number);return `${pad(m)}.${pad(d)} ${DOW[new Date(y,m-1,d).getDay()]}`};
 
 // 대비 계산 (WCAG): 선·아이콘은 3:1 이상이면 구분됨
 const BG_LIGHT='#f5f5f2',BG_DARK='#151618';
@@ -518,11 +536,42 @@ function pickInk(main,sub,bg){
     mix(main,to,.35),mix(main,to,.5),...(sub&&!colorSub?[sub]:[]),mix(main,to,.65)];
   return tries.find(c=>contrast(c,bg)>=3)||mix(main,to,.8);
 }
-const sel=document.getElementById('team');
-TEAMS.forEach((t,i)=>sel.add(new Option(t[0],i)));
-const $=id=>document.getElementById(id);
+
+// ── 종목 ──
+// 종목 데이터는 data/<id>.js 에 따로 있고, 고른 종목 것만 불러온다. ready가 아닌 종목은 "곧 열려요"
+// icon: 로고 속 공 symbol
+const SPORTS=[
+  {id:'baseball',name:'야구',league:'KBO',icon:'base',ready:true},
+  {id:'volleyball',name:'배구',league:'V-리그',icon:'volley'},
+  {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket'},
+  {id:'hockey',name:'아이스하키',league:'아시아리그',icon:'puck'},
+  {id:'handball',name:'핸드볼',league:'H리그',icon:'hand'},
+  {id:'soccer',name:'축구',league:'K리그1',icon:'soccer'}
+];
+const SPORT=Object.fromEntries(SPORTS.map(s=>[s.id,s]));
+const READY=SPORTS.filter(s=>s.ready).map(s=>s.id);
+window.SPORT_DATA=window.SPORT_DATA||{};
+const loadSport=id=>SPORT_DATA[id]?Promise.resolve():new Promise((ok,no)=>{
+  const s=document.createElement('script');s.src=`data/${id}.js`;s.onload=ok;s.onerror=()=>no(new Error(id));document.head.append(s);
+});
+// 처음 쓰는 종목 데이터에 찾아보기 표를 붙여 둠
+function prepData(id){
+  const d=SPORT_DATA[id];
+  if(!d.teamBy){d.teamBy=Object.fromEntries(d.teams.map(t=>[t[1],t]));d.parks=[...new Set(d.teams.map(t=>t[3]))];d.ruleBy=Object.fromEntries(d.rules.map(r=>[r.id,r]))}
+  return d;
+}
+
+// 내 종목·팀: {baseball:0, ...} (팀 번호). 예전 'team'(야구 팀 번호)은 그대로 옮김
+let MY=load('myTeams',null);
+if(!MY||typeof MY!=='object'){let old=null;try{old=localStorage.getItem('team')}catch(e){};MY=old!==null?{baseball:+old||0}:null}
+const firstVisit=!MY;
+if(MY)MY=Object.fromEntries(Object.entries(MY).filter(([id])=>READY.includes(id)));
+if(MY&&!Object.keys(MY).length)MY=null;
+let cur=load('sport',null),D,SP;   // 지금 보는 종목: 데이터, 종목 정보
+const sel=$('team');
+
 function apply(i){
-  const t=TEAMS[i];
+  const t=D.teams[i];
   const root=document.documentElement.style;
   root.setProperty('--team',t[2]);
   const inkL=pickInk(t[2],t[4],BG_LIGHT),inkD=pickInk(t[2],t[4],BG_DARK);
@@ -532,76 +581,86 @@ function apply(i){
   root.setProperty('--on-team-ink-dark',onColor(inkD));
   renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);
 }
+function useSport(id){
+  cur=id;store('sport',id);SP=SPORT[id];D=prepData(id);
+  sel.innerHTML=D.teams.map((t,i)=>`<option value="${i}">${esc(t[0])}</option>`).join('');
+  sel.setAttribute('aria-label',`내 ${SP.name}팀`);sel.value=MY[id];
+  const mine=SPORTS.filter(s=>s.id in MY);
+  $('sport-bar').hidden=mine.length<2;
+  $('sport-bar').innerHTML=mine.map(s=>`<button class="chip" type="button" data-sport="${s.id}" aria-pressed="${s.id===id}">${s.name}</button>`).join('');
+  renderSportPages();apply(MY[id]);
+}
+sel.addEventListener('change',()=>{MY[cur]=+sel.value;store('myTeams',MY);apply(MY[cur])});
+$('sport-bar').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur)useSport(b.dataset.sport)});
 
-// 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 링크는 예매처의 구단 페이지. 오픈 시각은 확인된 구단만
-const BOOK={LG:['티켓링크','https://www.ticketlink.co.kr/sports/137/59','경기 7일 전 11:00'],'두산':['NOL 티켓','https://nol.yanolja.com/ticket/genre/sports/bears',null],
-  '키움':['NOL 티켓','https://nol.yanolja.com/ticket/genre/sports/heroes','연간회원 3시간 선예매'],SSG:['SSG 티켓','https://ticket.ssg.com',null],
-  KT:['티켓링크','https://www.ticketlink.co.kr/sports/137/62',null],'한화':['티켓링크','https://www.ticketlink.co.kr/sports/137/63','경기 7일 전 11:00'],
-  '삼성':['티켓링크','https://www.ticketlink.co.kr/sports/137/57',null],KIA:['티켓링크','https://www.ticketlink.co.kr/sports/137/58','경기 7일 전 11:00'],
-  '롯데':['자이언츠 티켓','https://ticket.giantsclub.com',null],NC:['NC 티켓','https://ticket.ncdinos.com',null]};
+// 종목이 바뀔 때만 다시 그리는 부분 (팀과 상관없는 것)
+function renderSportPages(){
+  $('next-note').textContent=D.nextNote||'';
+  // 예매
+  const n=D.bookNow;
+  $('book-now').closest('section').hidden=!n;
+  if(n){
+    $('book-now-note').textContent=n.note;
+    $('book-now').innerHTML=`<div class="bc-top">${n.date?`<span class="led-chip js-dday" data-date="${n.date}"></span>`:''}<b>${n.title}</b></div>
+      <dl class="info">${n.rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>${n.fine?`<p class="fine">${n.fine}</p>`:''}`;
+    fillDday($('book-now'));
+  }
+  $('clubs-note').textContent=D.bookNote;$('clubs-fine').textContent=D.bookFine;
+  // 룰
+  $('h-rule').textContent=`${SP.name} 룰 카드`;$('rule-fine').innerHTML=D.ruleFine;
+  $('home-rules-sub').textContent=`${SP.name} ${D.homeRules.length}장`;$('more-rules').textContent=`룰 카드 ${D.rules.length}장 모두 보기`;
+  $('home-tabs').innerHTML=D.homeRules.map(id=>`<button class="tab" role="tab" type="button" data-id="${id}">${esc(D.ruleBy[id].name)}</button>`).join('');
+  showHomeRule(D.homeRules[0]);
+  ruleCat='전체';
+  $('rule-chips').innerHTML=['전체',...D.ruleCats].map(c=>`<button class="chip" type="button">${c}</button>`).join('');
+  $('rule-list').innerHTML='';renderRules();
+  // 준비
+  prepPark.innerHTML=D.parks.map(p=>`<option value="${p}">${esc(D.parkShort[p])} · ${esc(p)}</option>`).join('');
+  $('prep-seats').innerHTML=D.seats.map(([k,v,rec])=>`<div class="row tip"><div><b>${k}${rec?'<span class="rec">처음이라면</span>':''}</b><span>${v}</span></div></div>`).join('');
+  PREP_DONE=load('prep-'+cur,null)||(cur==='baseball'?load('prep',{}):{})||{};
+  $('prep-check').innerHTML=D.prep.map(([id,k,v])=>`<label class="check"><input type="checkbox" data-id="${id}"${PREP_DONE[id]?' checked':''}><div><b>${k}</b><span>${v}</span></div></label>`).join('');
+  prepCount();$('prep-fine').textContent=D.prepFine||'';
+  // 기록 양식의 구장 목록
+  F.park.innerHTML=D.parks.map(p=>`<option value="${p}">${esc(p)}</option>`).join('');
+}
+
+// 홈 티켓: 내 팀의 다음 경기 (종목 데이터의 nextGame이 정함)
+function renderTicket(t){
+  const g=D.nextGame(t);
+  $('tk-round').textContent=g.round;$('home').textContent=g.home;$('vs').hidden=!!g.off;$('away').textContent=g.away;
+  const [date,time,dd]=g.led||[ledDate(g.date),g.time||'TBA',g.date?dday(g.date):'--'];
+  $('tk-date').textContent=date;$('tk-time').textContent=time;$('tk-dday').textContent=dd;
+  $('tk-park').textContent=D.parkShort[g.park]||'';
+  $('tk-info').innerHTML=g.rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+}
+
+// 예매: 구단별 예매처
 function renderClubs(me){
-  $('clubs').innerHTML=TEAMS.map(t=>{const [name,url,open]=BOOK[t[1]];
+  $('clubs').innerHTML=D.teams.map(t=>{const [name,url,open]=D.book[t[1]];
     return `<div class="row${t===me?' me':''}"><span class="dot" style="background:${t[2]}"></span>
-      <div><b>${t[0]}</b><span>${PARK_SHORT[t[3]]} · ${t[3]}</span></div>
+      <div><b>${esc(t[0])}</b><span>${esc(D.parkShort[t[3]])} · ${esc(t[3])}</span></div>
       <div class="bk"><a href="${url}" target="_blank" rel="noopener">${name}</a>${open||'구단 공지 확인'}</div></div>`}).join('');
 }
 
-// 2026 포스트시즌 (10.13 기준, KBO 발표·보도). 시간·날짜가 발표되지 않은 건 null로 두고 TBA로 표시
-const STANDINGS={KT:[1,'90승 5무 49패'],'삼성':[2,'83승 3무 58패'],KIA:[3,'79승 2무 63패'],LG:[4,'78승 1무 65패'],'두산':[5,'73승 5무 66패'],
-  SSG:[6,'65승 5무 74패'],'롯데':[7,'64승 3무 77패'],NC:[8,'64승 2무 78패'],'한화':[9,'57승 4무 83패'],'키움':[10,'50승 4무 90패']};
-const WC_BOOK='NOL 티켓 · 10.13(화) 14:00 오픈 · 1인 4매';
-const POSTSEASON={
-  LG:{round:'WILD CARD · G1',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장',book:WC_BOOK,note:'4위 LG는 1승 또는 무승부면 준PO 진출'},
-  '두산':{round:'WILD CARD · G1',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장',parkNote:' (LG 홈, 두산 원정)',book:WC_BOOK,note:'5위 두산은 2연승해야 준PO 진출'},
-  KIA:{round:'SEMI-PO · G1',home:'KIA 타이거즈',away:'WC 승자',date:null,time:null,park:'광주기아챔피언스필드',book:'예매 일정 발표 전',note:'LG-두산 와일드카드 승자와 대결 (5전 3선승)'},
-  '삼성':{round:'PLAYOFF · G1',home:'삼성 라이온즈',away:'준PO 승자',date:null,time:null,park:'대구삼성라이온즈파크',book:'예매 일정 발표 전',note:'정규시즌 2위로 플레이오프 직행 (5전 3선승)'},
-  KT:{round:'KOREAN SERIES · G1',home:'KT wiz',away:'PO 승자',date:'2026-11-02',time:null,park:'수원KT위즈파크',book:'예매 일정 발표 전',note:'정규시즌 1위로 한국시리즈 직행 (7전 4선승)'}
-};
-// 구장 줄임말: 팬들이 부르는 이름 (Figma 일정표의 잠실·고척·문학·사직 표기를 따름)
-const PARK_SHORT={'잠실야구장':'잠실','고척스카이돔':'고척','인천SSG랜더스필드':'문학','수원KT위즈파크':'위팍','대전한화생명볼파크':'볼파크',
-  '대구삼성라이온즈파크':'라팍','광주기아챔피언스필드':'챔필','사직야구장':'사직','창원NC파크':'엔팍'};
-const DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-const ledDate=iso=>{if(!iso)return 'TBA';const [y,m,d]=iso.split('-').map(Number);return `${pad(m)}.${pad(d)} ${DOW[new Date(y,m-1,d).getDay()]}`};
-function renderTicket(t){
-  const short=t[1],[rank,record]=STANDINGS[short],g=POSTSEASON[short];
-  const rows=[];
-  if(g){
-    $('tk-round').textContent=g.round;$('home').textContent=g.home;$('vs').hidden=false;$('away').textContent=g.away;
-    $('tk-date').textContent=ledDate(g.date);$('tk-time').textContent=g.time||'TBA';$('tk-dday').textContent=g.date?dday(g.date):'--';
-    $('tk-park').textContent=PARK_SHORT[g.park];
-    rows.push(['장소',g.park+(g.parkNote||'')],['예매',g.book],['참고',g.note]);
-  }else{
-    $('tk-park').textContent=PARK_SHORT[t[3]];   // 내년에 돌아갈 홈구장
-    // 가을야구 탈락: 시즌 종료 티켓 + 지금 볼 수 있는 가을야구 안내
-    $('tk-round').textContent='2026 SEASON';$('home').textContent=t[0];$('vs').hidden=true;$('away').textContent='시즌 종료';
-    $('tk-date').textContent='2027.03';$('tk-time').textContent='OPEN';$('tk-dday').textContent='OFF';
-    rows.push(['순위',`${rank}위 · ${record}`],['가을야구','LG vs 두산 와일드카드 · 10.14 잠실'],['예매',WC_BOOK]);
-  }
-  $('tk-info').innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
-}
 // 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저(localStorage 'diary')에만 저장
-// 한 장 = {id, date:'2026-09-14', me:'LG'(그때 내 팀), opp:'롯데', park:'잠실야구장', my:5, op:3, memo}
-const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const TEAM_BY=Object.fromEntries(TEAMS.map(t=>[t[1],t]));
-const PARKS=[...new Set(TEAMS.map(t=>t[3]))];
-const todayISO=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+// 한 장 = {id, sport:'baseball', date:'2026-09-14', me:'LG'(그때 내 팀), opp:'롯데', park:'잠실야구장', my:5, op:3, memo}
 const score=v=>Number.isInteger(v)&&v>=0&&v<=99?v:null;
 let DIARY=[];
-try{const raw=JSON.parse(localStorage.getItem('diary')||'[]');
-  if(Array.isArray(raw))DIARY=raw.filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&TEAM_BY[e.opp])
-    .map(e=>({id:Number(e.id)||0,date:e.date,me:TEAM_BY[e.me]?e.me:'LG',opp:e.opp,park:PARKS.includes(e.park)?e.park:TEAM_BY[e.opp][3],my:score(e.my),op:score(e.op),memo:String(e.memo||'').slice(0,30)}))}catch(e){}
-const saveDiary=()=>{try{localStorage.setItem('diary',JSON.stringify(DIARY));return true}catch(e){return false}};
-let me=TEAMS[0];
+{const raw=load('diary',[]);
+  if(Array.isArray(raw))DIARY=raw.filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&typeof e.opp==='string')
+    .map(e=>({id:Number(e.id)||0,sport:SPORT[e.sport]?e.sport:'baseball',date:e.date,me:String(e.me||''),opp:e.opp,park:String(e.park||''),
+      my:score(e.my),op:score(e.op),memo:String(e.memo||'').slice(0,30)}))}
+const saveDiary=()=>store('diary',DIARY);
+let me=null;
 // 기록이 없을 때 홈에만 보여 줄 예시 2장 (상대는 내 팀에 맞춰 바뀜)
-const examples=()=>{const i=TEAMS.indexOf(me);return [
-  {date:'2026-09-14',me:me[1],opp:TEAMS[(i+3)%10][1],park:me[3],my:5,op:3,memo:'처음 간 날. 응원가 하나 외움'},
-  {date:'2026-08-23',me:me[1],opp:TEAMS[(i+7)%10][1],park:me[3],my:2,op:4,memo:'비 와서 우비 삼. 7회까지 봄'}]};
+const examples=()=>{const i=D.teams.indexOf(me),N=D.teams.length;
+  return D.diaryExamples.map(([date,off,my,op,memo])=>({sport:cur,date,me:me[1],opp:D.teams[(i+off)%N][1],park:me[3],my,op,memo}))};
 const result=e=>e.my==null||e.op==null?null:e.my>e.op?'W':e.my<e.op?'L':'D';
 function entryHTML(e,peel){
-  const t=TEAM_BY[e.me],r=result(e);
+  const d=SPORT_DATA[e.sport],t=d&&prepData(e.sport).teamBy[e.me],r=result(e);
   const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${{W:'승리',L:'패배',D:'무승부'}[r]} ${e.my} 대 ${e.op}">${r} ${e.my}:${e.op}</span>`:'';
-  return `<div class="entry"><div class="mini" style="--team:${t[2]}"><div class="band">${ledDate(e.date)}</div>
-    <div class="in"><b>vs ${esc(e.opp)}</b><span class="pk">${esc(PARK_SHORT[e.park])}</span>${chip}</div>
+  return `<div class="entry"><div class="mini" style="--team:${t?t[2]:'#6b7177'}"><div class="band">${ledDate(e.date)}</div>
+    <div class="in"><b>vs ${esc(e.opp)}</b><span class="pk">${esc((d&&d.parkShort[e.park])||e.park)}</span>${chip}</div>
     <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
     ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
 }
@@ -618,10 +677,9 @@ function renderDiary(){
 }
 const form=$('add-form'),F=form.elements;
 F.date.value=todayISO;F.date.max=todayISO;
-F.park.innerHTML=PARKS.map(p=>`<option value="${p}">${p}</option>`).join('');
 function setDiaryTeam(t){
   me=t;
-  F.opp.innerHTML=TEAMS.filter(x=>x!==t).map(x=>`<option value="${x[1]}">${x[0]}</option>`).join('');
+  F.opp.innerHTML=D.teams.filter(x=>x!==t).map(x=>`<option value="${esc(x[1])}">${esc(x[0])}</option>`).join('');
   F.park.value=t[3];
   renderDiary();
 }
@@ -631,7 +689,7 @@ form.addEventListener('submit',ev=>{
   if(!/^\d{4}-\d{2}-\d{2}$/.test(F.date.value)){msg.textContent='날짜를 골라 주세요.';F.date.focus();return}
   if(F.date.value>todayISO){msg.textContent='오늘 이후 경기는 다녀온 뒤에 붙여 주세요.';F.date.focus();return}
   if((my==null)!==(op==null)||[my,op].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.my.focus();return}
-  DIARY.push({id:Date.now(),date:F.date.value,me:me[1],opp:F.opp.value,park:F.park.value,my,op,memo:F.memo.value.trim().slice(0,30)});
+  DIARY.push({id:Date.now(),sport:cur,date:F.date.value,me:me[1],opp:F.opp.value,park:F.park.value,my,op,memo:F.memo.value.trim().slice(0,30)});
   msg.textContent=saveDiary()?'티켓을 붙였어요.':'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.';
   F.my.value=F.op.value=F.memo.value='';
   renderDiary();
@@ -642,138 +700,69 @@ $('log-diary').addEventListener('click',ev=>{
 });
 document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{go('log');F.date.focus()}));
 
-// 직관 준비: 구장 가는 법 (구단 안내·보도 기준 2026.10.13). 응원석 방향을 확인 못 한 구장은 null
-const PARK_INFO={
-  '잠실야구장':{go:'지하철 2·9호선 종합운동장역',home:'1루 (LG·두산 모두 홈경기 때 1루)'},
-  '고척스카이돔':{go:'지하철 1호선 구일역에서 걸어서 약 3분',car:'경기 날은 구장 일반 주차가 안 돼요. 대중교통을 이용하세요',home:'1루'},
-  '인천SSG랜더스필드':{go:'인천 1호선 문학경기장역',home:'1루'},
-  '수원KT위즈파크':{go:'1호선 수원역·화서역·성균관대역에서 버스나 택시',car:'경기 날은 사전 예약한 차만 주차할 수 있어요',home:'1루'},
-  '대전한화생명볼파크':{go:'시내버스 한밭종합운동장 정류장',home:'1루'},
-  '대구삼성라이온즈파크':{go:'대구 2호선 대공원역',home:'3루 (대부분의 구장과 반대)'},
-  '광주기아챔피언스필드':{go:'시내버스 챔피언스필드 정류장. 광주역·광천터미널·광주송정역에서 버스나 택시',home:'3루 (대부분의 구장과 반대)'},
-  '사직야구장':{go:'부산 3호선 사직역·종합운동장역',car:'경기가 끝나면 역 주변이 붐벼요. 여유 있게 움직이세요',home:null},
-  '창원NC파크':{go:'시내버스 창원NC파크·마산회원구청 정류장',car:'주말 셔틀버스는 구단 공지를 확인하세요',home:'1루'}
-};
-const SEATS=[
-  ['응원석','응원단상 앞. 서서 응원가를 따라 부르며 봐요',true],
-  ['내야석','투수와 타자가 가까이 보여서 경기 흐름을 보기 좋아요'],
-  ['테이블석','앞에 테이블이 있어 음식 먹으며 보기 편해요. 값은 비싼 편'],
-  ['외야석','값이 싸고 홈런 공이 날아오기도 해요. 선수는 멀리 보여요'],
-  ['원정팬이라면','홈 응원석 반대쪽 내야에 원정 팬이 모여요']
-];
-const PREP_ITEMS=[
-  ['ticket','모바일 티켓','예매처 앱에 로그인돼 있는지 미리 확인'],['battery','보조배터리','티켓 QR과 사진 찍느라 금방 닳아요'],
-  ['jacket','얇은 겉옷','해가 지면 쌀쌀해요'],['rain','우비','비 예보가 있으면. 우산은 뒷자리 시야를 가려요'],
-  ['tissue','물티슈·휴지','의자 닦고 음식 먹을 때'],['cheer','응원 도구','유니폼, 응원 타올 (구장 굿즈숍에서도 팔아요)'],
-  ['sun','모자·선크림','낮 경기라면'],['trash','작은 봉투','쓰레기는 들고 나와요']
-];
-const CLUB_URL={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
-  '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
-let PREP_DONE={};try{PREP_DONE=JSON.parse(localStorage.getItem('prep')||'{}')||{}}catch(e){}
+// 직관 준비: 구장 가는 법 · 좌석 · 준비물(종목별로 따로 저장) · 응원
+let PREP_DONE={};
 const prepPark=$('prep-park');
-prepPark.innerHTML=PARKS.map(p=>`<option value="${p}">${PARK_SHORT[p]} · ${p}</option>`).join('');
 function renderPark(){
-  const p=PARK_INFO[prepPark.value];
+  const p=D.parkInfo[prepPark.value];
   $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
     <dt>홈 응원석</dt><dd>${p.home||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>`;
 }
 prepPark.addEventListener('change',renderPark);
-$('prep-seats').innerHTML=SEATS.map(([k,v,rec])=>`<div class="row tip"><div><b>${k}${rec?'<span class="rec">처음이라면</span>':''}</b><span>${v}</span></div></div>`).join('');
-$('prep-check').innerHTML=PREP_ITEMS.map(([id,k,v])=>`<label class="check"><input type="checkbox" data-id="${id}"${PREP_DONE[id]?' checked':''}><div><b>${k}</b><span>${v}</span></div></label>`).join('');
-const prepCount=()=>{$('prep-count').textContent=`${PREP_ITEMS.filter(([id])=>PREP_DONE[id]).length}/${PREP_ITEMS.length} 챙김`};
-$('prep-check').addEventListener('change',e=>{
-  PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();
-  try{localStorage.setItem('prep',JSON.stringify(PREP_DONE))}catch(err){}
-});
-prepCount();
+const prepCount=()=>{$('prep-count').textContent=`${D.prep.filter(([id])=>PREP_DONE[id]).length}/${D.prep.length} 챙김`};
+$('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();store('prep-'+cur,PREP_DONE)});
 function setPrepTeam(t){
   prepPark.value=t[3];renderPark();
-  $('prep-cheer').innerHTML=[
-    ['응원단상 가까이','응원단장과 치어리더를 따라 하면 처음이어도 금방 익숙해져요'],
-    ['응원가는 공격 때','우리 팀 공격 때 선수별 응원가가 나와요. 한두 곡만 알아 가도 충분해요'],
-    ['파울볼 조심','내야석에는 파울볼이 자주 날아와요. 공이 뜨면 눈을 떼지 마세요'],
-    ['응원가 미리 듣기',`<a href="${CLUB_URL[t[1]]}" target="_blank" rel="noopener">${t[0]} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
+  $('prep-cheer').innerHTML=[...D.cheer,
+    ['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
   ].map(([k,v])=>`<div class="row tip"><div><b>${k}</b><span>${v}</span></div></div>`).join('');
 }
 
-let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved=s}catch(e){}
-sel.value=saved;apply(saved);
-sel.addEventListener('change',()=>{apply(sel.value);try{localStorage.setItem('team',sel.value)}catch(e){}});
-
-// 룰 카드 10장: 데이터는 여기 한 곳. 홈 "경기 전 1분 룰"은 HOME_RULES 3장만 꺼내 씀
-// book: [조항, 무엇에 관한 조항]. 조항 번호는 2026 공식야구규칙(KBO)과 대조한 것만. KBO 리그 규정은 이름만
-const RULE_CATS=['점수','아웃','출루','헷갈리는 룰','KBO 규정'];
-const RULES=[
- {id:'score',name:'득점',cats:['점수'],
-  easy:'주자가 1·2·3루를 차례로 밟고 홈까지 오면 1점이에요.',
-  field:'홈런은 타자가 네 베이스를 한 번에 돌아 들어오는 것. 주자가 홈을 밟는 사이 세 번째 아웃이 포스아웃으로 나오면 그 점수는 인정되지 않아요.',
-  book:[['5.08(a)','점수가 나는 경우와 인정되지 않는 경우']]},
- {id:'inning',name:'아웃 3개와 이닝',cats:['아웃'],
-  easy:'아웃 3개면 공격과 수비가 바뀌어요.',
-  field:'초에는 원정팀, 말에는 홈팀이 공격해요. 9회까지 해서 동점이면 연장전. KBO 정규시즌은 11회까지 해도 같으면 무승부, 포스트시즌은 15회까지 해요. 9회초가 끝났을 때 홈팀이 앞서 있으면 9회말은 하지 않아요.',
-  book:[['5.09(e)','아웃 3개면 공수 교대'],['7.01(a)','9이닝 정식 경기'],['7.01(b)','9회까지 동점이면 연장전'],['KBO 리그 규정','정규시즌 연장은 11회까지 (2025년부터)']]},
- {id:'kbb',name:'삼진과 볼넷',cats:['아웃','출루'],
-  easy:'스트라이크 3개면 삼진 아웃, 볼 4개면 볼넷으로 1루에 나가요.',
-  field:'투 스트라이크 뒤의 파울은 스트라이크로 세지 않아서, 파울이 이어지면 타석이 길어져요. 볼넷을 얻은 타자는 아웃될 걱정 없이 1루로 걸어가요.',
-  book:[['5.09(a)(2)','세 번째 스트라이크를 포수가 잡으면 아웃'],['5.05(b)(1)','볼 4개면 1루로']]},
- {id:'zone',name:'스트라이크존과 ABS',cats:['KBO 규정'],
-  easy:'타자 몸에 맞춘 가상의 상자를 공이 지나가면 스트라이크예요.',
-  field:'KBO는 2024년부터 볼과 스트라이크를 기계(ABS)가 판정하고, 심판은 결과를 듣고 콜을 해요. 2026년 존은 위쪽이 선수 키의 55.75%, 아래쪽이 27.04% 높이. 좌우는 홈플레이트보다 양쪽 2cm씩 넓어요.',
-  book:[['용어의 정의 73','스트라이크 존'],['KBO 리그 규정','ABS 존 기준 (2026)']]},
- {id:'dropk',name:'낫아웃',cats:['헷갈리는 룰','출루'],
-  easy:'세 번째 스트라이크를 포수가 못 잡으면 타자가 1루로 뛸 수 있어요.',
-  field:'공이 땅에 먼저 닿거나 미트에서 빠지면 타자가 1루로 달려요. 수비가 타자를 태그하거나 1루로 먼저 공을 보내면 아웃. 무사나 1사에 1루 주자가 있으면 뛸 수 없고 그냥 아웃이에요. 2사라면 1루 주자가 있어도 뛸 수 있어요.',
-  book:[['5.05(a)(2)','타자가 주자가 되는 경우'],['5.09(a)(3)','1루 주자가 있고 2아웃 전이면 아웃']]},
- {id:'ifly',name:'인필드 플라이',cats:['헷갈리는 룰'],
-  easy:'내야에 높이 뜬 공은 잡기 전에 타자 아웃을 미리 선언해요.',
-  field:'무사나 1사에 1·2루 또는 만루일 때, 내야수가 쉽게 잡을 뜬공이 오르면 심판이 손을 들어 선언해요. 수비가 일부러 공을 떨어뜨려 병살을 만드는 걸 막으려는 룰이에요. 라인드라이브와 번트는 해당하지 않아요.',
-  book:[['용어의 정의 40','인필드 플라이'],['5.09(a)(5)','인필드 플라이가 선언되면 타자 아웃']]},
- {id:'balk',name:'보크',cats:['헷갈리는 룰'],
-  easy:'주자가 있을 때 투수가 속이는 동작을 하면 주자가 한 베이스씩 가요.',
-  field:'투구판을 밟은 투수가 던지려다 멈추거나, 멈춤 동작 없이 바로 던지면 심판이 보크를 선언해요. 모든 주자가 아웃 걱정 없이 한 베이스씩 가고, 3루 주자는 그대로 홈인해서 1점이에요.',
-  book:[['6.02(a)','주자가 있을 때의 보크와 벌칙'],['6.02(a)(1)','투구 동작을 시작했다가 멈춤'],['6.02(a)(13)','세트 포지션에서 완전히 멈추지 않고 던짐']]},
- {id:'tagup',name:'태그업',cats:['아웃','점수'],
-  easy:'뜬공이 잡히면 주자는 원래 베이스를 다시 밟고 나서 뛰어야 해요.',
-  field:'외야 뜬공이 잡힌 순간 3루 주자가 베이스를 밟고 있다가 홈으로 달리면 희생플라이로 1점. 공이 잡히기 전에 먼저 출발했다면, 수비가 그 베이스에 공을 보내 어필할 때 아웃이에요.',
-  book:[['5.09(b)(5)','뜬공이 잡힌 뒤 베이스를 다시 밟지 않으면 아웃'],['5.09(c)(1)','어필 플레이']]},
- {id:'force',name:'포스아웃과 태그아웃',cats:['아웃'],
-  easy:'밀려서 뛰는 주자는 베이스만 밟아도 아웃, 아니면 공으로 몸을 태그해야 아웃이에요.',
-  field:'땅볼이 나오면 1루 주자는 타자에게 자리를 내줘야 해서 2루로 뛸 수밖에 없어요. 이때는 공을 든 수비가 2루를 밟기만 해도 아웃(포스아웃). 뒤에서 미는 주자가 없으면 공을 쥔 글러브로 주자를 건드려야 아웃(태그아웃)이에요.',
-  book:[['5.09(b)(6)','포스아웃'],['5.09(b)(4)','베이스를 떠난 주자를 태그하면 아웃']]},
- {id:'clock',name:'피치클락',cats:['KBO 규정'],
-  easy:'투수와 타자 모두 정해진 시간 안에 준비해야 해요.',
-  field:'2026년 KBO는 주자가 없으면 18초, 있으면 23초 안에 투구를 시작해야 해요. 투수가 늦으면 볼, 타자가 8초 남았을 때까지 타석에서 준비하지 않으면 스트라이크. 타자 사이 간격은 33초예요. 1군은 견제 횟수 제한이 없어요.',
-  book:[['KBO 리그 규정','피치클락 (2026년 18초·23초로 단축)']]}
-];
-const RULE=Object.fromEntries(RULES.map(r=>[r.id,r]));
-
-// 홈: 경기 전 1분 룰 3장
-const HOME_RULES=['score','kbb','dropk'];
+// 룰: 홈 "경기 전 1분 룰" 몇 장 + 룰 탭(분류 칩 + 카드 목록, 태블릿부터는 왼쪽·오른쪽 두 묶음)
 function showHomeRule(id){
   document.querySelectorAll('#home-tabs .tab').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.id===id)));
-  $('rk').textContent=RULE[id].cats.join(' · ');$('rb').textContent=RULE[id].easy;
+  $('rk').textContent=D.ruleBy[id].cats.join(' · ');$('rb').textContent=D.ruleBy[id].easy;
 }
-$('home-tabs').innerHTML=HOME_RULES.map(id=>`<button class="tab" role="tab" type="button" data-id="${id}">${esc(RULE[id].name)}</button>`).join('');
-document.querySelectorAll('#home-tabs .tab').forEach(b=>b.addEventListener('click',()=>showHomeRule(b.dataset.id)));
-showHomeRule(HOME_RULES[0]);
+$('home-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)showHomeRule(b.dataset.id)});
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
-
-// 룰 탭: 분류 칩 + 카드 목록 (태블릿부터는 왼쪽·오른쪽 두 묶음)
 let ruleCat='전체';
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
   <dl><div><dt>경기장에서 보면</dt><dd>${esc(r.field)}</dd></div>
   <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
-  const list=RULES.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
+  const list=D.rules.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
   document.querySelectorAll('#rule-chips .chip').forEach(b=>b.setAttribute('aria-pressed',String(b.textContent===ruleCat)));
   $('rule-count').textContent=`${list.length}장`;
   $('rule-list').innerHTML=[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('');
   document.querySelectorAll('#rule-list .rcard').forEach(d=>{if(open.has(d.dataset.id))d.open=true});
 }
-$('rule-chips').innerHTML=['전체',...RULE_CATS].map(c=>`<button class="chip" type="button">${c}</button>`).join('');
 $('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.textContent;renderRules()});
-renderRules();
+
+// 처음 설정: 종목 여러 개 + 종목마다 내 팀. 홈 "종목별 내 팀 추가"로 다시 열 수 있음
+const setup=$('setup');
+async function openSetup(){
+  await Promise.all(READY.map(loadSport));
+  $('setup-msg').textContent='';
+  $('setup-ok').textContent=setupDone?'저장':'시작하기';
+  $('setup-list').innerHTML=SPORTS.map(s=>{
+    if(!s.ready)return `<div class="pick off"><input type="checkbox" disabled aria-label="${s.name} (곧 열려요)"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · 곧 열려요</span></div></div>`;
+    const d=prepData(s.id),on=!MY||s.id in MY;
+    return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league}</span></div></label>
+      <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${d.teams.map((t,i)=>`<option value="${i}"${MY&&MY[s.id]==i?' selected':''}>${esc(t[0])}</option>`).join('')}</select></div>`;
+  }).join('');
+  setup.showModal();
+}
+$('setup-list').addEventListener('change',e=>{if(e.target.name==='sp')e.target.closest('.pick').querySelector('select').hidden=!e.target.checked});
+$('setup-form').addEventListener('submit',e=>{
+  const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
+  if(!on.length){e.preventDefault();$('setup-msg').textContent='종목을 하나 이상 골라 주세요.';return}
+  MY=Object.fromEntries(on.map(id=>[id,+setup.querySelector(`[name="team-${id}"]`).value]));
+  store('myTeams',MY);setupDone=true;useSport(on.includes(cur)?cur:on[0]);
+});
+let setupDone=!firstVisit;
+setup.addEventListener('cancel',e=>{if(!setupDone)e.preventDefault()});   // 처음엔 고르기 전에 닫지 않음
+document.querySelectorAll('[data-setup]').forEach(b=>b.addEventListener('click',openSetup));
 
 // 하단 메뉴: 페이지 전환 (#book 같은 주소로 바로 열 수 있음)
 const PAGES=['home','book','rule','prep','log'];
@@ -784,7 +773,19 @@ function go(p){
   window.scrollTo(0,0);
 }
 document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.p)));
-const h=location.hash.slice(1);go(PAGES.includes(h)?h:'home');
+
+// 시작: 고른 종목과 기록에 있는 종목 데이터만 불러온 뒤 그림
+(async()=>{
+  const want=new Set([...(MY?Object.keys(MY):['baseball']),...DIARY.map(e=>e.sport)].filter(id=>READY.includes(id)));
+  try{await Promise.all([...want].map(loadSport))}
+  catch(e){document.querySelector('.app').insertAdjacentHTML('afterbegin','<p class="empty">경기 정보를 불러오지 못했어요. 새로고침해 주세요.</p>');return}
+  const my=MY||{baseball:0};   // 처음 온 사람은 설정을 마칠 때까지 야구 1번 팀으로 보여 줌
+  for(const id in my)if(!SPORT_DATA[id].teams[my[id]])my[id]=0;
+  MY=my;if(!firstVisit)store('myTeams',MY);
+  useSport(cur in MY?cur:Object.keys(MY)[0]);
+  const h=location.hash.slice(1);go(PAGES.includes(h)?h:'home');
+  if(firstVisit)setTimeout(openSetup,splashShown?1900:0);
+})();
 </script>
 </body>
 </html>
