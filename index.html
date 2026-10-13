@@ -62,7 +62,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 
 /* 날짜 소인: 한 색 잉크 도장 */
 .ink-stamp{--ball:transparent;--puck:var(--ink);--puck-top:transparent;--seam:var(--ink)}
-.mini-stamp{position:absolute;right:-14px;bottom:-18px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
+.mini-stamp{position:absolute;right:-6px;bottom:-18px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
 .mini-stamp svg{width:100%;height:100%}
 
 /* 첫 화면: 하루 첫 실행 때 오늘 날짜 소인 */
@@ -115,8 +115,9 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .diary{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;padding-top:6px}
 .entry{display:flex;flex-direction:column;gap:6px;min-width:0}
 .mini{position:relative;background:var(--tk-paper);color:var(--tk-ink);box-shadow:0 4px 10px -6px rgba(0,0,0,.35)}
-.entry:nth-child(1) .mini{transform:rotate(-2deg)}
-.entry:nth-child(2) .mini{transform:rotate(1.5deg)}
+.diary-in{display:contents}
+.entry:nth-child(odd) .mini{transform:rotate(-2deg)}
+.entry:nth-child(even) .mini{transform:rotate(1.5deg)}
 .mini::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(-3deg)}
 .mini .band{padding:4px 10px;font-size:var(--fs-cap)}
 .mini .in{padding:8px 10px 10px;font-size:var(--fs-cap);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
@@ -169,6 +170,21 @@ a{color:inherit;text-underline-offset:3px}
 .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+/* 직관 기록 */
+.mini .pk{color:var(--tk-faint)}
+.peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#log-led{grid-template-columns:repeat(3,minmax(0,1fr))}
+.add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+.add-form label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-cap);color:var(--pencil)}
+.add-form fieldset{margin:0;padding:0;border:0;min-width:0}
+.add-form legend{padding:0;margin-bottom:4px;font-size:var(--fs-cap);color:var(--pencil)}
+.add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+.score-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
+.score-in>span{font-size:var(--fs-title);padding-bottom:6px;color:var(--pencil)}
+.form-msg{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+.form-msg:empty{display:none}
+.submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
+input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
 /* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기장 장면 + 규정집 조항 */
 .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -209,6 +225,10 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   .page{grid-column:1/-1}
   #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
   #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
+  /* 직관 기록: 왼쪽 쪽 붙인 티켓 / 오른쪽 쪽 티켓 붙이기 */
+  #p-log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
+  #p-log>section:first-child{padding-right:36px}
+  #p-log>section+section{padding-left:36px;border-left:1px solid var(--line)}
   /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
   .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
   .rule-list>.list+.list{border-top:1px solid var(--line)}
@@ -304,18 +324,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   </section>
 
   <section aria-labelledby="h-diary">
-    <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note">기록 2장 · 예시</span></div>
-    <div class="diary">
-      <div class="entry">
-        <div class="mini"><div class="band">09.14 SUN</div><div class="in"><b id="d1">vs 롯데</b><span class="led-chip win" aria-label="승리 5 대 3">W 5:3</span></div><span class="mini-stamp ink-stamp" data-date="2026.09.14"></span></div>
-        <div class="memo">처음 간 날. 응원가 하나 외움</div>
-      </div>
-      <div class="entry">
-        <div class="mini"><div class="band">08.23 SAT</div><div class="in"><b id="d2">vs KIA</b><span class="led-chip loss" aria-label="패배 2 대 4">L 2:4</span></div><span class="mini-stamp ink-stamp" data-date="2026.08.23"></span></div>
-        <div class="memo">비 와서 우비 삼. 7회까지 봄</div>
-      </div>
-      <button class="slot" type="button">다음 티켓 붙이기</button>
-    </div>
+    <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note" id="home-diary-note"></span></div>
+    <div class="diary"><div class="diary-in" id="home-diary"></div><button class="slot" type="button" data-add>다음 티켓 붙이기</button></div>
   </section>
   </div>
 
@@ -368,7 +378,30 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
 
   <!-- 아직 만들지 않은 탭 -->
   <div class="page" id="p-prep" hidden><section aria-labelledby="h-prep"><div class="sec-head"><h2 id="h-prep">직관 준비</h2></div><p class="empty">구장 가는 법, 좌석 고르기, 준비물, 응원 방법을 준비하고 있어요.</p></section></div>
-  <div class="page" id="p-log" hidden><section aria-labelledby="h-log"><div class="sec-head"><h2 id="h-log">직관 기록</h2></div><p class="empty">다녀온 경기를 티켓으로 모으는 기능을 준비하고 있어요.</p></section></div>
+  <!-- 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저에만 저장 -->
+  <div class="page" id="p-log" hidden>
+    <section aria-labelledby="h-log">
+      <div class="sec-head"><h2 id="h-log">직관 기록</h2><span class="note" id="log-count"></span></div>
+      <div class="led" id="log-led" aria-label="직관 성적"></div>
+      <div class="diary"><div class="diary-in" id="log-diary"></div></div>
+      <p class="empty" id="log-empty">아직 붙인 티켓이 없어요. 다녀온 경기를 붙여 보세요.</p>
+    </section>
+    <section aria-labelledby="h-add">
+      <div class="sec-head"><h2 id="h-add">티켓 붙이기</h2></div>
+      <form class="add-form" id="add-form" novalidate>
+        <label>날짜<input type="date" name="date" required></label>
+        <label>상대<select name="opp"></select></label>
+        <label>구장<select name="park"></select></label>
+        <fieldset><legend>점수 (선택)</legend>
+          <div class="score-in"><label>우리<input type="number" name="my" min="0" max="99" inputmode="numeric"></label><span aria-hidden="true">:</span><label>상대<input type="number" name="op" min="0" max="99" inputmode="numeric"></label></div>
+        </fieldset>
+        <label>한 줄 메모 (선택)<input type="text" name="memo" maxlength="30" placeholder="처음 간 날. 응원가 하나 외움"></label>
+        <p class="form-msg" id="form-msg" role="status"></p>
+        <button type="submit" class="submit">티켓 붙이기</button>
+      </form>
+      <p class="fine">기록은 이 브라우저에만 저장돼요. 다른 기기에서는 보이지 않고, 방문 기록을 지우면 함께 지워져요.</p>
+    </section>
+  </div>
 
 </div>
 
@@ -389,7 +422,6 @@ function dateStamp(date){
     <text x="100" y="164" font-size="30" text-anchor="middle" fill="var(--ink)" style="font-family:var(--logo)">첫직관</text>
   </g></svg>`;
 }
-document.querySelectorAll('.mini-stamp').forEach(el=>el.innerHTML=dateStamp(el.dataset.date));
 
 const now=new Date(),pad=n=>String(n).padStart(2,'0');
 const today=`${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
@@ -448,7 +480,7 @@ const sel=document.getElementById('team');
 TEAMS.forEach((t,i)=>sel.add(new Option(t[0],i)));
 const $=id=>document.getElementById(id);
 function apply(i){
-  const t=TEAMS[i],o1=TEAMS[(+i+1)%10],o2=TEAMS[(+i+3)%10],o3=TEAMS[(+i+7)%10];
+  const t=TEAMS[i];
   const root=document.documentElement.style;
   root.setProperty('--team',t[2]);
   const inkL=pickInk(t[2],t[4],BG_LIGHT),inkD=pickInk(t[2],t[4],BG_DARK);
@@ -456,8 +488,7 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  renderTicket(t);renderClubs(t);
-  $('d1').textContent='vs '+o2[1];$('d2').textContent='vs '+o3[1];
+  renderTicket(t);renderClubs(t);setDiaryTeam(t);
 }
 
 // 구단별 정규시즌 예매처 (KBO 공식 티켓 안내 2026.10.13). 오픈 시각은 확인된 구단만
@@ -506,6 +537,69 @@ function renderTicket(t){
   }
   $('tk-info').innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
+// 직관 기록: 다녀온 경기를 티켓으로 붙임. 이 브라우저(localStorage 'diary')에만 저장
+// 한 장 = {id, date:'2026-09-14', me:'LG'(그때 내 팀), opp:'롯데', park:'잠실야구장', my:5, op:3, memo}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TEAM_BY=Object.fromEntries(TEAMS.map(t=>[t[1],t]));
+const PARKS=[...new Set(TEAMS.map(t=>t[3]))];
+const todayISO=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+const score=v=>Number.isInteger(v)&&v>=0&&v<=99?v:null;
+let DIARY=[];
+try{const raw=JSON.parse(localStorage.getItem('diary')||'[]');
+  if(Array.isArray(raw))DIARY=raw.filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&TEAM_BY[e.opp])
+    .map(e=>({id:Number(e.id)||0,date:e.date,me:TEAM_BY[e.me]?e.me:'LG',opp:e.opp,park:PARKS.includes(e.park)?e.park:TEAM_BY[e.opp][3],my:score(e.my),op:score(e.op),memo:String(e.memo||'').slice(0,30)}))}catch(e){}
+const saveDiary=()=>{try{localStorage.setItem('diary',JSON.stringify(DIARY));return true}catch(e){return false}};
+let me=TEAMS[0];
+// 기록이 없을 때 홈에만 보여 줄 예시 2장 (상대는 내 팀에 맞춰 바뀜)
+const examples=()=>{const i=TEAMS.indexOf(me);return [
+  {date:'2026-09-14',me:me[1],opp:TEAMS[(i+3)%10][1],park:me[3],my:5,op:3,memo:'처음 간 날. 응원가 하나 외움'},
+  {date:'2026-08-23',me:me[1],opp:TEAMS[(i+7)%10][1],park:me[3],my:2,op:4,memo:'비 와서 우비 삼. 7회까지 봄'}]};
+const result=e=>e.my==null||e.op==null?null:e.my>e.op?'W':e.my<e.op?'L':'D';
+function entryHTML(e,peel){
+  const t=TEAM_BY[e.me],r=result(e);
+  const chip=r?`<span class="led-chip${r==='W'?' win':r==='L'?' loss':''}" aria-label="${{W:'승리',L:'패배',D:'무승부'}[r]} ${e.my} 대 ${e.op}">${r} ${e.my}:${e.op}</span>`:'';
+  return `<div class="entry"><div class="mini" style="--team:${t[2]}"><div class="band">${ledDate(e.date)}</div>
+    <div class="in"><b>vs ${esc(e.opp)}</b><span class="pk">${esc(PARK_SHORT[e.park])}</span>${chip}</div>
+    <span class="mini-stamp ink-stamp">${dateStamp(e.date.replace(/-/g,'.'))}</span></div>
+    ${e.memo?`<div class="memo">${esc(e.memo)}</div>`:''}${peel?`<button type="button" class="peel" data-peel="${e.id}">떼기</button>`:''}</div>`;
+}
+function renderDiary(){
+  const list=[...DIARY].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),has=list.length>0;
+  $('home-diary').innerHTML=(has?list.slice(0,2):examples()).map(e=>entryHTML(e,false)).join('');
+  $('home-diary-note').textContent=has?`기록 ${list.length}장`:'예시 2장';
+  $('log-diary').innerHTML=list.map(e=>entryHTML(e,true)).join('');
+  $('log-empty').hidden=has;$('log-led').hidden=!has;
+  $('log-count').textContent=`기록 ${list.length}장`;
+  const n=k=>list.filter(e=>result(e)===k).length,w=n('W'),l=n('L');
+  $('log-led').innerHTML=`<span><small>GAMES</small><b>${list.length}</b></span><span><small>W-L-D</small><b>${w}-${l}-${n('D')}</b></span>
+    <span class="dd"><small>WIN%</small><b>${w+l?(w/(w+l)).toFixed(3).replace(/^0/,''):'---'}</b></span>`;
+}
+const form=$('add-form'),F=form.elements;
+F.date.value=todayISO;F.date.max=todayISO;
+F.park.innerHTML=PARKS.map(p=>`<option value="${p}">${p}</option>`).join('');
+function setDiaryTeam(t){
+  me=t;
+  F.opp.innerHTML=TEAMS.filter(x=>x!==t).map(x=>`<option value="${x[1]}">${x[0]}</option>`).join('');
+  F.park.value=t[3];
+  renderDiary();
+}
+form.addEventListener('submit',ev=>{
+  ev.preventDefault();
+  const msg=$('form-msg'),num=v=>v===''?null:Number(v),my=num(F.my.value),op=num(F.op.value);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(F.date.value)){msg.textContent='날짜를 골라 주세요.';F.date.focus();return}
+  if(F.date.value>todayISO){msg.textContent='오늘 이후 경기는 다녀온 뒤에 붙여 주세요.';F.date.focus();return}
+  if((my==null)!==(op==null)||[my,op].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.my.focus();return}
+  DIARY.push({id:Date.now(),date:F.date.value,me:me[1],opp:F.opp.value,park:F.park.value,my,op,memo:F.memo.value.trim().slice(0,30)});
+  msg.textContent=saveDiary()?'티켓을 붙였어요.':'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.';
+  F.my.value=F.op.value=F.memo.value='';
+  renderDiary();
+});
+$('log-diary').addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-peel]');if(!b||!confirm('이 티켓을 뗄까요? 되돌릴 수 없어요.'))return;
+  DIARY=DIARY.filter(e=>String(e.id)!==b.dataset.peel);saveDiary();renderDiary();
+});
+document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{go('log');F.date.focus()}));
+
 let saved=0;try{const s=localStorage.getItem('team');if(s!==null&&TEAMS[s])saved=s}catch(e){}
 sel.value=saved;apply(saved);
 sel.addEventListener('change',()=>{apply(sel.value);try{localStorage.setItem('team',sel.value)}catch(e){}});
@@ -556,7 +650,6 @@ const RULES=[
   book:[['KBO 리그 규정','피치클락 (2026년 18초·23초로 단축)']]}
 ];
 const RULE=Object.fromEntries(RULES.map(r=>[r.id,r]));
-const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 // 홈: 경기 전 1분 룰 3장
 const HOME_RULES=['score','kbb','dropk'];
