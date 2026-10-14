@@ -2,7 +2,7 @@
 
 > 슬기로운 직관생활 — 처음 가는 경기장, 예매부터 응원까지
 
-경기장에 처음 가는 사람을 위한 직관 가이드 웹앱입니다. 내 팀을 고르면 다음 경기, 예매처, 꼭 알아야 할 룰, 경기장 가는 길과 준비물을 한곳에서 보고, 다녀온 경기는 티켓처럼 붙여 직관 승률까지 모읍니다. 지금은 **야구(KBO), 배구(V-리그), 축구(K리그1), 농구(KBL·WKBL), 아이스하키(아시아리그 HL 안양)**가 들어 있습니다.
+경기장에 처음 가는 사람을 위한 직관 가이드 웹앱입니다. 내 팀을 고르면 다음 경기, 예매처, 꼭 알아야 할 룰, 경기장 가는 길과 준비물을 한곳에서 보고, 다녀온 경기는 티켓처럼 붙여 직관 승률까지 모읍니다. 지금은 **야구(KBO), 배구(V-리그), 축구(K리그1), 농구(KBL·WKBL), 아이스하키(아시아리그 HL 안양), 핸드볼(H리그)**가 들어 있습니다.
 
 - **사이트: https://yeonland.github.io/first-gikgwan/**
 - 로고 시안: [drafts/logo.html](https://yeonland.github.io/first-gikgwan/drafts/logo.html) · 첫 홈 화면 시안: [drafts/first-jikgwan.html](https://yeonland.github.io/first-gikgwan/drafts/first-jikgwan.html)
@@ -91,7 +91,8 @@ first-gikgwan/
 │  ├─ volleyball.js 배구: 남녀 14팀, 2026-27 개막 일정, 룰 카드, 체육관
 │  ├─ soccer.js     축구: K리그1 12팀, 2026 정규 라운드 남은 경기, 룰 카드, 경기장
 │  ├─ basketball.js 농구: KBL 10팀·WKBL 6팀, 2026-27 정규리그 일정, 룰 카드, 체육관
-│  └─ hockey.js     아이스하키: 아시아리그 6팀, HL 안양 2026-27 일정, 룰 카드, 안양빙상장
+│  ├─ hockey.js     아이스하키: 아시아리그 6팀, HL 안양 2026-27 일정, 룰 카드, 안양빙상장
+│  └─ handball.js   핸드볼: H리그 남녀 14팀, 26-27 일정 발표 전, 룰 카드, 경기장 7곳
 ├─ DESIGN.md        디자인 기준 (색, 글꼴, 글자 크기, 화면별 규칙)
 ├─ docs/screens/    README 화면 캡처
 ├─ drafts/          로고 시안, 첫 홈 화면 시안
@@ -117,7 +118,8 @@ first-gikgwan/
 - [x] 반응형, 라이트·다크 모드, GitHub Pages 배포
 
 ### 나중에 할 일
-- [ ] 핸드볼 (H리그)
+- [x] 핸드볼 H리그: 남녀 14팀, 26-27 일정은 발표 전이라 "일정 발표 전"으로 표시, 티켓링크 연결, 룰 카드 10장(2025 변경 규칙에 있는 조항만), 경기장 7곳
+- [ ] 핸드볼 전체 규칙서로 룰 카드 조항 채우기, 26-27 일정 나오면 넣기
 - [ ] 룰 카드 그림 13장 (영상보다 그림이 나은 카드. 그림 스타일을 정한 뒤)
 - [ ] 구장 먹거리 (구장 안 대표 메뉴, 시즌 기준일을 붙여서)
 - [ ] 직관 기록 백업: 파일로 내보내기·불러오기 → 로그인·서버로 기기 간 동기화
@@ -133,7 +135,7 @@ first-gikgwan/
 | 배구 | V-리그 (남녀 각 7팀) | 10월 말 ~ 이듬해 4월 | 들어 있음 |
 | 남자농구 | KBL (10팀) | 10월 ~ 이듬해 4월 | 들어 있음 |
 | 여자농구 | WKBL (6팀) | 11월 ~ 이듬해 3월 | 들어 있음 |
-| 핸드볼 | H리그 (남 6팀, 여 8팀) | 11월 ~ 이듬해 5월 초 | 다음 |
+| 핸드볼 | H리그 (남 6팀, 여 8팀) | 11월 ~ 이듬해 5월 초 | 들어 있음 |
 | 아이스하키 | 아시아리그 (국내 HL 안양) | 9월 ~ 이듬해 3월, 플레이오프 3월 | 들어 있음 |
 | 축구 | K리그1 (12팀) | 2월 말 ~ 12월 초 (파이널 라운드) | 들어 있음 |
 
@@ -151,7 +153,7 @@ first-gikgwan/
 | 축구 | IFAB 축구 경기규칙 2026/27 (한국어판) | [서울특별시축구협회 경기규칙](http://seoulfa.or.kr/bbs/board.php?bo_table=rule&wr_id=5) |
 | 농구 | FIBA 공식 농구 경기규칙 2026 (한국어판) | [대한민국농구협회 경기규칙](https://www.koreabasketball.or.kr/basketball/game_rule.php) |
 | 농구 리그 규정 | KBL 규약 (2025.08.28 개정) | [KBL 규정](https://kbl.or.kr/rule/regulation) · WKBL은 [경기규칙](https://www.wkbl.or.kr/about/game_rule.asp) |
-| 핸드볼 | 핸드볼 경기규칙 (2025 변경 규칙) | [대한핸드볼협회 경기규칙](https://www.koreahandball.com/hkl/game_rule.php) |
+| 핸드볼 | 2025 변경 규칙 (국제핸드볼연맹 규칙 번역) | [한국핸드볼연맹 경기규칙](https://www.koreahandball.com/hkl/game_rule.php) |
 | 아이스하키 | IIHF 공식 규정집 2025/26 (영문) | [IIHF 규정집](https://www.iihf.com/en/statichub/4719/rules-and-regulations) |
 | 아이스하키 리그 규정 | 아시아리그 2026-27 개최요강 (연장·승부치기·승점) | [아시아리그 개최요강](https://asiaicehockey.com/outline) |
 
@@ -164,6 +166,7 @@ first-gikgwan/
 - 야구 KBO 규정(ABS, 피치클락, 연장)은 [KBO 2026 주요 규정·규칙](https://www.koreabaseball.com/Kbo/League/GameManage2026.aspx) 기준입니다.
 - V-리그 일정·예매처는 [KOVO](https://kovo.co.kr) 기준(2026.10.13 확인)입니다.
 - K리그 승점·파이널 라운드와 일정은 [K리그](https://www.kleague.com) 대회요강·일정표 기준(2026.10.14 확인)입니다.
+- H리그 팀·경기장은 [한국핸드볼연맹](https://www.koreahandball.com) 팀 소개·경기장 소개 기준(2026.10.14 확인)입니다. 26-27 일정은 아직 발표 전입니다.
 - HL 안양 일정·티켓 가격은 [HL 안양 홈페이지](http://www.hlicehockey.com) 기준(2026.10.14 확인)입니다.
 - KBL·WKBL 일정은 네이버 스포츠 일정, 예매처는 KBL·WKBL 홈페이지와 구단 티켓 안내 기준(2026.10.14 확인)입니다.
 - 구장 지도의 윤곽은 [Natural Earth](https://www.naturalearthdata.com/)(퍼블릭 도메인), 구장 좌표는 © [OpenStreetMap](https://www.openstreetmap.org/copyright) 기여자 기준입니다.

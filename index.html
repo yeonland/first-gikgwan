@@ -637,7 +637,7 @@ const SPORTS=[
   {id:'volleyball',name:'배구',league:'V-리그',icon:'volley',ready:true},
   {id:'basketball',name:'농구',league:'KBL·WKBL',icon:'basket',ready:true},
   {id:'hockey',name:'아이스하키',league:'아시아리그',icon:'puck',ready:true},
-  {id:'handball',name:'핸드볼',league:'H리그',icon:'hand'},
+  {id:'handball',name:'핸드볼',league:'H리그',icon:'hand',ready:true},
   {id:'soccer',name:'축구',league:'K리그1',icon:'soccer',ready:true}
 ];
 const SPORT=Object.fromEntries(SPORTS.map(s=>[s.id,s]));
@@ -650,7 +650,7 @@ const loadSport=id=>SPORT_DATA[id]?Promise.resolve():new Promise((ok,no)=>{
 // 처음 쓰는 종목 데이터에 찾아보기 표를 붙여 둠
 function prepData(id){
   const d=SPORT_DATA[id];
-  if(!d.teamBy){d.teamBy=Object.fromEntries(d.teams.map(t=>[t[1],t]));d.parks=[...new Set(d.teams.map(t=>t[3]))];d.ruleBy=Object.fromEntries(d.rules.map(r=>[r.id,r]))}
+  if(!d.teamBy){d.teamBy=Object.fromEntries(d.teams.map(t=>[t[1],t]));d.parks=[...new Set([...d.teams.map(t=>t[3]),...(d.extraParks||[])])];d.ruleBy=Object.fromEntries(d.rules.map(r=>[r.id,r]))}
   return d;
 }
 
@@ -947,7 +947,7 @@ function vidsHTML(r){
 }
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
   ${vidsHTML(r)}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기에서 보면</dt><dd>${esc(r.field)}</dd></div>
-  <div><dt>규정집에서는</dt><dd><ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul></dd></div></dl></details>`;
+  <div><dt>규정집에서는</dt><dd>${r.book.length?`<ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul>`:'<span class="note">조항 번호는 전체 규칙서로 확인한 뒤 채워요</span>'}</dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
   const list=D.rules.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
