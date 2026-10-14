@@ -609,9 +609,11 @@ nav button{padding:13px 0}
     <section aria-labelledby="h-backup">
       <div class="sec-head"><h2 id="h-backup">기록 보관</h2><span class="note" id="backup-note"></span></div>
       <div class="list">
-        <p class="row hint">기록을 파일 하나로 내려받아 두면, 브라우저를 지우거나 기기를 바꿔도 다시 불러올 수 있어요. 내 팀과 준비물 체크도 같이 담겨요.</p>
-        <button type="button" class="add backup-btn" id="backup-save">기록 파일로 내려받기</button>
-        <label class="add backup-btn">파일에서 불러오기<input type="file" id="backup-load" accept=".json,application/json" hidden></label>
+        <p class="row hint">기록을 파일 하나로 보관해 두면, 브라우저를 지우거나 기기를 바꿔도 다시 불러올 수 있어요. 내 팀과 준비물 체크도 같이 담겨요. 카톡 "나와의 채팅"으로 보내 두면 찾기 쉬워요.</p>
+        <p class="row hint" id="backup-inapp" hidden>카톡·인스타 안에서 연 화면에서는 파일이 저장되지 않을 수 있어요. 메뉴에서 "다른 브라우저로 열기"를 눌러 크롬·사파리에서 해 주세요.</p>
+        <button type="button" class="add backup-btn" id="backup-share" hidden>카톡·메일로 보내기</button>
+        <button type="button" class="add backup-btn" id="backup-save">파일로 내려받기</button>
+        <label class="add backup-btn">파일에서 불러오기<input type="file" id="backup-load" accept=".json,.txt,application/json,text/plain" hidden></label>
       </div>
       <p class="fine" id="backup-msg" role="status" aria-live="polite"></p>
     </section>
@@ -882,14 +884,25 @@ const saveDiary=()=>store('diary',DIARY);
 const BACKUP_APP='first-gikgwan';
 const sameTicket=(a,b)=>a.id===b.id||(a.date===b.date&&a.sport===b.sport&&a.home===b.home&&a.away===b.away);
 function backupNote(){const at=load('backupAt',null);$('backup-note').textContent=at?`마지막 내려받기 ${at}`:''}
+const backupText=()=>{const prep=Object.fromEntries(READY.map(id=>[id,load('prep-'+id,null)]).filter(([,v])=>v));
+  return JSON.stringify({app:BACKUP_APP,version:1,savedAt:new Date().toISOString(),diary:DIARY,myTeams:MY,prep},null,1)};
+// 공유 창: 휴대폰 크롬은 .json 파일 공유를 막아서 내용은 같고 이름만 .txt
+const shareFile=()=>new File([backupText()],`첫직관-기록-${todayISO}.txt`,{type:'text/plain'});
+const UA=navigator.userAgent;
+const SAVED_AT=/Android/i.test(UA)?'휴대폰 "내 파일 → 다운로드"':/iPhone|iPad|iPod/i.test(UA)?'"파일" 앱 → 다운로드':'다운로드 폴더';
+try{$('backup-share').hidden=!(navigator.canShare&&navigator.canShare({files:[shareFile()]}))}catch(err){}
+$('backup-inapp').hidden=!/KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\//i.test(UA);
+$('backup-share').addEventListener('click',async()=>{
+  try{await navigator.share({files:[shareFile()],title:'첫직관 기록',text:'첫직관 직관 기록 보관 파일이에요. 첫직관 기록 탭 → "파일에서 불러오기"로 되살릴 수 있어요.'});
+    store('backupAt',today);backupNote();$('backup-msg').textContent=`티켓 ${DIARY.length}장을 보냈어요. 다시 불러올 때는 보낸 곳에서 파일을 저장한 뒤 "파일에서 불러오기"를 눌러 주세요.`}
+  catch(err){if(err&&err.name!=='AbortError')$('backup-msg').textContent='보내지 못했어요. "파일로 내려받기"로 해 주세요.'}
+});
 $('backup-save').addEventListener('click',()=>{
-  const prep=Object.fromEntries(READY.map(id=>[id,load('prep-'+id,null)]).filter(([,v])=>v));
-  const data={app:BACKUP_APP,version:1,savedAt:new Date().toISOString(),diary:DIARY,myTeams:MY,prep};
-  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));
+  const url=URL.createObjectURL(new Blob([backupText()],{type:'application/json'}));
   const a=document.createElement('a');a.href=url;a.download=`첫직관-기록-${todayISO}.json`;document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   store('backupAt',today);backupNote();
-  $('backup-msg').textContent=`티켓 ${DIARY.length}장을 파일로 내려받았어요. 파일은 휴대폰·PC의 다운로드 폴더에 있어요.`;
+  $('backup-msg').textContent=`티켓 ${DIARY.length}장을 내려받았어요. 파일은 ${SAVED_AT}에 있어요.`;
 });
 $('backup-load').addEventListener('change',async e=>{
   const file=e.target.files[0];e.target.value='';if(!file)return;
@@ -1002,13 +1015,16 @@ form.addEventListener('submit',ev=>{
   if(F.date.value>todayISO){msg.textContent='오늘 이후 경기는 다녀온 뒤에 붙여 주세요.';F.date.focus();return}
   if(F.home.value===F.away.value){msg.textContent='홈팀과 원정팀을 다르게 골라 주세요.';F.away.focus();return}
   if(D.teamBy[F.home.value][5]!==D.teamBy[F.away.value][5]){msg.textContent=`${D.teamBy[F.home.value][5]} 팀끼리, ${D.teamBy[F.away.value][5]} 팀끼리 골라 주세요.`;F.away.focus();return}
-  if((hs==null)!==(as==null)||[hs,as].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~99로 적거나, 둘 다 비워 주세요.';F.hs.focus();return}
+  if((hs==null)!==(as==null)||[hs,as].some(v=>v!=null&&score(v)==null)){msg.textContent='점수는 두 칸 모두 0~199로 적거나, 둘 다 비워 주세요.';F.hs.focus();return}
   const cheer=F.cheer.value==='none'?null:F.cheer.value;
   DIARY.push({id:Date.now(),sport:cur,date:F.date.value,home:F.home.value,away:F.away.value,park:F.park.value,hs,as,cheer,mate:cleanMates(F.mate.value),memo:F.memo.value.trim().slice(0,30)});
-  msg.textContent=saveDiary()?'티켓을 붙였어요.':'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.';
+  const saved=saveDiary(),nudge=saved&&(DIARY.length===1||DIARY.length%5===0)&&load('backupAt',null)!==today;
+  msg.innerHTML=!saved?'이 브라우저에서는 저장할 수 없어서 새로고침하면 사라져요.'
+    :nudge?`티켓을 붙였어요. 기록은 이 브라우저에만 있어서, 한 번 보관해 두면 안전해요. <button type="button" class="more" data-go-backup>지금 보관하기</button>`:'티켓을 붙였어요.';
   F.hs.value=F.as.value=F.memo.value='';   // 같이 간 사람은 다음 티켓에도 그대로 둠 (같은 사람과 자주 가니까)
   renderDiary();
 });
+$('form-msg').addEventListener('click',e=>{if(e.target.closest('[data-go-backup]'))$('h-backup').scrollIntoView({behavior:'smooth',block:'start'})});
 $('log-diary').addEventListener('click',ev=>{
   const b=ev.target.closest('[data-peel]');if(!b||!confirm('이 티켓을 뗄까요? 되돌릴 수 없어요.'))return;
   DIARY=DIARY.filter(e=>String(e.id)!==b.dataset.peel);saveDiary();renderDiary();
