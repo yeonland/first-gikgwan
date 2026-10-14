@@ -238,6 +238,10 @@ const season={note:'2026-27 시즌 · KOVO 발표 기준',rows:[
   ['플레이오프','2위 vs 3위(또는 준플레이오프 승자), 3전 2선승'],
   ['챔피언결정전','1위 vs 플레이오프 승자, 5전 3선승']]};
 
-return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 좌석 시야: KOVO 좌석 시야 페이지 (팀 번호 tcode는 KOVO 팀 목록 2026.10.14 확인). 준비 탭 좌석 고르기 아래 버튼
+const KOVO_TCODE={'대한항공':1001,'현대캐피탈':1005,'우리카드':1009,'KB손해보험':1004,'한국전력':1006,'OK저축은행':1008,'삼성화재':1002,'GS칼텍스':2005,'한국도로공사':2002,'현대건설':2001,'흥국생명':2004,'IBK기업은행':2006,'정관장':2003,'SOOP':2008};
+const seatView=Object.fromEntries(Object.entries(KOVO_TCODE).map(([k,c])=>[k,`https://kovo.co.kr/tickets/court-view?tcode=${c}`]));
+
+return {seatView,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

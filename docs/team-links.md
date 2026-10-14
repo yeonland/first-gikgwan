@@ -24,6 +24,8 @@
 
 ## 배구 (V-리그)
 
+좌석 시야: KOVO 좌석 시야 페이지 `https://kovo.co.kr/tickets/court-view?tcode=팀번호` (앱 준비 탭에 버튼으로 넣음). 팀 번호는 data/volleyball.js 의 KOVO_TCODE
+
 | 구단 | 홈페이지 | 팀 색 (BI) | 마스코트 | 응원가 |
 |---|---|---|---|---|
 | 대한항공 점보스 (남자부) |  |  |  |  |
@@ -51,7 +53,7 @@
 | 대전하나시티즌 | [홈페이지](https://www.dhcfc.kr) |  |  |  |
 | 부천FC1995 | [홈페이지](https://bfc1995.com) |  |  |  |
 | FC서울 | [홈페이지](https://www.fcseoul.com) |  |  | [응원가](https://www.fcseoul.com/club/clubFcSongCheeringSongView?page=1) |
-| FC안양 | [홈페이지](https://www.fc-anyang.com) | #cda55f, #1f0149, #4fb87? (한 자리 빠짐, 확인 필요). 홈페이지에 엠블럼·마스코트·응원가 메뉴 없음 |  |  |
+| FC안양 | [홈페이지](https://www.fc-anyang.com) | #4f1b87, #cda55f, #1f0149 (확정, 앱에 넣음). 홈페이지에 엠블럼·마스코트·응원가 메뉴 없음 |  |  |
 | 울산 HD | [홈페이지](https://www.uhdfc.com) |  | [미타](https://www.uhdfc.com/fc/mascot.php) (호랑이) |  |
 | 인천 유나이티드 | [홈페이지](https://www.incheonutd.com) |  |  |  |
 | 전북 현대 | [홈페이지](https://hyundai-motorsfc.com) |  |  |  |

@@ -134,6 +134,7 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .wk-game svg{width:20px;height:20px}
 .wk-game b{display:block;font-size:var(--fs-body)}
 .wk-game span{font-size:var(--fs-cap);color:var(--pencil)}
+.seat-view{display:block;text-align:center;text-decoration:none}   /* 좌석 시야 보기: 리그 공식 좌석 시야 페이지로 */
 .add{border:0;border-top:1px dashed var(--line);background:transparent;color:var(--pencil);font-family:var(--sans);font-size:var(--fs-cap);padding:12px;cursor:pointer}
 
 /* diary */
@@ -530,7 +531,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
       </section>
       <section aria-labelledby="h-seat">
         <div class="sec-head"><h2 id="h-seat">좌석 고르기</h2></div>
-        <div class="list" id="prep-seats"></div>
+        <div class="list"><div class="list-in" id="prep-seats"></div><a class="add seat-view" id="seat-view" target="_blank" rel="noopener" hidden></a></div>
       </section>
     </div>
     <div class="pg">
@@ -973,6 +974,9 @@ $('park-map').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.
 const prepCount=()=>{$('prep-count').textContent=`${D.prep.filter(([id])=>PREP_DONE[id]).length}/${D.prep.length} 챙김`};
 $('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();store('prep-'+cur,PREP_DONE)});
 function setPrepTeam(t){
+  // 좌석 시야: 리그가 구단별 좌석 시야 페이지를 주면 버튼으로 연결 (data의 seatView)
+  const sv=D.seatView&&D.seatView[t[1]];$('seat-view').hidden=!sv;
+  if(sv){$('seat-view').href=sv;$('seat-view').textContent=`${t[0]} 홈 경기장 좌석 시야 보기 (KOVO)`}
   prepPark.value=t[3];renderPark();renderMap();
   $('prep-cheer').innerHTML=[...D.cheer,
     D.cheerUrl&&D.cheerUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.cheerUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 응원가 페이지</a>에서 가사와 음원을 볼 수 있어요. 대표 응원가 1~2곡만 들어 보고 가도 금방 따라 불러요`]
