@@ -1355,8 +1355,11 @@ function finishSetup(my){
 }
 // 팀 없이 둘러보기: 체크한 종목을 모두 응원팀 없이 (이미 고른 팀이 있어도). 종목을 안 골랐으면 열린 종목 전부
 $('setup-skip').addEventListener('click',()=>{
-  const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
-  finishSetup(Object.fromEntries((on.length?on:READY).map(id=>[id,NO_TEAM])));
+  const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value),ids=on.length?on:READY;
+  // 골라 둔 팀이 지워지면 한 번 물어봄 (설정 창을 다시 열었다가 잘못 누를 수 있어서)
+  const lost=ids.filter(id=>MY[id]!=null&&MY[id]!==NO_TEAM&&setupDone).map(id=>SPORT_DATA[id].teams[MY[id]][0]);
+  if(lost.length&&!confirm(`고른 팀(${lost.join(', ')})을 응원팀 없음으로 바꿀까요? 기록은 그대로 남아요.`))return;
+  finishSetup(Object.fromEntries(ids.map(id=>[id,NO_TEAM])));
 });
 $('setup-form').addEventListener('submit',e=>{
   const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
