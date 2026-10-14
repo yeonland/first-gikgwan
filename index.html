@@ -315,6 +315,11 @@ input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
 /* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기 장면 + 규정집 조항 */
 .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
+/* 룰 찾기: 이름·쉬운 말·본문·조항에서 찾음. 칩 옆 숫자는 지금 검색어로 걸리는 카드 수 */
+.rule-q{display:block;width:100%;margin:0 0 10px;padding:10px 12px;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px}
+.rule-q:focus{outline:2px solid var(--team-ink);outline-offset:1px}
+.chip .n{margin-left:4px;font-weight:400;color:var(--pencil)}
+.chip[aria-pressed="true"] .n{color:inherit}
 .chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
 .chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
 .rule-list{display:flex;flex-direction:column}
@@ -511,6 +516,7 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
     <section aria-labelledby="h-rule">
       <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note" id="rule-count"></span></div>
       <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기 장면과 규정집 조항이 보여요.</p>
+      <input type="search" class="rule-q" id="rule-q" placeholder="룰 찾기 (예: 폴대, 낫아웃, 주자)" aria-label="룰 카드 찾기" autocomplete="off">
       <dl class="glance" id="rule-glance" aria-label="이 종목 한눈에"></dl>
       <div class="season" id="rule-season"><h3>시즌은 이렇게</h3><dl class="info" id="season-info"></dl><p class="note" id="season-note"></p></div>
       <div class="chips" role="group" aria-label="분류별로 보기" id="rule-chips"></div>
@@ -785,7 +791,8 @@ function renderSportPages(){
   $('rule-season').hidden=!D.season;
   if(D.season){$('season-info').innerHTML=D.season.rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');$('season-note').textContent=D.season.note}
   ruleCat='전체';
-  $('rule-chips').innerHTML=['전체',...D.ruleCats].map(c=>`<button class="chip" type="button">${c}</button>`).join('');
+  $('rule-q').value='';
+  $('rule-chips').innerHTML=['전체',...D.ruleCats].map(c=>`<button class="chip" type="button" data-cat="${c}">${c}<span class="n"></span></button>`).join('');
   $('rule-list').innerHTML='';renderRules();
   // 준비
   prepPark.innerHTML=D.parks.map(p=>`<option value="${p}">${esc(D.parkShort[p])} · ${esc(p)}</option>`).join('');
@@ -1011,10 +1018,19 @@ const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class
   <div><dt>규정집에서는</dt><dd>${r.book.length?`<ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul>`:'<span class="note">조항 번호는 전체 규칙서로 확인한 뒤 채워요</span>'}</dd></div></dl></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
-  const list=D.rules.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
-  document.querySelectorAll('#rule-chips .chip').forEach(b=>b.setAttribute('aria-pressed',String(b.textContent===ruleCat)));
-  $('rule-count').textContent=`${list.length}장`;
-  $('rule-list').innerHTML=[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('');
+  // 검색: 띄어쓰기·대소문자 무시. 이름, 쉬운 말, 경기에서 보면, 분류, 조항까지 찾음
+  const norm=t=>String(t).toLowerCase().replace(/\s+/g,'');
+  const q=norm($('rule-q').value);
+  // 찾는 동안에는 한눈에·시즌 상자를 숨겨서 결과가 바로 보이게
+  $('rule-glance').hidden=!!q||!D.glance;$('rule-season').hidden=!!q||!D.season;
+  const hit=r=>!q||norm([r.name,r.easy,r.field,r.cats.join(' '),r.book.map(b=>b.join(' ')).join(' ')].join(' ')).includes(q);
+  const found=D.rules.filter(hit);
+  const list=found.filter(r=>ruleCat==='전체'||r.cats.includes(ruleCat)),half=Math.ceil(list.length/2);
+  document.querySelectorAll('#rule-chips .chip').forEach(b=>{const c=b.dataset.cat;b.setAttribute('aria-pressed',String(c===ruleCat));
+    b.querySelector('.n').textContent=c==='전체'?found.length:found.filter(r=>r.cats.includes(c)).length});
+  $('rule-count').textContent=q?`${list.length}장 찾음`:`${list.length}장`;
+  $('rule-list').innerHTML=list.length?[list.slice(0,half),list.slice(half)].filter(a=>a.length).map(a=>`<div class="list">${a.map(ruleCard).join('')}</div>`).join('')
+    :`<div class="list"><p class="row hint">${q?`'${esc($('rule-q').value.trim())}'에 맞는 룰이 없어요. 다른 말로 찾아보거나 분류를 전체로 바꿔 보세요.`:'이 분류에는 카드가 없어요.'}</p></div>`;
   document.querySelectorAll('#rule-list .rcard').forEach(d=>{if(open.has(d.dataset.id))d.open=true});
 }
 // 룰 카드는 한 번에 하나만 펼침. 닫힌 카드는 새로 그려서 보던 영상도 멈춤 (toggle은 버블링이 안 돼서 캡처로 받음)
@@ -1036,7 +1052,8 @@ $('rule-list').addEventListener('click',e=>{
   const b=e.target.closest('.vid-btn');if(!b)return;
   b.outerHTML=`<iframe class="vid-frame" src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0&start=${+b.dataset.start||0}" title="${b.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
 });
-$('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.textContent;renderRules()});
+$('rule-chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;ruleCat=b.dataset.cat;renderRules()});
+$('rule-q').addEventListener('input',renderRules);
 
 // 처음 설정: 종목 여러 개 + 종목마다 내 팀. 홈 "종목별 내 팀 추가"로 다시 열 수 있음
 const setup=$('setup');
