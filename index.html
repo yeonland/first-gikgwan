@@ -1140,16 +1140,22 @@ async function openSetup(){
   $('setup-ok').textContent=setupDone?'저장':'시작하기';
   $('setup-list').innerHTML=SPORTS.map(s=>{
     if(!s.ready)return `<div class="pick off"><input type="checkbox" disabled aria-label="${s.name} (곧 열려요)"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · 곧 열려요</span></div></div>`;
-    const d=prepData(s.id),on=!MY||s.id in MY;
+    // 처음엔 아무것도 골라 두지 않음 (미리 골라 두면 그대로 눌러 다른 팀 팬이 되기 쉬움). 다시 열 때는 고른 값 그대로
+    const d=prepData(s.id),on=setupDone&&s.id in MY,picked=setupDone&&s.id in MY?MY[s.id]:null;
     return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league}</span></div></label>
-      <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${teamOptions(d.teams,(t,i)=>i,MY?MY[s.id]:0)}</select></div>`;
+      <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${picked==null?'<option value="" selected disabled>내 팀 고르기</option>':''}${teamOptions(d.teams,(t,i)=>i,picked)}</select></div>`;
   }).join('');
   setup.showModal();
 }
-$('setup-list').addEventListener('change',e=>{if(e.target.name==='sp')e.target.closest('.pick').querySelector('select').hidden=!e.target.checked});
+$('setup-list').addEventListener('change',e=>{
+  if(e.target.name==='sp'){const sel=e.target.closest('.pick').querySelector('select');sel.hidden=!e.target.checked;if(e.target.checked&&sel.value==='')sel.focus()}
+  else $('setup-msg').textContent='';
+});
 $('setup-form').addEventListener('submit',e=>{
   const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
   if(!on.length){e.preventDefault();$('setup-msg').textContent='종목을 하나 이상 골라 주세요.';return}
+  const empty=on.find(id=>setup.querySelector(`[name="team-${id}"]`).value==='');
+  if(empty){e.preventDefault();$('setup-msg').textContent=`${SPORT[empty].name} 팀을 골라 주세요.`;setup.querySelector(`[name="team-${empty}"]`).focus();return}
   MY=Object.fromEntries(on.map(id=>[id,+setup.querySelector(`[name="team-${id}"]`).value]));
   store('myTeams',MY);setupDone=true;useSport(on.includes(cur)?cur:on[0]);
 });
