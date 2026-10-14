@@ -119,6 +119,14 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .row.other{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .row.other:first-child{border-top:0}
 .row.hint{grid-template-columns:minmax(0,1fr);font-size:var(--fs-cap);color:var(--pencil)}
+/* 오늘 경기: 홈 맨 위. 팀 색 왼쪽 줄 + 바로가기 버튼 세 개 */
+.today-list{display:flex;flex-direction:column;gap:10px}
+.today-game{background:var(--surface);border:1px solid var(--line);box-shadow:inset 4px 0 0 var(--team-ink);padding:12px 14px 12px 18px}
+.today-game>b{display:block;font-size:var(--fs-title)}
+.today-game>span{display:block;font-size:var(--fs-cap);color:var(--pencil);margin-top:2px}
+.today-go{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+.today-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
+.today-go button.main{grid-column:1/-1;background:var(--team-ink);color:var(--on-team-ink);border-color:var(--team-ink);font-size:var(--fs-body);font-weight:700}
 /* 이번 주 일정: 왼쪽 날짜, 오른쪽 그날 경기. 오늘은 팀 색 줄 */
 .week-nav{display:flex;align-items:center;gap:6px}
 .week-nav button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-family:var(--sans);font-size:var(--fs-body);line-height:1;cursor:pointer}
@@ -462,6 +470,10 @@ nav button{padding:13px 0}
   </header>
 
   <div class="page" id="p-home">
+  <section class="today" id="today" aria-labelledby="h-today" hidden>
+    <div class="sec-head"><h2 id="h-today">오늘은 직관 날</h2><span class="led-chip">D-DAY</span></div>
+    <div class="today-list" id="today-list"></div>
+  </section>
   <section aria-labelledby="h-next">
     <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note" id="next-note"></span></div>
     <article class="ticket">
@@ -747,7 +759,7 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);renderWeek();
+  renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);renderWeek();renderToday();
 }
 function useSport(id){
   cur=id;store('sport',id);SP=SPORT[id];D=prepData(id);
@@ -786,6 +798,38 @@ function renderWeek(){
 $('wk-prev').addEventListener('click',()=>{weekOff--;renderWeek()});
 $('wk-next').addEventListener('click',()=>{weekOff++;renderWeek()});
 $('week-list').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur){useSport(b.dataset.sport);scrollTo(0,0)}});
+
+// 홈 "오늘 경기": 이번 주 일정과 같은 games에서 오늘 내 팀 경기. 경기 시작 3시간 뒤(시간 모르면 밤 10시)부터는 "티켓 붙이기"를 맨 앞에
+function todayGames(){
+  return SPORTS.filter(sp=>sp.id in MY&&SPORT_DATA[sp.id]).flatMap(sp=>{const d=prepData(sp.id),t=d.teams[MY[sp.id]];
+    return (d.games||[]).filter(g=>g[0]===todayISO&&(g[2]===t[1]||g[3]===t[1])).map(g=>({sp,d,g,home:g[2]===t[1]}))})
+    .sort((a,b)=>(a.g[1]||'99').localeCompare(b.g[1]||'99'));
+}
+function renderToday(){
+  const list=todayGames();$('today').hidden=!list.length;if(!list.length)return;
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  const name=(d,x)=>d.teamBy[x]?d.teamBy[x][0]:x;
+  $('today-list').innerHTML=list.map(({sp,d,g,home},i)=>{
+    const [h,m]=(g[1]||'19:00').split(':').map(Number),after=g[1]?nowMin>=h*60+m+180:nowMin>=22*60;
+    const done=sp.id===cur?PREP_DONE:(load('prep-'+sp.id,null)||{}),n=d.prep.filter(([id])=>done[id]).length;
+    const btn=(k,txt,main)=>`<button type="button" data-today="${k}" data-i="${i}"${main?' class="main"':''}>${txt}</button>`;
+    return `<div class="today-game"><b>${esc(name(d,g[2]))} vs ${esc(name(d,g[3]))}</b>
+      <span>${sp.name} · ${g[1]||'시간 발표 전'} · ${esc(d.parkShort[g[4]]||g[4])} · ${home?'홈':'원정'}${g[5]?` · ${esc(g[5])}`:''}</span>
+      <div class="today-go">${after?btn('ticket','다녀오셨나요? 티켓 붙이기',true):''}${btn('go','가는 길')}${btn('bag',`준비물 ${n}/${d.prep.length}`)}${btn('rule','1분 룰')}</div></div>`;
+  }).join('');
+}
+$('today-list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-today]');if(!b)return;
+  const {sp,d,g}=todayGames()[+b.dataset.i];if(sp.id!==cur)useSport(sp.id);
+  const k=b.dataset.today,to=id=>requestAnimationFrame(()=>$(id).scrollIntoView({block:'start'}));
+  if(k==='go'){go('prep');if([...prepPark.options].some(o=>o.value===g[4])){prepPark.value=g[4];renderPark();renderMap()}to('h-go')}
+  else if(k==='bag'){go('prep');to('h-bag')}
+  else if(k==='rule'){const r=document.querySelector('#p-home details.rules');r.open=true;r.scrollIntoView({block:'start'})}
+  else if(k==='ticket'){go('log');F.date.value=todayISO;
+    if(d.teamBy[g[2]]&&d.teamBy[g[3]]){F.home.value=g[2];F.away.value=g[3];syncForm()}
+    if([...F.park.options].some(o=>o.value===g[4]))F.park.value=g[4];
+    to('h-add');setTimeout(()=>F.hs.focus({preventScroll:true}),300)}
+});
 
 // 홈 "다른 종목 내 팀": 고른 다른 종목마다 내 팀의 다음 경기. 누르면 그 종목으로 바꿈
 function renderOthers(){
@@ -1060,7 +1104,7 @@ const pickPin=e=>{const g=e.target.closest('.pin');if(!g)return;prepPark.value=g
 $('park-map').addEventListener('click',pickPin);
 $('park-map').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickPin(e)}});
 const prepCount=()=>{$('prep-count').textContent=`${D.prep.filter(([id])=>PREP_DONE[id]).length}/${D.prep.length} 챙김`};
-$('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();store('prep-'+cur,PREP_DONE)});
+$('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.target.checked;prepCount();store('prep-'+cur,PREP_DONE);renderToday()});
 function setPrepTeam(t){
   // 좌석 시야: 리그가 구단별 좌석 시야 페이지를 주면 버튼으로 연결 (data의 seatView)
   const sv=D.seatView&&D.seatView[t[1]];$('seat-view').hidden=!sv;
