@@ -127,6 +127,11 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .today-go{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
 .today-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
 .today-go button.main{grid-column:1/-1;background:var(--team-ink);color:var(--on-team-ink);border-color:var(--team-ink);font-size:var(--fs-body);font-weight:700}
+/* 종목별 시즌: 지금 시즌이면 팀 색 점, 아니면 빈 점 */
+.row.sea{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.row.sea:first-child{border-top:0}
+.sea .tag{font-size:var(--fs-cap);color:var(--pencil);white-space:nowrap}
+.sea.on .tag{color:var(--team-ink);font-weight:700}
 /* 이번 주 일정: 왼쪽 날짜, 오른쪽 그날 경기. 오늘은 팀 색 줄 */
 .week-nav{display:flex;align-items:center;gap:6px}
 .week-nav button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-family:var(--sans);font-size:var(--fs-body);line-height:1;cursor:pointer}
@@ -517,6 +522,12 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
     <div class="list"><div class="list-in" id="other-list"></div><button class="add" type="button" data-setup>종목별 내 팀 추가</button></div>
   </section>
 
+  <section aria-labelledby="h-season">
+    <div class="sec-head"><h2 id="h-season">종목별 시즌</h2><span class="note" id="season-cal-note"></span></div>
+    <div class="list"><div class="list-in" id="season-cal"></div></div>
+    <p class="fine">고르지 않은 종목을 누르면 내 팀을 골라 추가할 수 있어요.</p>
+  </section>
+
   <section aria-labelledby="h-diary">
     <div class="sec-head"><h2 id="h-diary">내 직관 기록</h2><span class="note" id="home-diary-note"></span></div>
     <div class="led" id="home-led"></div>
@@ -727,6 +738,32 @@ const SPORTS=[
   {id:'soccer',name:'축구',league:'K리그1',icon:'soccer',ready:true}
 ];
 const SPORT=Object.fromEntries(SPORTS.map(s=>[s.id,s]));
+// 종목별 시즌 기간 [리그(여러 리그일 때만), 기간 이름, 시작, 끝(모르면 null)]. 리그 발표·대회요강 기준 (2026.10.14 확인)
+// after: 모든 기간이 끝났거나 아직 정해진 게 없을 때 보여 줄 말
+const SEASONS={
+  baseball:{list:[['','포스트시즌','2026-10-14','2026-11-10']],after:'2027년 3월 개막 예정'},
+  volleyball:{list:[['','정규리그','2026-10-31','2027-04-02'],['','포스트시즌','2027-04-05',null]],after:'다음 시즌은 가을 개막'},
+  soccer:{list:[['','정규 라운드','2026-02-28','2026-10-25'],['','파이널 라운드','2026-10-31','2026-12-06']],after:'2027 시즌은 봄 개막'},
+  basketball:{list:[['KBL','정규리그','2026-10-03','2027-04-11'],['WKBL','정규리그','2026-11-01',null]],after:'다음 시즌은 가을 개막'},
+  hockey:{list:[['','정규리그','2026-09-12','2027-03-14']],after:'다음 시즌은 가을 개막'},
+  handball:{list:[],after:'26-27 일정 발표 전 (지난 시즌은 11월 개막)'}
+};
+const mdOf=iso=>{const [,m,d]=iso.split('-');return `${m}.${d}`};
+const daysTo=iso=>{const [y,m,d]=iso.split('-').map(Number);return Math.round((new Date(y,m-1,d)-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()))/86400000)};
+// 리그마다: 지금 하는 기간 → "포스트시즌 중 · 11.10까지", 다가오는 기간 → "10.31 개막 · D-17"
+function seasonOf(id){
+  const S=SEASONS[id],t=new Date(),iso=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  const leagues=[...new Set(S.list.map(x=>x[0]))];
+  const parts=leagues.map(lg=>{const L=S.list.filter(x=>x[0]===lg);
+    const now=L.find(([,,a,b])=>a<=iso&&(!b||iso<=b));
+    if(now)return {on:true,text:`${lg?lg+' ':''}${now[1]} 중${now[3]?` · ${mdOf(now[3])}까지`:''}`};
+    const next=L.find(([,,a])=>a>iso);
+    if(next){const first=L.indexOf(next)===0;return {on:false,soon:daysTo(next[2]),text:`${lg?lg+' ':''}${mdOf(next[2])} ${first?'개막':next[1]+' 시작'}`}}
+    return null;}).filter(Boolean);
+  if(!parts.length)return {on:false,text:S.after};
+  const soon=parts.filter(p=>!p.on&&p.soon!=null).map(p=>p.soon);
+  return {on:parts.some(p=>p.on),text:parts.map(p=>p.text).join(' · '),soon:soon.length?Math.min(...soon):null};
+}
 const READY=SPORTS.filter(s=>s.ready).map(s=>s.id);
 window.SPORT_DATA=window.SPORT_DATA||{};
 const loadSport=id=>SPORT_DATA[id]?Promise.resolve():new Promise((ok,no)=>{
@@ -776,7 +813,7 @@ function useSport(id){
   $('sport-bar').hidden=false;
   $('sport-bar').innerHTML=mine.map(s=>`<button class="chip" type="button" data-sport="${s.id}" aria-pressed="${s.id===id}">${s.name}</button>`).join('')
     +'<button class="chip add-sport" type="button" data-open-setup aria-label="종목 추가·바꾸기">+ 종목</button>';
-  renderSportPages();renderOthers();apply(MY[id]);
+  renderSportPages();renderOthers();renderSeasonCal();apply(MY[id]);
 }
 sel.addEventListener('change',()=>{MY[cur]=+sel.value;store('myTeams',MY);apply(MY[cur])});
 $('sport-bar').addEventListener('click',e=>{if(e.target.closest('[data-open-setup]')){openSetup();return}const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur)useSport(b.dataset.sport)});
@@ -804,6 +841,17 @@ function renderWeek(){
 $('wk-prev').addEventListener('click',()=>{weekOff--;renderWeek()});
 $('wk-next').addEventListener('click',()=>{weekOff++;renderWeek()});
 $('week-list').addEventListener('click',e=>{const b=e.target.closest('[data-sport]');if(b&&b.dataset.sport!==cur){useSport(b.dataset.sport);scrollTo(0,0)}});
+
+// 홈 "종목별 시즌": 6종목 모두. 누르면 고른 종목은 그 종목으로, 안 고른 종목은 종목·내 팀 고르기
+function renderSeasonCal(){
+  const rows=SPORTS.map(sp=>({sp,st:seasonOf(sp.id),mine:sp.id in MY})).sort((a,b)=>(b.st.on-a.st.on)||((a.st.soon??999)-(b.st.soon??999)));
+  $('season-cal-note').textContent=`지금 시즌 ${rows.filter(r=>r.st.on).length}개 종목`;
+  $('season-cal').innerHTML=rows.map(({sp,st,mine})=>`<button type="button" class="row sea${st.on?' on':''}" data-sea="${sp.id}"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${sp.icon}"/></svg>
+    <div><b>${sp.name} <span>${sp.league}</span></b><span>${esc(st.text)}</span></div>
+    <span class="tag">${st.on?'지금 시즌':st.soon!=null?`D-${st.soon}`:'쉬는 중'}${mine?'':'<br>+ 추가'}</span></button>`).join('');
+}
+$('season-cal').addEventListener('click',e=>{const b=e.target.closest('[data-sea]');if(!b)return;const id=b.dataset.sea;
+  if(id in MY){if(id!==cur)useSport(id);scrollTo(0,0)}else openSetup()});
 
 // 홈 "오늘 경기": 이번 주 일정과 같은 games에서 오늘 내 팀 경기. 경기 시작 3시간 뒤(시간 모르면 밤 10시)부터는 "티켓 붙이기"를 맨 앞에
 function todayGames(){
@@ -1224,7 +1272,7 @@ async function openSetup(){
     if(!s.ready)return `<div class="pick off"><input type="checkbox" disabled aria-label="${s.name} (곧 열려요)"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · 곧 열려요</span></div></div>`;
     // 처음엔 아무것도 골라 두지 않음 (미리 골라 두면 그대로 눌러 다른 팀 팬이 되기 쉬움). 다시 열 때는 고른 값 그대로
     const d=prepData(s.id),on=setupDone&&s.id in MY,picked=setupDone&&s.id in MY?MY[s.id]:null;
-    return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league}</span></div></label>
+    return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · ${seasonOf(s.id).text}</span></div></label>
       <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${picked==null?'<option value="" selected disabled>내 팀 고르기</option>':''}${teamOptions(d.teams,(t,i)=>i,picked)}</select></div>`;
   }).join('');
   setup.showModal();
