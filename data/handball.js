@@ -140,6 +140,9 @@ const glance=[['선수','한 팀 7명','골키퍼 1명 포함. 경기 중에도 
 const diaryExamples=[['2026-04-25',1,27,21,'처음 본 핸드볼. 골이 계속 나서 지루할 틈이 없음'],['2026-03-14',2,24,25,'한 골 차로 아쉽게 짐']];
 const scoreLabel='골';
 
-return {glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 홈 "이번 주 일정"용 경기 목록: 26-27 일정 발표 전이라 비어 있음
+const games=[];
+
+return {games,glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

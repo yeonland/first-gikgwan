@@ -192,6 +192,6 @@ const scoreLabel='점수';
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
 const glance=[['선수','한 팀 5명','벤치 선수와 몇 번이든 교체'],['경기 시간','10분 × 4쿼터','공이 죽으면 시계도 멈춰요'],['이기는 법','점수가 많은 팀','동점이면 5분 연장. 비기는 경기는 없어요']];
 
-return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,leagueSites,diaryExamples,scoreLabel};
 })();

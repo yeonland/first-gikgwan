@@ -137,6 +137,6 @@ const glance=[['선수','한 팀 6명','골리(골키퍼) 1명 포함. 경기 �
 const diaryExamples=[['2026-10-06',1,6,1,'처음 본 아이스하키. 생각보다 훨씬 빠름'],['2026-02-21',2,2,3,'승부치기까지 갔는데 아쉽게 짐']];
 const scoreLabel='골';
 
-return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

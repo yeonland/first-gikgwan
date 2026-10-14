@@ -181,6 +181,9 @@ const diaryExamples=[['2026-09-14',3,5,3,'처음 간 날. 응원가 하나 외�
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
 const glance=[['선수','한 팀 9명','수비할 때 9명이 다 나가요'],['경기 시간','9회','시간 제한 없이 3아웃씩 번갈아 공격'],['이기는 법','점수가 많은 팀','동점이면 연장. KBO 정규시즌은 11회까지 하고 그래도 같으면 무승부']];
 
-return {glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 홈 "이번 주 일정"용 경기 목록 [날짜, 시간(발표 전이면 null), 홈, 원정, 구장]. 날짜가 정해진 포스트시즌 경기만
+const games=[['2026-10-14',null,'LG','두산','잠실야구장'],['2026-11-02',null,'KT','플레이오프 승자','수원KT위즈파크']];
+
+return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
 })();
