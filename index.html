@@ -1133,10 +1133,22 @@ document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()
 // 직관 준비: 경기장 가는 법 · 좌석 · 준비물(종목별로 따로 저장) · 응원
 let PREP_DONE={};
 const prepPark=$('prep-park');
+// 내 팀 응원석: 다음 경기가 이 구장이면 그 경기 기준, 아니면 내 홈구장인지 다른 팀 구장인지에 따라
+function mySeatRow(p){
+  const side=/^3루/.test(p.home||'')?'3루':/^1루/.test(p.home||'')?'1루':null;if(!side||!me)return '';
+  const other=side==='1루'?'3루':'1루',park=prepPark.value,t=me,g=D.nextGame(t);
+  const owners=D.teams.filter(x=>x[3]===park).map(x=>x[1]);
+  let txt;
+  if(g&&!g.off&&g.date&&g.park===park){const home=g.home===t[0];txt=`다음 경기 ${ledDate(g.date)} ${home?'홈':'원정'} · ${esc(t[1])} 팬은 ${home?side:other} 쪽${home?'':'(원정 응원석)'}`}
+  else if(t[3]===park)txt=`${esc(t[1])} 홈경기 날은 ${side} 쪽. 원정 경기로 다른 구장에 가면 그 구장의 원정 쪽이에요`;
+  else txt=`${esc(t[1])} 원정 경기 날 ${esc(t[1])} 팬은 ${other} 쪽(원정 응원석)`;
+  if(owners.length>1)txt+=`. 이 구장은 ${owners.map(esc).join('·')} 홈구장이라, 그날 일정표의 홈팀이 ${side} 쪽이에요`;
+  return `<dt>내 팀 응원석</dt><dd>${txt}</dd>`;
+}
 function renderPark(){
   const p=D.parkInfo[prepPark.value],q=D.mapQuery[prepPark.value]||prepPark.value;
   $('prep-park-info').innerHTML=`<dt>가는 길</dt><dd>${p.go||'아래 카카오맵·네이버지도 링크로 길을 찾아 주세요'}</dd><dt>주차·이동</dt><dd>${p.car||'경기 날은 주차가 어려워요. 대중교통을 추천해요'}</dd>
-    <dt>홈 응원석</dt><dd>${p.home||D.homeSeatNote||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>
+    <dt>홈 응원석</dt><dd>${p.home||D.homeSeatNote||'확인 필요. 예매처 좌석도에서 응원단상 위치를 보세요'}</dd>${mySeatRow(p)}
     <dt>지도</dt><dd class="map-go"><a href="https://map.kakao.com/link/search/${encodeURIComponent(q)}" target="_blank" rel="noopener">카카오맵</a> · <a href="https://map.naver.com/p/search/${encodeURIComponent(q)}" target="_blank" rel="noopener">네이버지도</a>에서 길 찾기</dd>`;
 }
 prepPark.addEventListener('change',()=>{renderPark();renderMap()});
