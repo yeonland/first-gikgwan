@@ -472,7 +472,7 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 <dialog class="setup" id="setup" aria-labelledby="setup-h">
   <form method="dialog" id="setup-form">
     <h2 id="setup-h">어떤 경기를 보러 가세요?</h2>
-    <p class="fine">여러 종목을 고를 수 있어요. 종목마다 내 팀을 고르면 홈에 다음 경기가 나와요. 응원하는 팀이 없으면 "응원팀 없음"을 고르거나 아래 "팀 없이 둘러보기"를 누르세요.</p>
+    <p class="fine">여러 종목을 고를 수 있어요. 종목마다 내 팀을 고르면 홈에 다음 경기가 나와요. 응원하는 팀이 없으면 "응원팀 없음"을 고르거나, 아래 "팀 없이 둘러보기"를 누르세요. 종목을 안 고르고 누르면 모든 종목을 둘러봐요.</p>
     <div class="list" id="setup-list"></div>
     <p class="form-msg" id="setup-msg" role="status"></p>
     <button type="submit" class="submit" id="setup-ok">시작하기</button>
@@ -1349,11 +1349,10 @@ function finishSetup(my){
   MY=my;store('myTeams',MY);setupDone=true;document.body.classList.remove('pre');setup.close();
   const ids=Object.keys(MY);useSport(ids.includes(cur)?cur:ids[0]);
 }
-// 팀 없이 둘러보기: 고른 종목은 고른 팀 그대로, 팀을 안 고른 종목은 응원팀 없음. 종목도 안 골랐으면 야구
+// 팀 없이 둘러보기: 체크한 종목을 모두 응원팀 없이 (이미 고른 팀이 있어도). 종목을 안 골랐으면 열린 종목 전부
 $('setup-skip').addEventListener('click',()=>{
   const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
-  const my=Object.fromEntries((on.length?on:['baseball']).map(id=>{const v=setup.querySelector(`[name="team-${id}"]`).value;return [id,v===''?NO_TEAM:+v]}));
-  finishSetup(my);
+  finishSetup(Object.fromEntries((on.length?on:READY).map(id=>[id,NO_TEAM])));
 });
 $('setup-form').addEventListener('submit',e=>{
   const on=[...setup.querySelectorAll('[name=sp]:checked')].map(x=>x.value);
