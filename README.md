@@ -240,5 +240,11 @@ first-gikgwan/
 - 누구나 무료로 쓸 수 있고, 로고(CI/BI)를 포함해 웹·모바일·인쇄·영상에 별도 허가 없이 사용할 수 있습니다. 출처 표기는 권장 사항입니다.
 - 글꼴 파일의 수정, 복제, 배포, 유료 판매는 금지입니다. 그래서 파일은 저장소에 넣지 않고 CDN으로 불러옵니다.
 
-## 글꼴 라이선스: DotGothic16 (전광판 숫자)
-Google Fonts, SIL Open Font License.
+## 글꼴 라이선스: Mona12 (전광판 숫자)
+MonadABXY의 Mona 글꼴. 출처: [github.com/MonadABXY/mona-font](https://github.com/MonadABXY/mona-font)
+
+| 사용 범위 | 허용 여부 | 이 앱에서 |
+|---|---|---|
+| 웹사이트 | 가능 | 전광판 숫자 |
+| 웹·서버에 폰트 탑재(임베딩) | 가능 | jsdelivr CDN으로 불러옴 |
+| OFL | 수정·복제·배포 가능, 글꼴 파일 유료 판매는 금지 | 파일은 저장소에 넣지 않음 |
