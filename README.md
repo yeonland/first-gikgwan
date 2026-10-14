@@ -118,8 +118,8 @@ first-gikgwan/
 - [x] 반응형, 라이트·다크 모드, GitHub Pages 배포
 
 ### 나중에 할 일
-- [x] 핸드볼 H리그: 남녀 14팀, 26-27 일정은 발표 전이라 "일정 발표 전"으로 표시, 티켓링크 연결, 룰 카드 10장(2025 변경 규칙에 있는 조항만), 경기장 7곳
-- [ ] 핸드볼 전체 규칙서로 룰 카드 조항 채우기, 26-27 일정 나오면 넣기
+- [x] 핸드볼 H리그: 남녀 14팀, 26-27 일정은 발표 전이라 "일정 발표 전"으로 표시, 티켓링크 연결, 룰 카드 10장(IHF 경기규칙 2025·2025 변경 규칙 대조), 경기장 7곳
+- [ ] 핸드볼 26-27 일정 나오면 넣기
 - [ ] 룰 카드 그림 13장 (영상보다 그림이 나은 카드. 그림 스타일을 정한 뒤)
 - [ ] 구장 먹거리 (구장 안 대표 메뉴, 시즌 기준일을 붙여서)
 - [ ] 직관 기록 백업: 파일로 내보내기·불러오기 → 로그인·서버로 기기 간 동기화
@@ -153,7 +153,8 @@ first-gikgwan/
 | 축구 | IFAB 축구 경기규칙 2026/27 (한국어판) | [서울특별시축구협회 경기규칙](http://seoulfa.or.kr/bbs/board.php?bo_table=rule&wr_id=5) |
 | 농구 | FIBA 공식 농구 경기규칙 2026 (한국어판) | [대한민국농구협회 경기규칙](https://www.koreabasketball.or.kr/basketball/game_rule.php) |
 | 농구 리그 규정 | KBL 규약 (2025.08.28 개정) | [KBL 규정](https://kbl.or.kr/rule/regulation) · WKBL은 [경기규칙](https://www.wkbl.or.kr/about/game_rule.asp) |
-| 핸드볼 | 2025 변경 규칙 (국제핸드볼연맹 규칙 번역) | [한국핸드볼연맹 경기규칙](https://www.koreahandball.com/hkl/game_rule.php) |
+| 핸드볼 | IHF Rules of the Game for Indoor Handball (2025.07.01, 영문) | [국제핸드볼연맹](https://www.ihf.info) |
+| 핸드볼 | 2025 변경 규칙 (위 규칙의 바뀐 부분 한국어 번역) | [한국핸드볼연맹 경기규칙](https://www.koreahandball.com/hkl/game_rule.php) |
 | 아이스하키 | IIHF 공식 규정집 2025/26 (영문) | [IIHF 규정집](https://www.iihf.com/en/statichub/4719/rules-and-regulations) |
 | 아이스하키 리그 규정 | 아시아리그 2026-27 개최요강 (연장·승부치기·승점) | [아시아리그 개최요강](https://asiaicehockey.com/outline) |
 
