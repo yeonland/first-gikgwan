@@ -406,7 +406,11 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   /* 직관 기록: 왼쪽 쪽 붙인 티켓 / 오른쪽 쪽 티켓 붙이기 */
   #p-log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
   #p-log>section:first-child{padding-right:36px}
-  #p-log>section+section{padding-left:36px;border-left:1px solid var(--line)}
+  #p-log>section+section{grid-column:2;padding-left:36px;border-left:1px solid var(--line)}
+  /* 기록 보관은 티켓 붙이기 아래 (오른쪽 쪽). 붙인 티켓은 왼쪽 쪽 전체 */
+  #p-log>section:first-child{grid-row:1/span 2}
+  #p-log>section+section+section{padding-top:32px}
+  #p-log{grid-template-rows:auto 1fr}
   /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
   .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
   .rule-list>.list+.list{border-top:1px solid var(--line)}
