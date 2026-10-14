@@ -204,6 +204,13 @@ const season={note:'2026 시즌 · KBO 발표 기준',rows:[
   ['준플레이오프','3위 vs 와일드카드 승자, 5전 3선승'],['플레이오프','2위 vs 준플레이오프 승자, 5전 3선승'],
   ['한국시리즈','1위 vs 플레이오프 승자, 7전 4선승']]};
 
-return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 영구결번 [번호, 선수] (스포츠한국·일요신문 정리 기사와 대조, 2026.10.14 확인). 없는 구단은 빈 배열
+// retiredSpot: 구장에서 결번을 볼 수 있는 곳 (확인한 곳만)
+const retired={LG:[[9,'이병규'],[33,'박용택'],[41,'김용수']],'두산':[[21,'박철순'],[54,'김영신']],'키움':[],SSG:[[26,'박경완']],KT:[],
+  '한화':[[21,'송진우'],[23,'정민철'],[35,'장종훈'],[52,'김태균']],'삼성':[[10,'양준혁'],[21,'오승환'],[22,'이만수'],[36,'이승엽']],
+  KIA:[[7,'이종범'],[18,'선동열']],'롯데':[[10,'이대호'],[11,'최동원']],NC:[]};
+const retiredSpot={'롯데':'사직 전광판 기둥 아래 왼쪽에 11번, 오른쪽에 10번이 있어요'};
+
+return {retired,retiredSpot,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
 })();
