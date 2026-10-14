@@ -250,7 +250,13 @@ const cheer=[
   ['"디펜스" 외치기','상대가 공격할 때 홈 팬들이 다 같이 "디펜스"를 외쳐요'],
   ['자유투 때','우리 팀 자유투 땐 조용히, 상대 자유투 땐 응원 도구를 흔들어요']
 ];
-const clubUrl=Object.fromEntries(Object.entries(KBLsub).map(([k,s])=>[k,`https://${s}.kbl.or.kr`]));
+const clubUrl={...Object.fromEntries(Object.entries(KBLsub).map(([k,s])=>[k,`https://${s}.kbl.or.kr`])),
+  // WKBL: 구단 홈페이지 (사용자 확인 2026.10.14). 신한은행·하나은행은 따로 홈페이지가 없어 WKBL 팀 소개 페이지
+  'KB스타즈':'http://www.kbstars.co.kr/kbstars/2022/main.php','삼성생명':'http://www.samsungblueminx.com/',
+  '우리은행':'https://wooriwon.wooribank.com/basketball/main/main.php','BNK':'https://bnksumbasket.com/',
+  '신한은행':'https://www.wkbl.or.kr/team/teaminfo.asp?team_code=07','하나은행':'https://www.wkbl.or.kr/team/teaminfo.asp?team_code=09'};
+// 링크 이름: 구단 홈페이지가 아닌 곳은 따로 (없으면 "○○ 공식 홈페이지")
+const clubLabel={'신한은행':'WKBL 신한은행 구단 소개','하나은행':'WKBL 하나은행 구단 소개'};
 const leagueSite=['KBL 공식 홈페이지','https://www.kbl.or.kr'];
 const leagueSites={KBL:leagueSite,WKBL:['WKBL 공식 홈페이지','https://www.wkbl.or.kr']};
 
@@ -268,6 +274,6 @@ const season={note:'2026-27 시즌 · KBL·WKBL 발표 기준',rows:[
   ['WKBL 정규리그','6팀, 7라운드 팀당 35경기 (11.01 개막)'],
   ['WKBL 플레이오프','상위 4팀, 이번 시즌부터 3전 2선승 (지난 시즌 챔피언결정전은 5전 3선승)']]};
 
-return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {clubLabel,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,leagueSites,diaryExamples,scoreLabel};
 })();

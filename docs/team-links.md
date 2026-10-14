@@ -74,12 +74,12 @@
 | 서울 삼성 썬더스 (KBL) | [홈페이지](https://thunders.kbl.or.kr) |  |  |  |
 | 고양 소노 스카이거너스 (KBL) | [홈페이지](https://skygunners.kbl.or.kr) |  |  |  |
 | 울산 현대모비스 피버스 (KBL) | [홈페이지](https://phoebus.kbl.or.kr) |  |  |  |
-| 청주 KB스타즈 (WKBL) |  |  |  |  |
-| 용인 삼성생명 블루밍스 (WKBL) |  |  |  |  |
-| 인천 신한은행 에스버드 (WKBL) |  |  |  |  |
-| 부천 하나은행 (WKBL) |  |  |  |  |
-| 부산 BNK 썸 (WKBL) |  |  |  |  |
-| 아산 우리은행 우리WON (WKBL) |  |  |  |  |
+| 청주 KB스타즈 (WKBL) | [홈페이지](http://www.kbstars.co.kr/kbstars/2022/main.php) |  |  |  |
+| 용인 삼성생명 블루밍스 (WKBL) | [홈페이지](http://www.samsungblueminx.com/) |  |  |  |
+| 인천 신한은행 에스버드 (WKBL) | [WKBL 구단 소개](https://www.wkbl.or.kr/team/teaminfo.asp?team_code=07) (따로 홈페이지 없음) |  |  |  |
+| 부천 하나은행 (WKBL) | [WKBL 구단 소개](https://www.wkbl.or.kr/team/teaminfo.asp?team_code=09) (따로 홈페이지 없음) |  |  |  |
+| 부산 BNK 썸 (WKBL) | [홈페이지](https://bnksumbasket.com/) |  |  |  |
+| 아산 우리은행 우리WON (WKBL) | [홈페이지](https://wooriwon.wooribank.com/basketball/main/main.php) |  |  |  |
 
 ## 아이스하키 (아시아리그)
 
