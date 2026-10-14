@@ -130,7 +130,14 @@ const cheer=[
   ['골키퍼 선방에도 박수','핸드볼은 골키퍼가 막는 장면이 골만큼 큰 볼거리예요'],
   ['치어리더 따라 하기','H리그 치어리더가 응원을 이끄는 경기도 있어요']
 ];
-const clubUrl={};
+// 구단 페이지: SK호크스만 따로 홈페이지가 있고, 나머지는 한국핸드볼연맹 팀 소개 (team_num은 연맹 팀 번호, 2026.10.14 확인)
+const KOHA_NUM={'두산':149,'SK호크스':132,'인천도시공사':120,'하남시청':150,'충남도청':113,'상무피닉스':22,
+  'SK슈가글라이더즈':123,'삼척시청':93,'부산시설공단':100,'경남개발공사':102,'광주도시공사':110,'대구광역시청':23,'서울시청':107,'인천광역시청':127};
+const clubUrl=Object.fromEntries(teams.map(t=>[t[1],`https://www.koreahandball.com/introduce/team_${t[5]==='남자부'?'men':'women'}.php?team_num=${KOHA_NUM[t[1]]}&page_type=1`]));
+clubUrl['SK호크스']='https://www.skhawks.com/skhk/main/home/portalHome';
+const clubLabel=Object.fromEntries(teams.filter(t=>t[1]!=='SK호크스').map(t=>[t[1],`한국핸드볼연맹 ${t[0]} 소개`]));
+// 응원가 페이지 (확인한 구단만)
+const cheerUrl={'SK호크스':'https://www.skhawks.com/skhk/vw/contents/fightsong'};
 const leagueSite=['한국핸드볼연맹 홈페이지','https://www.koreahandball.com'];
 
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
@@ -149,6 +156,6 @@ const season={note:'26-27 시즌은 발표 전 · 지난 시즌(25-26) 기준',r
   ['남자부 포스트시즌','1위는 챔피언결정전으로 바로. 2위 vs 3위 플레이오프는 2위가 1번만 이기면 통과. 챔피언결정전 3전 2선승'],
   ['여자부 포스트시즌','3위 vs 4위 준플레이오프(단판) → 2위와 플레이오프(단판) → 1위와 챔피언결정전 3전 2선승']]};
 
-return {season,games,glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {clubLabel,cheerUrl,season,games,glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

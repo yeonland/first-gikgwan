@@ -28,20 +28,20 @@
 
 | 구단 | 홈페이지 | 팀 색 (BI) | 마스코트 | 응원가 |
 |---|---|---|---|---|
-| 대한항공 점보스 (남자부) |  |  |  |  |
-| 현대캐피탈 스카이워커스 (남자부) |  |  |  |  |
+| 대한항공 점보스 (남자부) | [KOVO 대한항공 구단 페이지](https://jumbos.kovo.co.kr/) |  |  |  |
+| 현대캐피탈 스카이워커스 (남자부) | [KOVO 현대캐피탈 구단 페이지](https://skywalkers.kovo.co.kr/) |  |  |  |
 | OK저축은행 읏맨 (남자부) | [홈페이지](https://www.okfinancialsports.com) |  |  |  |
-| 삼성화재 블루팡스 (남자부) |  |  |  |  |
-| 한국전력 빅스톰 (남자부) |  |  |  |  |
-| KB손해보험 스타즈 (남자부) |  |  |  |  |
-| 우리카드 우리WON (남자부) |  |  |  |  |
+| 삼성화재 블루팡스 (남자부) | [KOVO 삼성화재 구단 페이지](https://bluefangs.kovo.co.kr/) |  |  |  |
+| 한국전력 빅스톰 (남자부) | [KOVO 한국전력 구단 페이지](https://vixtorm.kovo.co.kr/) |  |  |  |
+| KB손해보험 스타즈 (남자부) | [KOVO KB손해보험 구단 페이지](https://stars.kovo.co.kr/) |  |  |  |
+| 우리카드 우리WON (남자부) | [KOVO 우리카드 구단 페이지](https://wooriwon.kovo.co.kr/) |  |  |  |
 | 흥국생명 핑크스파이더스 (여자부) | [홈페이지](https://www.pinkspiders.co.kr) |  |  |  |
 | 현대건설 힐스테이트 (여자부) | [홈페이지](https://hillstate.hdec.kr) |  |  |  |
-| 정관장 레드스파크스 (여자부) |  |  |  |  |
-| GS칼텍스 KIXX (여자부) |  |  |  |  |
+| 정관장 레드스파크스 (여자부) | [KOVO 정관장 구단 페이지](https://redsparks.kovo.co.kr/) |  |  |  |
+| GS칼텍스 KIXX (여자부) | [KOVO GS칼텍스 구단 페이지](https://kixx.kovo.co.kr/) |  |  |  |
 | IBK기업은행 알토스 (여자부) | [홈페이지](http://sports.ibk.co.kr/volleyball/altos) |  |  |  |
-| 한국도로공사 하이패스 (여자부) |  |  |  |  |
-| SOOP 수퍼스 (여자부) |  |  |  |  |
+| 한국도로공사 하이패스 (여자부) | [KOVO 한국도로공사 구단 페이지](https://hipass.kovo.co.kr/) |  |  |  |
+| SOOP 수퍼스 (여자부) | [홈페이지](https://soopers.gg/) |  |  |  |
 
 ## 축구 (K리그1)
 
@@ -86,27 +86,27 @@
 | 구단 | 홈페이지 | 팀 색 (BI) | 마스코트 | 응원가 |
 |---|---|---|---|---|
 | HL 안양 | [홈페이지](http://www.hlicehockey.com) |  |  |  |
-| 레드이글스 홋카이도 |  |  |  |  |
-| 도호쿠 프리블레이즈 |  |  |  |  |
-| 도치기 닛코 아이스벅스 |  |  |  |  |
-| 요코하마 그리츠 |  |  |  |  |
-| 스타즈 고베 |  |  |  |  |
+| 레드이글스 홋카이도 | [레드이글스 홋카이도 공식 홈페이지 (일본어)](https://redeagles.co.jp/) |  |  |  |
+| 도호쿠 프리블레이즈 | [도호쿠 프리블레이즈 공식 홈페이지 (일본어)](https://freeblades.jp/) |  |  |  |
+| 도치기 닛코 아이스벅스 | [도치기 닛코 아이스벅스 공식 홈페이지 (일본어)](https://www.icebucks.jp/) |  |  |  |
+| 요코하마 그리츠 | [요코하마 그리츠 공식 홈페이지 (일본어)](https://grits-sport.com/) |  |  |  |
+| 스타즈 고베 | [스타즈 고베 공식 홈페이지 (일본어)](https://stars-kobe.com/) |  |  |  |
 
 ## 핸드볼 (H리그)
 
 | 구단 | 홈페이지 | 팀 색 (BI) | 마스코트 | 응원가 |
 |---|---|---|---|---|
-| 두산 (남자부) |  |  |  |  |
-| SK호크스 (남자부) |  |  |  |  |
-| 인천도시공사 (남자부) |  |  |  |  |
-| 하남시청 (남자부) |  |  |  |  |
-| 충남도청 (남자부) |  |  |  |  |
-| 상무 피닉스 (남자부) |  |  |  |  |
-| SK슈가글라이더즈 (여자부) |  |  |  |  |
-| 삼척시청 (여자부) |  |  |  |  |
-| 부산시설공단 (여자부) |  |  |  |  |
-| 경남개발공사 (여자부) |  |  |  |  |
-| 광주도시공사 (여자부) |  |  |  |  |
-| 대구광역시청 (여자부) |  |  |  |  |
-| 서울시청 (여자부) |  |  |  |  |
-| 인천광역시청 (여자부) |  |  |  |  |
+| 두산 (남자부) | [한국핸드볼연맹 두산 소개](https://www.koreahandball.com/introduce/team_men.php?team_num=149&page_type=1) |  |  |  |
+| SK호크스 (남자부) | [홈페이지](https://www.skhawks.com/skhk/main/home/portalHome) |  |  | [응원가](https://www.skhawks.com/skhk/vw/contents/fightsong) |
+| 인천도시공사 (남자부) | [한국핸드볼연맹 인천도시공사 소개](https://www.koreahandball.com/introduce/team_men.php?team_num=120&page_type=1) |  |  |  |
+| 하남시청 (남자부) | [한국핸드볼연맹 하남시청 소개](https://www.koreahandball.com/introduce/team_men.php?team_num=150&page_type=1) |  |  |  |
+| 충남도청 (남자부) | [한국핸드볼연맹 충남도청 소개](https://www.koreahandball.com/introduce/team_men.php?team_num=113&page_type=1) |  |  |  |
+| 상무 피닉스 (남자부) | [한국핸드볼연맹 상무 피닉스 소개](https://www.koreahandball.com/introduce/team_men.php?team_num=22&page_type=1) |  |  |  |
+| SK슈가글라이더즈 (여자부) | [한국핸드볼연맹 SK슈가글라이더즈 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=123&page_type=1) |  |  |  |
+| 삼척시청 (여자부) | [한국핸드볼연맹 삼척시청 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=93&page_type=1) |  |  |  |
+| 부산시설공단 (여자부) | [한국핸드볼연맹 부산시설공단 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=100&page_type=1) |  |  |  |
+| 경남개발공사 (여자부) | [한국핸드볼연맹 경남개발공사 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=102&page_type=1) |  |  |  |
+| 광주도시공사 (여자부) | [한국핸드볼연맹 광주도시공사 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=110&page_type=1) |  |  |  |
+| 대구광역시청 (여자부) | [한국핸드볼연맹 대구광역시청 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=23&page_type=1) |  |  |  |
+| 서울시청 (여자부) | [한국핸드볼연맹 서울시청 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=107&page_type=1) |  |  |  |
+| 인천광역시청 (여자부) | [한국핸드볼연맹 인천광역시청 소개](https://www.koreahandball.com/introduce/team_women.php?team_num=127&page_type=1) |  |  |  |

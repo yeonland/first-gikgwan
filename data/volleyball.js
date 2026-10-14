@@ -221,7 +221,11 @@ const cheer=[
   ['공에서 눈 떼지 않기','강한 서브와 스파이크가 관중석으로 날아오기도 해요']
 ];
 // 응원가·선수 정보: 공식 홈페이지가 확인된 구단만. 나머지는 KOVO 홈페이지로
-const clubUrl={'OK저축은행':'https://www.okfinancialsports.com','흥국생명':'https://www.pinkspiders.co.kr','현대건설':'https://hillstate.hdec.kr','IBK기업은행':'http://sports.ibk.co.kr/volleyball/altos'};
+// 구단 페이지: 배구단 사이트는 KOVO 안의 구단 페이지(팀이름.kovo.co.kr). SOOP은 따로 (사용자 확인 2026.10.14)
+const KOVO_SUB={'대한항공':'jumbos','현대캐피탈':'skywalkers','OK저축은행':'okman','삼성화재':'bluefangs','한국전력':'vixtorm','KB손해보험':'stars','우리카드':'wooriwon',
+  '흥국생명':'pinkspiders','현대건설':'hillstate','정관장':'redsparks','GS칼텍스':'kixx','IBK기업은행':'altos','한국도로공사':'hipass'};
+const clubUrl={...Object.fromEntries(Object.entries(KOVO_SUB).map(([k,s])=>[k,`https://${s}.kovo.co.kr/`])),'SOOP':'https://soopers.gg/'};
+const clubLabel=Object.fromEntries(Object.keys(KOVO_SUB).map(k=>[k,`KOVO ${k} 구단 페이지`]));
 const leagueSite=['KOVO 공식 홈페이지',KOVO];
 
 // 직관 기록: 기록이 없을 때 홈에 보여 줄 예시 2장 [날짜, 상대(같은 리그에서 몇 번째 뒤 팀), 홈 세트, 원정 세트, 메모]
@@ -242,6 +246,6 @@ const season={note:'2026-27 시즌 · KOVO 발표 기준',rows:[
 const KOVO_TCODE={'대한항공':1001,'현대캐피탈':1005,'우리카드':1009,'KB손해보험':1004,'한국전력':1006,'OK저축은행':1008,'삼성화재':1002,'GS칼텍스':2005,'한국도로공사':2002,'현대건설':2001,'흥국생명':2004,'IBK기업은행':2006,'정관장':2003,'SOOP':2008};
 const seatView=Object.fromEntries(Object.entries(KOVO_TCODE).map(([k,c])=>[k,`https://kovo.co.kr/tickets/court-view?tcode=${c}`]));
 
-return {seatView,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {clubLabel,seatView,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

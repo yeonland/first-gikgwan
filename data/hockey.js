@@ -127,7 +127,9 @@ const cheer=[
   ['골 넣으면 함께','골이 들어가면 다 같이 일어나 환호해요'],
   ['퍽 조심','퍽이 관중석으로 날아올 수 있어요. 경기 중엔 빙판에서 눈을 떼지 마세요']
 ];
-const clubUrl={'HL안양':'http://www.hlicehockey.com'};
+const clubUrl={'HL안양':'http://www.hlicehockey.com','레드이글스':'https://redeagles.co.jp/','아이스벅스':'https://www.icebucks.jp/',
+  '프리블레이즈':'https://freeblades.jp/','그리츠':'https://grits-sport.com/','스타즈':'https://stars-kobe.com/'};   // 일본 팀은 사용자 확인 2026.10.14
+const clubLabel=Object.fromEntries(['레드이글스','아이스벅스','프리블레이즈','그리츠','스타즈'].map(k=>[k,`${teams.find(t=>t[1]===k)[0]} 공식 홈페이지 (일본어)`]));
 const leagueSite=['아시아리그 공식 홈페이지',AL];
 
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
@@ -143,6 +145,6 @@ const season={note:'2026-27 시즌 · 아시아리그 개최요강 기준',rows:
   ['순위','승점: 60분 안에 이기면 3, 연장·승부치기로 이기면 2, 연장·승부치기로 지면 1'],
   ['플레이오프','상위 4팀. 방식은 아직 발표 전이에요']]};
 
-return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {clubLabel,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();
