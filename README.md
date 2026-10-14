@@ -108,7 +108,7 @@ first-gikgwan/
 - [x] 야구 KBO: 10개 구단, 2026 포스트시즌 실제 일정, 구단별 예매처, 룰 카드 10장, 9개 구장
 - [x] 배구 V-리그: 남녀 14팀, 2026-27 첫 경기·첫 홈경기, 룰 카드 10장, 11개 체육관
 - [x] 축구 K리그1: 12팀, 2026 정규 라운드 남은 경기(32·33라운드), K리그 일정·예매 연결, 룰 카드 10장(IFAB 경기규칙 2026/27 대조), 12개 경기장
-- [x] 농구 KBL·WKBL: 남녀 16팀, 2026-27 정규리그 일정(KBL 10.14~11.08, WKBL 개막~11.20), 구단 예매 페이지 연결, 룰 카드 12장(FIBA 경기규칙 2026·KBL 규약·WKBL 경기규칙 대조, WKBL이 다른 점 카드 포함), 14개 체육관
+- [x] 농구 KBL·WKBL: 남녀 16팀, 2026-27 정규리그 일정(KBL 10.14~11.08, WKBL 개막~11.20), 구단 예매 페이지 연결, 룰 카드 12장(FIBA 경기규칙 2026·KBL 규약·KBL·WKBL 경기규칙 대조, 두 리그가 다른 점 카드 포함), 14개 체육관
 - [x] 아이스하키 아시아리그: 6팀(국내는 HL 안양), HL 안양 2026-27 남은 경기, 티켓링크 연결·좌석 가격, 룰 카드 10장(IIHF 규정집 2025/26·아시아리그 개최요강 대조), 안양빙상장
 - [x] 룰 탭 맨 위 이 종목 한눈에 (선수 수·경기 시간·이기는 법)
 - [x] 종목 구조: 데이터 분리, 처음 설정(여러 종목 + 종목마다 내 팀), 종목 칩
@@ -152,6 +152,7 @@ first-gikgwan/
 | 배구 | 배구경기규칙서 2025~2028 (FIVB) | [대한배구협회](https://www.kva.or.kr/user/template.do?fileNm=vlb2_1) |
 | 축구 | IFAB 축구 경기규칙 2026/27 (한국어판) | [서울특별시축구협회 경기규칙](http://seoulfa.or.kr/bbs/board.php?bo_table=rule&wr_id=5) |
 | 농구 | FIBA 공식 농구 경기규칙 2026 (한국어판) | [대한민국농구협회 경기규칙](https://www.koreabasketball.or.kr/basketball/game_rule.php) |
+| 농구 리그 규정 | KBL 2026-2027 경기규칙서 (FIBA 바탕, 작전타임·챌린지 등 일부 다름) | [KBL](https://kbl.or.kr) |
 | 농구 리그 규정 | KBL 규약 (2025.08.28 개정) | [KBL 규정](https://kbl.or.kr/rule/regulation) |
 | 농구 리그 규정 | WKBL 2025-2026 경기 규칙 (FIBA 바탕, 명단·타임아웃·챌린지 등 일부 다름) | [WKBL 경기규칙](https://www.wkbl.or.kr/about/game_rule.asp) |
 | 핸드볼 | IHF Rules of the Game for Indoor Handball (2025.07.01, 영문) | [국제핸드볼연맹](https://www.ihf.info) |
