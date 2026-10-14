@@ -194,7 +194,7 @@ nav button{width:100%;font:inherit;color:var(--pencil);background:transparent;bo
 nav button.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
 
 /* 페이지 */
-#p-home{display:contents}
+#p-home,.home-col{display:contents}
 .page{display:flex;flex-direction:column;gap:30px;min-width:0}
 .empty{margin:0;padding:20px 16px;border:1.5px dashed var(--line);color:var(--pencil);font-size:var(--fs-body)}
 .fine{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
@@ -383,13 +383,13 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   body{padding-inline:32px;padding-block:32px 112px}
   /* 왼쪽 쪽: 다음 경기 / 오른쪽 쪽: 다른 종목 + 기록. 가운데 세로선이 제본선 */
   .app{max-width:860px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:0;row-gap:0;
-       grid-template-areas:"head head" "next other" "next diary"}
+       grid-template-areas:"head head" "l r"}
   .app>header{grid-area:head;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
-  #p-home>section{padding-bottom:36px}
-  #p-home>section[aria-labelledby="h-next"]{grid-area:next;padding-right:36px}
-  #p-home>section[aria-labelledby="h-other"]{grid-area:other}
-  #p-home>section[aria-labelledby="h-diary"]{grid-area:diary}
-  #p-home>section[aria-labelledby="h-other"],#p-home>section[aria-labelledby="h-diary"]{padding-left:36px;border-left:1px solid var(--line)}
+  /* 두 쪽을 따로 쌓아서, 한쪽이 길어도 다른 쪽에 빈칸이 생기지 않게 */
+  .home-col{display:flex;flex-direction:column;min-width:0}
+  .home-col.l{grid-area:l;padding-right:36px}
+  .home-col.r{grid-area:r;padding-left:36px;border-left:1px solid var(--line)}
+  .home-col>section{padding-bottom:36px}
   nav ul{max-width:520px}
   .page{grid-column:1/-1}
   #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
@@ -413,8 +413,8 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
   nav ul{grid-template-columns:1fr;gap:8px;max-width:none;font-size:var(--fs-body)}
   nav button{padding:12px 0}
   .app{max-width:1000px}
-  #p-home>section[aria-labelledby="h-next"]{padding-right:48px}
-  #p-home>section[aria-labelledby="h-other"],#p-home>section[aria-labelledby="h-diary"]{padding-left:48px}
+  .home-col.l{padding-right:48px}
+  .home-col.r{padding-left:48px}
 }
 @media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
 /* 터치 영역: 손가락으로 누르기 편하게 (칩·고르기 칸·작은 버튼 40px 이상, 하단 메뉴·탭 44px 안팎) */
@@ -480,6 +480,7 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
   </header>
 
   <div class="page" id="p-home">
+  <div class="home-col l">
   <section class="today" id="today" aria-labelledby="h-today" hidden>
     <div class="sec-head"><h2 id="h-today">오늘은 직관 날</h2><span class="led-chip">D-DAY</span></div>
     <div class="today-list" id="today-list"></div>
@@ -517,6 +518,8 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
     <p class="fine" id="week-fine">고른 종목의 내 팀 경기만 보여요. 경기를 누르면 그 종목으로 바뀌어요.</p>
   </section>
 
+  </div>
+  <div class="home-col r">
   <section aria-labelledby="h-other">
     <div class="sec-head"><h2 id="h-other">다른 종목 내 팀</h2><span class="note" id="other-note"></span></div>
     <div class="list"><div class="list-in" id="other-list"></div><button class="add" type="button" data-setup>종목별 내 팀 추가</button></div>
@@ -534,6 +537,7 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
     <p class="led-empty" id="home-led-empty"></p>
     <div class="diary"><div class="diary-in" id="home-diary"></div><button class="slot" type="button" data-add>다음 티켓 붙이기</button></div>
   </section>
+  </div>
   </div>
 
   <!-- 예매 -->
