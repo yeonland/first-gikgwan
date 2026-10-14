@@ -219,9 +219,14 @@ a{color:inherit;text-underline-offset:3px}
 header{flex-wrap:wrap}
 .sport-bar{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px}
 .chip.add-sport{border-style:dashed}
-.setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
+.setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:hidden}
+.setup[open]{display:flex;flex-direction:column}
 .setup::backdrop{background:rgba(0,0,0,.45)}
-.setup form{display:flex;flex-direction:column;gap:12px}
+.setup form{display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
+.setup h2,.setup .fine,.setup .form-msg,.setup .submit{flex-shrink:0}
+#setup-list{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+/* 처음 왔을 때: 팀을 고르기 전엔 뒤 화면을 가림 (기본값 LG 화면이 내 팀처럼 보이지 않게) */
+body.pre .app,body.pre nav{visibility:hidden}
 .pick{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px 12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
 .pick:first-child{border-top:0}
 .pick label{display:contents;cursor:pointer}
@@ -1291,7 +1296,8 @@ async function openSetup(){
     return `<div class="pick"><label><input type="checkbox" name="sp" value="${s.id}"${on?' checked':''}><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${s.icon}"/></svg><div><b>${s.name}</b><span>${s.league} · ${seasonOf(s.id).text}</span></div></label>
       <select name="team-${s.id}" aria-label="내 ${s.name}팀"${on?'':' hidden'}>${picked==null?'<option value="" selected disabled>내 팀 고르기</option>':''}${teamOptions(d.teams,(t,i)=>i,picked)}</select></div>`;
   }).join('');
-  setup.showModal();
+  if(!setupDone)document.body.classList.add('pre');
+  setup.showModal();$('setup-list').scrollTop=0;
 }
 $('setup-list').addEventListener('change',e=>{
   if(e.target.name==='sp'){const sel=e.target.closest('.pick').querySelector('select');sel.hidden=!e.target.checked;if(e.target.checked&&sel.value==='')sel.focus()}
@@ -1303,7 +1309,7 @@ $('setup-form').addEventListener('submit',e=>{
   const empty=on.find(id=>setup.querySelector(`[name="team-${id}"]`).value==='');
   if(empty){e.preventDefault();$('setup-msg').textContent=`${SPORT[empty].name} 팀을 골라 주세요.`;setup.querySelector(`[name="team-${empty}"]`).focus();return}
   MY=Object.fromEntries(on.map(id=>[id,+setup.querySelector(`[name="team-${id}"]`).value]));
-  store('myTeams',MY);setupDone=true;useSport(on.includes(cur)?cur:on[0]);
+  store('myTeams',MY);setupDone=true;document.body.classList.remove('pre');useSport(on.includes(cur)?cur:on[0]);
 });
 let setupDone=!firstVisit;
 setup.addEventListener('cancel',e=>{if(!setupDone)e.preventDefault()});   // 처음엔 고르기 전에 닫지 않음
