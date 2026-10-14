@@ -154,6 +154,13 @@ const scoreLabel='골';
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
 const glance=[['선수','한 팀 11명','골키퍼 1명 포함'],['경기 시간','전반 45분 + 후반 45분','끝날 때 추가시간이 붙어요'],['이기는 법','골이 많은 팀','K리그는 비기면 그대로 무승부 (승점 1)']];
 
-return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'2026 시즌 · K리그 대회요강 기준',rows:[
+  ['정규 라운드','12팀이 33라운드, 팀당 33경기'],
+  ['파이널 라운드','1~6위는 파이널A, 7~12위는 파이널B로 나뉘어 5경기씩 더 (팀당 모두 38경기, 10.31 ~ 12.06)'],
+  ['우승','38경기를 마친 뒤 승점 1위'],
+  ['강등','김천 상무는 연고 협약이 끝나 순위와 관계없이 K리그2로 가요. 김천이 12위가 아니면 12위 팀이 승강 플레이오프를 해요']]};
+
+return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

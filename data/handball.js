@@ -143,6 +143,12 @@ const scoreLabel='골';
 // 홈 "이번 주 일정"용 경기 목록: 26-27 일정 발표 전이라 비어 있음
 const games=[];
 
-return {games,glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'26-27 시즌은 발표 전 · 지난 시즌(25-26) 기준',rows:[
+  ['남자부 정규리그','6팀, 5라운드 팀당 25경기'],['여자부 정규리그','8팀, 3라운드 팀당 21경기'],
+  ['남자부 포스트시즌','1위는 챔피언결정전으로 바로. 2위 vs 3위 플레이오프는 2위가 1번만 이기면 통과. 챔피언결정전 3전 2선승'],
+  ['여자부 포스트시즌','3위 vs 4위 준플레이오프(단판) → 2위와 플레이오프(단판) → 1위와 챔피언결정전 3전 2선승']]};
+
+return {season,games,glance,teams,extraParks,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

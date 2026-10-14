@@ -231,6 +231,13 @@ const scoreLabel='세트';
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
 const glance=[['선수','한 팀 6명','수비만 하는 리베로가 따로 있어요'],['경기 시간','세트제','시간 제한 없이 25점 한 세트 (5세트는 15점)'],['이기는 법','세 세트를 먼저 따는 팀','비기는 경기는 없어요']];
 
-return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'2026-27 시즌 · KOVO 발표 기준',rows:[
+  ['정규리그','남녀부 각 7팀, 6라운드 팀당 36경기 (10.31 ~ 2027.04.02)'],
+  ['준플레이오프','3위와 4위의 승점 차가 3점 이내일 때만 단판으로 해요'],
+  ['플레이오프','2위 vs 3위(또는 준플레이오프 승자), 3전 2선승'],
+  ['챔피언결정전','1위 vs 플레이오프 승자, 5전 3선승']]};
+
+return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

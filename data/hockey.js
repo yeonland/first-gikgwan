@@ -137,6 +137,12 @@ const glance=[['선수','한 팀 6명','골리(골키퍼) 1명 포함. 경기 �
 const diaryExamples=[['2026-10-06',1,6,1,'처음 본 아이스하키. 생각보다 훨씬 빠름'],['2026-02-21',2,2,3,'승부치기까지 갔는데 아쉽게 짐']];
 const scoreLabel='골';
 
-return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'2026-27 시즌 · 아시아리그 개최요강 기준',rows:[
+  ['정규리그','6팀이 서로 8번씩, 팀당 40경기 (9.12 ~ 2027.03.14)'],
+  ['순위','승점: 60분 안에 이기면 3, 연장·승부치기로 이기면 2, 연장·승부치기로 지면 1'],
+  ['플레이오프','상위 4팀. 방식은 아직 발표 전이에요']]};
+
+return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();

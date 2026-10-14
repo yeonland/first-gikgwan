@@ -197,6 +197,13 @@ const games=[
  ['2026-11-09',null,'KT',PO2,'수원KT위즈파크','한국시리즈 6차전 · 필요하면'],['2026-11-10',null,'KT',PO2,'수원KT위즈파크','한국시리즈 7차전 · 필요하면']
 ];
 
-return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'2026 시즌 · KBO 발표 기준',rows:[
+  ['정규시즌','10팀이 팀당 144경기'],['가을야구','정규시즌 1~5위가 나가요'],
+  ['와일드카드','4위 vs 5위, 4위 홈. 4위는 1번 이기거나 비기면, 5위는 2번 다 이겨야 올라가요'],
+  ['준플레이오프','3위 vs 와일드카드 승자, 5전 3선승'],['플레이오프','2위 vs 준플레이오프 승자, 5전 3선승'],
+  ['한국시리즈','1위 vs 플레이오프 승자, 7전 4선승']]};
+
+return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
 })();

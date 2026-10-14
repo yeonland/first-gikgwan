@@ -261,6 +261,13 @@ const scoreLabel='점수';
 // 이 종목 한눈에 (룰 탭 맨 위): [이름표, 큰 글씨, 작은 설명]
 const glance=[['선수','한 팀 5명','벤치 선수와 몇 번이든 교체'],['경기 시간','10분 × 4쿼터','공이 죽으면 시계도 멈춰요'],['이기는 법','점수가 많은 팀','동점이면 5분 연장. 비기는 경기는 없어요']];
 
-return {games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+// 시즌은 이렇게 (룰 탭): 정규시즌 경기 수와 포스트시즌 방식 (2026.10.14 확인)
+const season={note:'2026-27 시즌 · KBL·WKBL 발표 기준',rows:[
+  ['KBL 정규리그','10팀, 팀당 54경기 (10.03 ~ 2027.04.11)'],
+  ['KBL 플레이오프','상위 6팀. 1·2위는 4강으로 바로, 3~6위는 6강 플레이오프 (지난 시즌 6강은 5전 3선승)'],
+  ['WKBL 정규리그','6팀, 7라운드 팀당 35경기 (11.01 개막)'],
+  ['WKBL 플레이오프','상위 4팀, 이번 시즌부터 3전 2선승 (지난 시즌 챔피언결정전은 5전 3선승)']]};
+
+return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,leagueSites,diaryExamples,scoreLabel};
 })();
