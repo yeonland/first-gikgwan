@@ -132,6 +132,9 @@ select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);backgrou
 .row.sea:first-child{border-top:0}
 .sea .tag{font-size:var(--fs-cap);color:var(--pencil);white-space:nowrap}
 .sea.on .tag{color:var(--team-ink);font-weight:700}
+/* 둘러보는 중: 룰·준비로 바로 가는 버튼 두 개 */
+.browse-go{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 14px 12px}
+.browse-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
 /* 이번 주 일정: 왼쪽 날짜, 오른쪽 그날 경기. 오늘은 팀 색 줄 */
 .week-nav{display:flex;align-items:center;gap:6px}
 .week-nav button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-family:var(--sans);font-size:var(--fs-body);line-height:1;cursor:pointer}
@@ -496,6 +499,12 @@ summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
     <div class="sec-head"><h2 id="h-today">오늘은 직관 날</h2><span class="led-chip">D-DAY</span></div>
     <div class="today-list" id="today-list"></div>
   </section>
+  <section aria-labelledby="h-browse" id="browse" hidden>
+    <div class="sec-head"><h2 id="h-browse">둘러보는 중</h2></div>
+    <div class="list"><p class="row hint">응원팀 없이 보고 있어요. 룰 카드와 경기장 가는 법, 준비물은 그대로 볼 수 있어요. 응원팀을 고르면 여기에 다음 경기와 직관 기록이 나와요.</p>
+      <div class="browse-go"><button type="button" data-go="rule">룰 카드 보기</button><button type="button" data-go="prep">경기장·준비물</button></div>
+      <button class="add" type="button" data-setup>응원팀 고르기</button></div>
+  </section>
   <section aria-labelledby="h-next">
     <div class="sec-head"><h2 id="h-next">내 팀 다음 경기</h2><span class="note" id="next-note"></span></div>
     <article class="ticket">
@@ -825,7 +834,13 @@ function apply(i){
   root.setProperty('--team-ink-dark',inkD);
   root.setProperty('--on-team-ink-light',onColor(inkL));
   root.setProperty('--on-team-ink-dark',onColor(inkD));
-  renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);renderWeek();renderToday();
+  renderTicket(t);renderClubs(t);setDiaryTeam(t);setPrepTeam(t);renderWeek();renderToday();renderBrowse();
+}
+// 모든 종목이 응원팀 없음이면 홈은 둘러보기 모양 (내 팀이 있어야 쓸모 있는 칸은 숨김)
+function renderBrowse(){
+  const browse=Object.values(MY).every(v=>v===NO_TEAM);
+  $('browse').hidden=!browse;
+  ['h-next','h-week','h-other','h-diary'].forEach(h=>{document.querySelector(`#p-home section[aria-labelledby="${h}"]`).hidden=browse});
 }
 function useSport(id){
   cur=id;store('sport',id);SP=SPORT[id];D=prepData(id);
