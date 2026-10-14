@@ -732,7 +732,7 @@ function renderWeek(){
       return (d.games||[]).filter(g=>g[0]===iso&&(g[2]===t[1]||g[3]===t[1])).map(g=>({sp,d,g,home:g[2]===t[1]}))})
       .sort((a,b)=>(a.g[1]||'99').localeCompare(b.g[1]||'99'));
     const games=list.map(({sp,d,g,home})=>`<button type="button" class="wk-game" data-sport="${sp.id}"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#${sp.icon}"/></svg>
-      <div><b>${esc(nameOf(d,g[2]))} vs ${esc(nameOf(d,g[3]))}</b><span>${sp.name} · ${g[1]||'시간 발표 전'} · ${esc(d.parkShort[g[4]]||g[4])} · ${home?'홈':'원정'}</span></div></button>`).join('');
+      <div><b>${esc(nameOf(d,g[2]))} vs ${esc(nameOf(d,g[3]))}</b><span>${sp.name} · ${g[1]||'시간 발표 전'} · ${esc(d.parkShort[g[4]]||g[4])} · ${home?'홈':'원정'}${g[5]?`<br>${esc(g[5])}`:''}</span></div></button>`).join('');
     return `<div class="wk-day${iso===todayISO?' today':''}${list.length?'':' off'}"><b>${bandDate(iso)}${iso===todayISO?'<br>오늘':''}</b>
       <div class="wk-games">${games||'<span class="wk-none">경기 없음</span>'}</div></div>`;
   }).join('');
