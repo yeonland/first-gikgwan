@@ -29,8 +29,8 @@ const standings={KT:[1,'90승 5무 49패'],'삼성':[2,'83승 3무 58패'],KIA:[
   SSG:[6,'65승 5무 74패'],'롯데':[7,'64승 3무 77패'],NC:[8,'64승 2무 78패'],'한화':[9,'57승 4무 83패'],'키움':[10,'50승 4무 90패']};
 const wcBook='NOL 티켓 · 10.13(화) 14:00 오픈 · 1인 4매';
 const postseason={
-  LG:{round:'와일드카드 1차전',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장',book:wcBook,note:'4위 LG는 1승 또는 무승부면 준플레이오프 진출'},
-  '두산':{round:'와일드카드 1차전',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:null,park:'잠실야구장',parkNote:' (LG 홈, 두산 원정)',book:wcBook,note:'5위 두산은 2연승해야 준플레이오프 진출'},
+  LG:{round:'와일드카드 1차전',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:'18:30',park:'잠실야구장',book:wcBook,note:'4위 LG는 1승 또는 무승부면 준플레이오프 진출'},
+  '두산':{round:'와일드카드 1차전',home:'LG 트윈스',away:'두산 베어스',date:'2026-10-14',time:'18:30',park:'잠실야구장',parkNote:' (LG 홈, 두산 원정)',book:wcBook,note:'5위 두산은 2연승해야 준플레이오프 진출'},
   KIA:{round:'준플레이오프 1차전',home:'KIA 타이거즈',away:'와일드카드 승자',date:'2026-10-17',time:null,park:'광주기아챔피언스필드',book:'예매 일정 발표 전',note:'LG-두산 와일드카드 승자와 대결 (5전 3선승)'},
   '삼성':{round:'플레이오프 1차전',home:'삼성 라이온즈',away:'준플레이오프 승자',date:'2026-10-25',time:null,park:'대구삼성라이온즈파크',book:'예매 일정 발표 전',note:'정규시즌 2위로 플레이오프 직행 (5전 3선승)'},
   KT:{round:'한국시리즈 1차전',home:'KT wiz',away:'플레이오프 승자',date:'2026-11-02',time:null,park:'수원KT위즈파크',book:'예매 일정 발표 전',note:'정규시즌 1위로 한국시리즈 직행 (7전 4선승)'}
