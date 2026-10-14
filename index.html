@@ -840,8 +840,11 @@ function apply(i){
 function renderBrowse(){
   const browse=Object.values(MY).every(v=>v===NO_TEAM);
   $('browse').hidden=!browse;
-  ['h-next','h-week','h-other','h-diary'].forEach(h=>{document.querySelector(`#p-home section[aria-labelledby="${h}"]`).hidden=browse});
+  ['h-next','h-week','h-other'].forEach(h=>{document.querySelector(`#p-home section[aria-labelledby="${h}"]`).hidden=browse});
+  homeDiaryShow();
 }
+// 직관 기록 칸: 둘러보기여도 붙인 티켓이 있으면 보여 줌 (기록이 사라진 것처럼 보이지 않게)
+const homeDiaryShow=()=>{document.querySelector('#p-home section[aria-labelledby="h-diary"]').hidden=Object.values(MY).every(v=>v===NO_TEAM)&&!DIARY.length};
 function useSport(id){
   cur=id;store('sport',id);SP=SPORT[id];D=prepData(id);
   sel.innerHTML=noTeamOpt()+teamOptions(D.teams);
@@ -1094,6 +1097,7 @@ function entryHTML(e,peel){
 }
 function renderDiary(){
   const list=[...DIARY].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),has=list.length>0;
+  homeDiaryShow();
   // 전광판: 기록이 여러 종목이면 지금 보는 종목만, 한 종목이면 전체. 모든 종목 합계는 아래 한 줄에
   const multi=new Set(list.map(e=>e.sport)).size>1,view=multi?list.filter(e=>e.sport===cur):list;
   const tally=arr=>{const c=arr.filter(result),n=k=>c.filter(e=>result(e)===k).length;return {c,W:n('W'),L:n('L'),D:n('D')}};
