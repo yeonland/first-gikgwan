@@ -975,7 +975,8 @@ $('prep-check').addEventListener('change',e=>{PREP_DONE[e.target.dataset.id]=e.t
 function setPrepTeam(t){
   prepPark.value=t[3];renderPark();renderMap();
   $('prep-cheer').innerHTML=[...D.cheer,
-    D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
+    D.cheerUrl&&D.cheerUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.cheerUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 응원가 페이지</a>에서 가사와 음원을 볼 수 있어요. 대표 응원가 1~2곡만 들어 보고 가도 금방 따라 불러요`]
+    :D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 홈페이지</a>와 공식 영상 채널에서 들을 수 있어요`]
       :['응원가 미리 듣기',`<a href="${(D.leagueSites&&D.leagueSites[t[5]]||D.leagueSite)[1]}" target="_blank" rel="noopener">${(D.leagueSites&&D.leagueSites[t[5]]||D.leagueSite)[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`]
   ].map(([k,v])=>`<div class="row tip"><div><b>${k}</b><span>${v}</span></div></div>`).join('');
 }

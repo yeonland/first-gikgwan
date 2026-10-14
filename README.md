@@ -134,6 +134,7 @@ first-gikgwan/
 - [ ] 마스코트 공식 이름: 검색어 `[구단 이름] 마스코트`. 야구는 삼성(블레오/라이)·한화·롯데를 특히 확인
 - [ ] 마스코트 그림을 쓸 수 있는지: 구단에 사용 허락 문의 (그전까지는 이름과 구단 공식 페이지 링크만)
 - [ ] 야구 구단별 응원봉 이름·파는 곳
+- [ ] 구단별 공식 응원가 페이지 주소 (FC서울처럼 응원가 목록으로 바로 가는 주소. 찾으면 data 파일 cheerUrl에 추가). 검색어 `[구단 이름] 응원가`
 - [ ] LCK 규정집 최신판: [리그 오브 레전드 e스포츠 뉴스](https://www.leagueoflegends.com/ko-kr/news/esports/), lolesports.com
 - [ ] 골프 규칙: [R&A 한국어](https://www.randa.org/ko-KR/rules/rules-of-golf-home), KLPGA 대회 규정은 KLPGA 홈페이지 공지
 - [ ] 용인실내체육관(WKBL 삼성생명) 지도 위치

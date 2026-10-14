@@ -146,6 +146,8 @@ const clubUrl={'강원':'https://gangwon-fc.com','광주':'https://www.gwangjufc
   '부천':'https://bfc1995.com','서울':'https://www.fcseoul.com','안양':'https://www.fc-anyang.com','울산':'https://www.uhdfc.com',
   '인천':'https://www.incheonutd.com','전북':'https://hyundai-motorsfc.com','제주':'https://www.jejuskfc.com','포항':'https://www.steelers.co.kr'};
 const leagueSite=['K리그 공식 홈페이지','https://www.kleague.com'];
+// 응원가 페이지: 구단 공식 응원가 목록으로 바로 연결 (가사·음원은 앱에 넣지 않음). 확인한 구단만
+const cheerUrl={'서울':'https://www.fcseoul.com/club/clubFcSongCheeringSongView?page=1'};
 
 // 직관 기록: 기록이 없을 때 홈에 보여 줄 예시 2장 [날짜, 상대(몇 번째 뒤 팀), 홈 골, 원정 골, 메모]
 const diaryExamples=[['2026-09-20',2,2,1,'처음 간 축구장. 응원가 90분 내내'],['2026-08-30',5,0,0,'0:0이어도 재밌었음']];
@@ -161,6 +163,6 @@ const season={note:'2026 시즌 · K리그 대회요강 기준',rows:[
   ['우승','38경기를 마친 뒤 승점 1위'],
   ['강등','김천 상무는 연고 협약이 끝나 순위와 관계없이 K리그2로 가요. 김천이 12위가 아니면 12위 팀이 승강 플레이오프를 해요']]};
 
-return {season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
+return {cheerUrl,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
   parkInfo,parkGeo,mapQuery,homeSeatNote,seats,prep,prepFine,cheer,clubUrl,leagueSite,diaryExamples,scoreLabel};
 })();
