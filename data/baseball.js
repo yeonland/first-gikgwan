@@ -176,6 +176,9 @@ const cheer=[
   ['응원가는 공격 때','우리 팀 공격 때 선수별 응원가가 나와요. 한두 곡만 알아 가도 충분해요'],
   ['파울볼 조심','내야석에는 파울볼이 자주 날아와요. 공이 뜨면 눈을 떼지 마세요']
 ];
+// 견제구 응원: 상대 투수가 견제구를 던질 때 다 같이 외치는 구호 (나무위키 '견제 응원' 2026.10.17 확인, 팬 문서라 구단 공지와 다를 수 있음)
+const pickoff={LG:'(투수 이름) 떽! 떽! 떽! 앞으로 던져라!','두산':'야! 야! 야! 야!','키움':'(투수 이름) 뭐야! 뭐야! 뭐야!',SSG:'(투수 이름) 확! 확! 확! 확확확!',
+  KT:'왓! 왓! 왓! 왓왓왓!','한화':'뭐여! 뭐여! 뭐여! 뭐하는겨! 뭐하잔겨!','삼성':'뭐꼬! 뭐꼬! 뭐꼬!',KIA:'아야~! 아야~! 아야~! 날 새겄다!','롯데':'마! 마! 마!',NC:'쫌! 쫌! 쫌쫌쫌!'};
 const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
   '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
 
@@ -216,5 +219,5 @@ const retired={LG:[[9,'이병규'],[33,'박용택'],[41,'김용수']],'두산':[
 const retiredSpot={'롯데':'사직 전광판 기둥 아래 왼쪽에 11번, 오른쪽에 10번이 있어요'};
 
 return {retired,retiredSpot,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,clubUrl,diaryExamples};
+  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,pickoff,clubUrl,diaryExamples};
 })();

@@ -10,441 +10,441 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/MonadABXY/mona-font/web/mona.css">
 <style>
-/* 기본 리셋: hidden 속성이 display 규칙에 덮이지 않게 */
-[hidden]{display:none!important}
-body{margin:0}
-img,svg{max-width:100%}
-@font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
-@font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
-/* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 눈누 CDN을 먼저, 인터넷이 없을 때만 로컬 파일 */
-@font-face{font-family:"GangwonEducationSaeum";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
-/* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
-:root{
-  --team:#000000;               /* 내 팀 컬러, JS가 바꿈 */
-  /* 바탕 위에 선·글자로 쓸 팀 색. JS가 바탕과 대비 3:1 이상인 색을 골라 넣음 (주색 → 보조색 → 밝게 섞은 주색) */
-  --team-ink-light:var(--team); --team-ink-dark:#e7e9ea;
-  --team-ink:var(--team-ink-light);
-  --on-team-ink-light:#fff; --on-team-ink-dark:#111; --on-team-ink:var(--on-team-ink-light);   /* 팀 색 버튼 위 글자: 흰색/검정 중 더 잘 보이는 쪽 */
-  --paper:#f5f5f2; --ink:#1d2024; --pencil:#6b7177; --line:#d3d5d0; --surface:#ffffff;
-  --tk-paper:#fdfdfb; --tk-ink:#1d2024; --tk-faint:#8a8f93;   /* 티켓은 실물 종이라 두 테마 모두 밝게 */
-  --led-bg:#0d0e0b; --led:#ffb238; --led-dim:#8f7d55;          /* 전광판도 실물이라 두 테마 모두 같게 */
-  --tape:rgba(214,206,170,.72);
-  --sans:"KBO Dia Gothic","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-  --dot:"Mona12",ui-monospace,monospace;
-  --hand:var(--logo);           /* 손글씨 메모도 로고와 같은 강원교육새음 */
-  /* 글자 크기 5단계 (단계마다 약 1.2배): 캡션 · 본문 · 제목 · 강조 · 로고 */
-  --fs-cap:12px; --fs-body:15px; --fs-title:18px; --fs-em:22px; --fs-logo:28px;
-  --logo:"GangwonEducationSaeum","Nanum Pen Script",cursive;
-  --ball:var(--paper); --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55;   /* 로고 속 공 */
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --team-ink:var(--team-ink-dark); --on-team-ink:var(--on-team-ink-dark);
-  --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
-  --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
-  --tape:rgba(190,182,150,.55); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --team-ink:var(--team-ink-dark); --on-team-ink:var(--on-team-ink-dark);
-  --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
-  --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
-  --tape:rgba(190,182,150,.55); color-scheme:dark}
+  /* 기본 리셋: hidden 속성이 display 규칙에 덮이지 않게 */
+  [hidden]{display:none!important}
+  body{margin:0}
+  img,svg{max-width:100%}
+  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
+  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
+  /* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 눈누 CDN을 먼저, 인터넷이 없을 때만 로컬 파일 */
+  @font-face{font-family:"GangwonEducationSaeum";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
+  /* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
+  :root{
+    --team:#000000;               /* 내 팀 컬러, JS가 바꿈 */
+    /* 바탕 위에 선·글자로 쓸 팀 색. JS가 바탕과 대비 3:1 이상인 색을 골라 넣음 (주색 → 보조색 → 밝게 섞은 주색) */
+    --team-ink-light:var(--team); --team-ink-dark:#e7e9ea;
+    --team-ink:var(--team-ink-light);
+    --on-team-ink-light:#fff; --on-team-ink-dark:#111; --on-team-ink:var(--on-team-ink-light);   /* 팀 색 버튼 위 글자: 흰색/검정 중 더 잘 보이는 쪽 */
+    --paper:#f5f5f2; --ink:#1d2024; --pencil:#6b7177; --line:#d3d5d0; --surface:#ffffff;
+    --tk-paper:#fdfdfb; --tk-ink:#1d2024; --tk-faint:#8a8f93;   /* 티켓은 실물 종이라 두 테마 모두 밝게 */
+    --led-bg:#0d0e0b; --led:#ffb238; --led-dim:#8f7d55;          /* 전광판도 실물이라 두 테마 모두 같게 */
+    --tape:rgba(214,206,170,.72);
+    --sans:"KBO Dia Gothic","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    --dot:"Mona12",ui-monospace,monospace;
+    --hand:var(--logo);           /* 손글씨 메모도 로고와 같은 강원교육새음 */
+    /* 글자 크기 5단계 (단계마다 약 1.2배): 캡션 · 본문 · 제목 · 강조 · 로고 */
+    --fs-cap:12px; --fs-body:15px; --fs-title:18px; --fs-em:22px; --fs-logo:28px;
+    --logo:"GangwonEducationSaeum","Nanum Pen Script",cursive;
+    --ball:var(--paper); --seam:#c8321e; --puck:#1d2024; --puck-top:#4a4f55;   /* 로고 속 공 */
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --team-ink:var(--team-ink-dark); --on-team-ink:var(--on-team-ink-dark);
+    --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+    --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
+    --tape:rgba(190,182,150,.55); color-scheme:dark}}
+  :root[data-theme="dark"]{
+    --team-ink:var(--team-ink-dark); --on-team-ink:var(--on-team-ink-dark);
+    --paper:#151618; --ink:#e7e9ea; --pencil:#9aa1a7; --line:#33373d; --surface:#1d2024;
+    --seam:#f06a52; --puck:#0b0c0d; --puck-top:#5c626a;
+    --tape:rgba(190,182,150,.55); color-scheme:dark}
 
-*{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-body);line-height:1.55;font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:20px 104px}
-.app{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
-section{min-width:0;display:flex;flex-direction:column;gap:12px}
-.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.sec-head h2{flex:none}
-.sec-head select{min-width:0;max-width:100%;text-overflow:ellipsis}   /* 경기장 이름이 길면 제목 대신 고르기 칸이 줄어듦 */
-h2{margin:0;font-size:var(--fs-title);font-weight:700;letter-spacing:.02em}
-.note{font-size:var(--fs-cap);color:var(--pencil)}
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-body);line-height:1.55;font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:20px 104px}
+  .app{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+  section{min-width:0;display:flex;flex-direction:column;gap:12px}
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .sec-head h2{flex:none}
+  .sec-head select{min-width:0;max-width:100%;text-overflow:ellipsis}   /* 경기장 이름이 길면 제목 대신 고르기 칸이 줄어듦 */
+  h2{margin:0;font-size:var(--fs-title);font-weight:700;letter-spacing:.02em}
+  .note{font-size:var(--fs-cap);color:var(--pencil)}
 
-/* header: 꽃 도장 + 강원교육새음. KBO 다이아고딕은 로고(CI/BI)에 쓸 수 없음 */
-header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.mark{display:flex;align-items:center;gap:10px}
-.mark>svg{width:44px;height:44px;flex:none}
-.mark b{display:block;font-family:var(--logo);font-weight:normal;font-size:var(--fs-logo);line-height:1}
-.mark span{font-size:var(--fs-cap);color:var(--pencil)}
-select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+  /* header: 꽃 도장 + 강원교육새음. KBO 다이아고딕은 로고(CI/BI)에 쓸 수 없음 */
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .mark{display:flex;align-items:center;gap:10px}
+  .mark>svg{width:44px;height:44px;flex:none}
+  .mark b{display:block;font-family:var(--logo);font-weight:normal;font-size:var(--fs-logo);line-height:1}
+  .mark span{font-size:var(--fs-cap);color:var(--pencil)}
+  select{font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
 
-/* 날짜 소인: 한 색 잉크 도장 */
-.ink-stamp{--ball:transparent;--puck:var(--ink);--puck-top:transparent;--seam:var(--ink)}
-.mini-stamp{position:absolute;right:-8px;bottom:-46px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
-.mini-stamp svg{width:100%;height:100%}
+  /* 날짜 소인: 한 색 잉크 도장 */
+  .ink-stamp{--ball:transparent;--puck:var(--ink);--puck-top:transparent;--seam:var(--ink)}
+  .mini-stamp{position:absolute;right:-8px;bottom:-46px;width:62px;height:62px;--ink:var(--team);opacity:.8;pointer-events:none}
+  .mini-stamp svg{width:100%;height:100%}
 
-/* 첫 화면: 하루 첫 실행 때 오늘 날짜 소인 */
-.splash{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-content:center;gap:14px;background:var(--paper);transition:opacity .4s;cursor:pointer}
-.splash.out{opacity:0;pointer-events:none}
-.splash-in svg{width:min(56vw,220px);height:auto;display:block;animation:press .55s cubic-bezier(.2,.9,.3,1.2) both}
-.splash p{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-@keyframes press{from{transform:scale(1.35) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
+  /* 첫 화면: 하루 첫 실행 때 오늘 날짜 소인 */
+  .splash{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-content:center;gap:14px;background:var(--paper);transition:opacity .4s;cursor:pointer}
+  .splash.out{opacity:0;pointer-events:none}
+  .splash-in svg{width:min(56vw,220px);height:auto;display:block;animation:press .55s cubic-bezier(.2,.9,.3,1.2) both}
+  .splash p{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+  @keyframes press{from{transform:scale(1.35) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
 
-/* 전광판 숫자 */
-.led{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px;background:var(--led-bg);padding:2px;border-radius:3px}
-.led>span{display:flex;flex-direction:column;gap:3px;padding:7px 10px 8px;background-color:var(--led-bg);background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.4px);background-size:4px 4px;min-width:0}
-.led small{font-size:var(--fs-cap);letter-spacing:.08em;color:var(--led-dim);white-space:nowrap}
-.led b,.led-chip{font-family:var(--dot);font-weight:400;color:var(--led);text-shadow:0 0 6px rgba(255,178,56,.55);line-height:1;white-space:nowrap}
-.led b{font-size:var(--fs-em)}
-.led .dd{align-items:flex-end;text-align:right}
-.led-chip{display:inline-block;background:var(--led-bg);font-size:var(--fs-body);padding:4px 7px 3px;border-radius:2px}
-/* 승패는 전광판 관례대로 초록·빨강 고정 (두 테마 같음) */
-.led-chip.win{color:#5fe38a;text-shadow:0 0 6px rgba(95,227,138,.55)}
-.led-chip.loss{color:#ff5b4d;text-shadow:0 0 6px rgba(255,91,77,.55)}
+  /* 전광판 숫자 */
+  .led{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px;background:var(--led-bg);padding:2px;border-radius:3px}
+  .led>span{display:flex;flex-direction:column;gap:3px;padding:7px 10px 8px;background-color:var(--led-bg);background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.4px);background-size:4px 4px;min-width:0}
+  .led small{font-size:var(--fs-cap);letter-spacing:.08em;color:var(--led-dim);white-space:nowrap}
+  .led b,.led-chip{font-family:var(--dot);font-weight:400;color:var(--led);text-shadow:0 0 6px rgba(255,178,56,.55);line-height:1;white-space:nowrap}
+  .led b{font-size:var(--fs-em)}
+  .led .dd{align-items:flex-end;text-align:right}
+  .led-chip{display:inline-block;background:var(--led-bg);font-size:var(--fs-body);padding:4px 7px 3px;border-radius:2px}
+  /* 승패는 전광판 관례대로 초록·빨강 고정 (두 테마 같음) */
+  .led-chip.win{color:#5fe38a;text-shadow:0 0 6px rgba(95,227,138,.55)}
+  .led-chip.loss{color:#ff5b4d;text-shadow:0 0 6px rgba(255,91,77,.55)}
 
-/* ticket */
-.ticket{background:var(--tk-paper);color:var(--tk-ink);display:grid;grid-template-columns:1fr 64px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 14px -8px rgba(0,0,0,.35);transform:rotate(-.6deg)}
-.t-main{min-width:0;display:flex;flex-direction:column}
-.band{background:var(--team);color:var(--on-team,#fff);font-size:var(--fs-cap);font-weight:600;letter-spacing:.08em;padding:6px 14px;display:flex;justify-content:space-between;gap:8px}
-.t-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:12px}
-.match{font-size:var(--fs-em);font-weight:700;letter-spacing:-.01em;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
-.match i{font-style:normal;font-size:var(--fs-cap);color:var(--tk-faint)}
-.info{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:var(--fs-body)}
-.info dt{color:var(--tk-faint);font-size:var(--fs-cap)}
-.info dd{margin:0;font-weight:500}
-.stub{position:relative;border-left:2px dashed #c9ccc8;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 0}
-.stub::before,.stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--paper)}
-.stub::before{top:-8px}.stub::after{bottom:-8px}
-.barcode{width:30px;flex:1;margin:4px 0 8px;background:repeating-linear-gradient(0deg,var(--tk-ink) 0 2px,transparent 2px 4px,var(--tk-ink) 4px 5px,transparent 5px 8px,var(--tk-ink) 8px 11px,transparent 11px 13px)}
-/* 절취선 너머: 바코드 + 구장 줄임말(세로) */
-.barcode{flex:0 0 72px}
-.park-stub{writing-mode:vertical-rl;font-size:var(--fs-em);font-weight:700;letter-spacing:.2em;line-height:1;color:var(--team-ink-light);padding-bottom:4px}
+  /* ticket */
+  .ticket{background:var(--tk-paper);color:var(--tk-ink);display:grid;grid-template-columns:1fr 64px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 14px -8px rgba(0,0,0,.35);transform:rotate(-.6deg)}
+  .t-main{min-width:0;display:flex;flex-direction:column}
+  .band{background:var(--team);color:var(--on-team,#fff);font-size:var(--fs-cap);font-weight:600;letter-spacing:.08em;padding:6px 14px;display:flex;justify-content:space-between;gap:8px}
+  .t-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:12px}
+  .match{font-size:var(--fs-em);font-weight:700;letter-spacing:-.01em;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+  .match i{font-style:normal;font-size:var(--fs-cap);color:var(--tk-faint)}
+  .info{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:var(--fs-body)}
+  .info dt{color:var(--tk-faint);font-size:var(--fs-cap)}
+  .info dd{margin:0;font-weight:500}
+  .stub{position:relative;border-left:2px dashed #c9ccc8;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 0}
+  .stub::before,.stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--paper)}
+  .stub::before{top:-8px}.stub::after{bottom:-8px}
+  .barcode{width:30px;flex:1;margin:4px 0 8px;background:repeating-linear-gradient(0deg,var(--tk-ink) 0 2px,transparent 2px 4px,var(--tk-ink) 4px 5px,transparent 5px 8px,var(--tk-ink) 8px 11px,transparent 11px 13px)}
+  /* 절취선 너머: 바코드 + 구장 줄임말(세로) */
+  .barcode{flex:0 0 72px}
+  .park-stub{writing-mode:vertical-rl;font-size:var(--fs-em);font-weight:700;letter-spacing:.2em;line-height:1;color:var(--team-ink-light);padding-bottom:4px}
 
-/* 다른 종목 내 팀 */
-.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line)}
-.row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
-.row:first-child{border-top:0}
-.row svg{width:28px;height:28px}
-.row b{display:block;font-size:var(--fs-body)}
-.row span{font-size:var(--fs-cap);color:var(--pencil)}
-.list-in{display:contents}
-.row.other{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
-.row.other:first-child{border-top:0}
-.row.hint{grid-template-columns:minmax(0,1fr);font-size:var(--fs-cap);color:var(--pencil)}
-/* 오늘 경기: 홈 맨 위. 팀 색 왼쪽 줄 + 바로가기 버튼 세 개 */
-.today-list{display:flex;flex-direction:column;gap:10px}
-.today-game{background:var(--surface);border:1px solid var(--line);box-shadow:inset 4px 0 0 var(--team-ink);padding:12px 14px 12px 18px}
-.today-game>b{display:block;font-size:var(--fs-title)}
-.today-game>span{display:block;font-size:var(--fs-cap);color:var(--pencil);margin-top:2px}
-.today-go{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
-.today-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
-.today-go button.main{grid-column:1/-1;background:var(--team-ink);color:var(--on-team-ink);border-color:var(--team-ink);font-size:var(--fs-body);font-weight:700}
-/* 종목별 시즌: 지금 시즌이면 팀 색 점, 아니면 빈 점 */
-.row.sea{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
-.row.sea:first-child{border-top:0}
-.sea .tag{font-size:var(--fs-cap);color:var(--pencil);white-space:nowrap}
-.sea.on .tag{color:var(--team-ink);font-weight:700}
-/* 둘러보는 중: 맨 위 경기 전 1분 룰(펼친 채), 아래 준비로 가는 버튼 */
-.browse-go{display:grid;padding:0 14px 12px}
-.browse-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
-/* 이번 주 일정: 왼쪽 날짜, 오른쪽 그날 경기. 오늘은 팀 색 줄 */
-.week-nav{display:flex;align-items:center;gap:6px}
-.week-nav button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-family:var(--sans);font-size:var(--fs-body);line-height:1;cursor:pointer}
-.wk-day{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
-.wk-day:first-child{border-top:0}
-.wk-day.today{box-shadow:inset 3px 0 0 var(--team-ink)}
-.wk-day>b{font-size:var(--fs-cap);font-weight:700;padding-top:2px}
-.wk-day.today>b{color:var(--team-ink)}
-.wk-day.off>b,.wk-none{color:var(--pencil)}
-.wk-none{font-size:var(--fs-cap);padding-top:2px}
-.wk-games{display:flex;flex-direction:column;gap:6px;min-width:0}
-.wk-game{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
-.wk-game svg{width:20px;height:20px}
-.wk-game b{display:block;font-size:var(--fs-body)}
-.wk-game span{font-size:var(--fs-cap);color:var(--pencil)}
-.seat-view{display:block;text-align:center;text-decoration:none}   /* 좌석 시야 보기: 리그 공식 좌석 시야 페이지로 */
-/* 기록 보관 버튼: 목록 안 점선 버튼과 같은 모양, 글자는 본문 색 */
-.backup-btn{display:block;width:100%;text-align:center;color:var(--ink)}
-/* 불러오는 중: 티켓의 빈 칸은 회색 막대로 (팀 이름이 미리 적혀 있으면 다른 팀 팬에게 잘못 보임) */
-.match span:empty{display:inline-block;width:5.5em;height:1em;border-radius:3px;background:color-mix(in srgb,var(--tk-faint) 30%,transparent)}
-.park-stub:empty{display:block;width:1em;height:3em;border-radius:3px;background:color-mix(in srgb,var(--tk-faint) 30%,transparent)}
-#tk-round:empty::before{content:"불러오는 중"}
-.add{border:0;border-top:1px dashed var(--line);background:transparent;color:var(--pencil);font-family:var(--sans);font-size:var(--fs-cap);padding:12px;cursor:pointer}
+  /* 다른 종목 내 팀 */
+  .list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+  .row:first-child{border-top:0}
+  .row svg{width:28px;height:28px}
+  .row b{display:block;font-size:var(--fs-body)}
+  .row span{font-size:var(--fs-cap);color:var(--pencil)}
+  .list-in{display:contents}
+  .row.other{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+  .row.other:first-child{border-top:0}
+  .row.hint{grid-template-columns:minmax(0,1fr);font-size:var(--fs-cap);color:var(--pencil)}
+  /* 오늘 경기: 홈 맨 위. 팀 색 왼쪽 줄 + 바로가기 버튼 세 개 */
+  .today-list{display:flex;flex-direction:column;gap:10px}
+  .today-game{background:var(--surface);border:1px solid var(--line);box-shadow:inset 4px 0 0 var(--team-ink);padding:12px 14px 12px 18px}
+  .today-game>b{display:block;font-size:var(--fs-title)}
+  .today-game>span{display:block;font-size:var(--fs-cap);color:var(--pencil);margin-top:2px}
+  .today-go{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+  .today-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
+  .today-go button.main{grid-column:1/-1;background:var(--team-ink);color:var(--on-team-ink);border-color:var(--team-ink);font-size:var(--fs-body);font-weight:700}
+  /* 종목별 시즌: 지금 시즌이면 팀 색 점, 아니면 빈 점 */
+  .row.sea{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+  .row.sea:first-child{border-top:0}
+  .sea .tag{font-size:var(--fs-cap);color:var(--pencil);white-space:nowrap}
+  .sea.on .tag{color:var(--team-ink);font-weight:700}
+  /* 둘러보는 중: 맨 위 경기 전 1분 룰(펼친 채), 아래 준비로 가는 버튼 */
+  .browse-go{display:grid;padding:0 14px 12px}
+  .browse-go button{min-height:44px;font-family:var(--sans);font-size:var(--fs-cap);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;cursor:pointer}
+  /* 이번 주 일정: 왼쪽 날짜, 오른쪽 그날 경기. 오늘은 팀 색 줄 */
+  .week-nav{display:flex;align-items:center;gap:6px}
+  .week-nav button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-family:var(--sans);font-size:var(--fs-body);line-height:1;cursor:pointer}
+  .wk-day{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+  .wk-day:first-child{border-top:0}
+  .wk-day.today{box-shadow:inset 3px 0 0 var(--team-ink)}
+  .wk-day>b{font-size:var(--fs-cap);font-weight:700;padding-top:2px}
+  .wk-day.today>b{color:var(--team-ink)}
+  .wk-day.off>b,.wk-none{color:var(--pencil)}
+  .wk-none{font-size:var(--fs-cap);padding-top:2px}
+  .wk-games{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .wk-game{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
+  .wk-game svg{width:20px;height:20px}
+  .wk-game b{display:block;font-size:var(--fs-body)}
+  .wk-game span{font-size:var(--fs-cap);color:var(--pencil)}
+  .seat-view{display:block;text-align:center;text-decoration:none}   /* 좌석 시야 보기: 리그 공식 좌석 시야 페이지로 */
+  /* 기록 보관 버튼: 목록 안 점선 버튼과 같은 모양, 글자는 본문 색 */
+  .backup-btn{display:block;width:100%;text-align:center;color:var(--ink)}
+  /* 불러오는 중: 티켓의 빈 칸은 회색 막대로 (팀 이름이 미리 적혀 있으면 다른 팀 팬에게 잘못 보임) */
+  .match span:empty{display:inline-block;width:5.5em;height:1em;border-radius:3px;background:color-mix(in srgb,var(--tk-faint) 30%,transparent)}
+  .park-stub:empty{display:block;width:1em;height:3em;border-radius:3px;background:color-mix(in srgb,var(--tk-faint) 30%,transparent)}
+  #tk-round:empty::before{content:"불러오는 중"}
+  .add{border:0;border-top:1px dashed var(--line);background:transparent;color:var(--pencil);font-family:var(--sans);font-size:var(--fs-cap);padding:12px;cursor:pointer}
 
-/* diary */
-.diary{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;padding-top:6px}
-.entry{display:flex;flex-direction:column;gap:6px;min-width:0}
-.mini{position:relative;background:var(--tk-paper);color:var(--tk-ink);box-shadow:0 4px 10px -6px rgba(0,0,0,.35)}
-.diary-in{display:contents}
-.entry:nth-child(odd) .mini{transform:rotate(-2deg)}
-.entry:nth-child(even) .mini{transform:rotate(1.5deg)}
-.mini::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(-3deg)}
-.mini .band{padding:4px 10px;font-size:var(--fs-cap)}
-.mini .in{padding:10px 10px 16px;min-height:88px;font-size:var(--fs-cap);display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center}   /* 티켓처럼 가운데 */
-.mini .in b{font-size:var(--fs-body)}
-.memo{font-family:var(--hand);font-size:var(--fs-title);line-height:1.3;color:var(--ink);padding-inline:2px}
-.slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:var(--fs-cap);padding:14px;text-align:center;cursor:pointer}
+  /* diary */
+  .diary{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;padding-top:6px}
+  .entry{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .mini{position:relative;background:var(--tk-paper);color:var(--tk-ink);box-shadow:0 4px 10px -6px rgba(0,0,0,.35)}
+  .diary-in{display:contents}
+  .entry:nth-child(odd) .mini{transform:rotate(-2deg)}
+  .entry:nth-child(even) .mini{transform:rotate(1.5deg)}
+  .mini::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(-3deg)}
+  .mini .band{padding:4px 10px;font-size:var(--fs-cap)}
+  .mini .in{padding:10px 10px 16px;min-height:88px;font-size:var(--fs-cap);display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center}   /* 티켓처럼 가운데 */
+  .mini .in b{font-size:var(--fs-body)}
+  .memo{font-family:var(--hand);font-size:var(--fs-title);line-height:1.3;color:var(--ink);padding-inline:2px}
+  .slot{grid-column:1/-1;border:1.5px dashed var(--line);color:var(--pencil);background:transparent;font-family:var(--sans);font-size:var(--fs-cap);padding:14px;text-align:center;cursor:pointer}
 
-/* rule card: 홈에서는 접어 두고 다음 경기 바로 아래에 */
-.rules{border:1px solid var(--line);background:var(--surface)}
-.rules summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;font-size:var(--fs-body)}
-.rules summary::-webkit-details-marker{display:none}
-.rules summary b{font-weight:700}
-.rules summary span{font-size:var(--fs-cap);color:var(--pencil)}
-.rules summary::after{content:"+";font-size:var(--fs-title);line-height:1;color:var(--pencil)}
-.rules[open] summary::after{content:"−"}
-.rules summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
-.rules-body{padding:0 14px 14px}
-.tabs{display:flex;border-bottom:1.5px solid var(--ink)}
-.tab{font-family:var(--sans);font-size:var(--fs-body);color:var(--pencil);background:transparent;border:0;padding:8px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
-.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team-ink)}
-.card{padding:12px 2px 0;display:flex;flex-direction:column;gap:6px}
-.card .k{font-size:var(--fs-cap);color:var(--team-ink);letter-spacing:.06em}
-.card p{margin:0;font-size:var(--fs-body)}
+  /* rule card: 홈에서는 접어 두고 다음 경기 바로 아래에 */
+  .rules{border:1px solid var(--line);background:var(--surface)}
+  .rules summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;font-size:var(--fs-body)}
+  .rules summary::-webkit-details-marker{display:none}
+  .rules summary b{font-weight:700}
+  .rules summary span{font-size:var(--fs-cap);color:var(--pencil)}
+  .rules summary::after{content:"+";font-size:var(--fs-title);line-height:1;color:var(--pencil)}
+  .rules[open] summary::after{content:"−"}
+  .rules summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
+  .rules-body{padding:0 14px 14px}
+  .tabs{display:flex;border-bottom:1.5px solid var(--ink)}
+  .tab{font-family:var(--sans);font-size:var(--fs-body);color:var(--pencil);background:transparent;border:0;padding:8px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
+  .tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--team-ink)}
+  .card{padding:12px 2px 0;display:flex;flex-direction:column;gap:6px}
+  .card .k{font-size:var(--fs-cap);color:var(--team-ink);letter-spacing:.06em}
+  .card p{margin:0;font-size:var(--fs-body)}
 
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px))}
-nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:var(--fs-cap)}
-nav ul{gap:6px}
-nav button{width:100%;font:inherit;color:var(--pencil);background:transparent;border:0;padding:9px 0;border-radius:8px;cursor:pointer}
-nav button.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
+  nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px))}
+  nav ul{list-style:none;margin:0 auto;padding:0;max-width:420px;display:grid;grid-template-columns:repeat(5,1fr);text-align:center;font-size:var(--fs-cap)}
+  nav ul{gap:6px}
+  nav button{width:100%;font:inherit;color:var(--pencil);background:transparent;border:0;padding:9px 0;border-radius:8px;cursor:pointer}
+  nav button.on{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
 
-/* 페이지 */
-#p-home,.home-col{display:contents}
-.page{display:flex;flex-direction:column;gap:30px;min-width:0}
-.empty{margin:0;padding:20px 16px;border:1.5px dashed var(--line);color:var(--pencil);font-size:var(--fs-body)}
-.fine{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-a{color:inherit;text-underline-offset:3px}
-/* 예매 */
-.book-card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:12px}
-.bc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.book-card .info dd a{font-weight:700}
-.steps{list-style:none;margin:0;padding:0;counter-reset:s;background:var(--surface);border:1px solid var(--line)}
-.steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
-.steps li:first-child{border-top:0}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;background:var(--led-bg);color:var(--led);font-family:var(--dot);font-size:var(--fs-body);border-radius:2px}
-.steps b{display:block}
-.steps span{font-size:var(--fs-cap);color:var(--pencil)}
-.clubs .row{grid-template-columns:10px minmax(0,1fr) auto}
-.clubs .dot{width:10px;height:10px;border-radius:50%}
-.clubs .bk{text-align:right;font-size:var(--fs-cap);color:var(--pencil);max-width:9.5em}
-.clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
-.clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
-.clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
-/* 종목: 처음 설정(여러 종목 + 종목마다 내 팀), 고른 종목이 2개 이상이면 머리말 아래 종목 칩 */
-header{flex-wrap:wrap}
-.sport-bar{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px}
-.chip.add-sport{border-style:dashed}
-.setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:hidden}
-.setup[open]{display:flex;flex-direction:column}
-.setup::backdrop{background:rgba(0,0,0,.45)}
-.setup form{display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
-.setup h2,.setup .fine,.setup .form-msg,.setup .submit{flex-shrink:0}
-#setup-list{min-height:0;overflow-y:auto;overscroll-behavior:contain}
-.setup .setup-skip{align-self:center;flex-shrink:0;min-height:40px;margin:-4px 0 0}
-/* 처음 왔을 때: 팀을 고르기 전엔 뒤 화면을 가림 (기본값 LG 화면이 내 팀처럼 보이지 않게) */
-body.pre .app,body.pre nav{visibility:hidden}
-.pick{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px 12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
-.pick:first-child{border-top:0}
-.pick label{display:contents;cursor:pointer}
-.pick input{width:18px;height:18px;margin:0;accent-color:var(--team-ink)}
-.pick svg{width:28px;height:28px}
-.pick b{display:block;font-weight:500}
-.pick span{font-size:var(--fs-cap);color:var(--pencil)}
-.pick select{grid-column:3;width:100%;font-size:var(--fs-body);padding:8px 10px}
-.pick.off{color:var(--pencil)}
-.pick.off svg{opacity:.45}
-/* 직관 준비 */
-/* 구장 지도: 종이 위 약도. 내 팀 구장은 팀 색 점선 도장, 고른 구장은 팀 색으로 채운 점 */
-.park-map{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px 12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.park-map svg{width:100%;max-width:300px;height:auto;display:block;overflow:visible}
-.park-map .land{fill:var(--paper);stroke:var(--pencil);stroke-width:1;stroke-linejoin:round}
-.pin{cursor:pointer;outline:none}
-.pin .hit{fill:transparent}
-.pin .dot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
-.pin.mine .ring{fill:none;stroke:var(--team-ink);stroke-width:2;stroke-dasharray:2.5 2}
-.pin.on .dot{fill:var(--team-ink);stroke:var(--team-ink)}
-.pin:focus-visible .hit{stroke:var(--team-ink);stroke-width:2}
-.park-map .lb{font-family:var(--sans);font-size:var(--fs-cap);font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3;stroke-linejoin:round}
-.park-map figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
+  /* 페이지 */
+  #p-home,.home-col{display:contents}
+  .page{display:flex;flex-direction:column;gap:30px;min-width:0}
+  .empty{margin:0;padding:20px 16px;border:1.5px dashed var(--line);color:var(--pencil);font-size:var(--fs-body)}
+  .fine{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+  a{color:inherit;text-underline-offset:3px}
+  /* 예매 */
+  .book-card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+  .bc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .book-card .info dd a{font-weight:700}
+  .steps{list-style:none;margin:0;padding:0;counter-reset:s;background:var(--surface);border:1px solid var(--line)}
+  .steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+  .steps li:first-child{border-top:0}
+  .steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;background:var(--led-bg);color:var(--led);font-family:var(--dot);font-size:var(--fs-body);border-radius:2px}
+  .steps b{display:block}
+  .steps span{font-size:var(--fs-cap);color:var(--pencil)}
+  .clubs .row{grid-template-columns:10px minmax(0,1fr) auto}
+  .clubs .dot{width:10px;height:10px;border-radius:50%}
+  .clubs .bk{text-align:right;font-size:var(--fs-cap);color:var(--pencil);max-width:9.5em}
+  .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
+  .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
+  .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
+  /* 종목: 처음 설정(여러 종목 + 종목마다 내 팀), 고른 종목이 2개 이상이면 머리말 아래 종목 칩 */
+  header{flex-wrap:wrap}
+  .sport-bar{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px}
+  .chip.add-sport{border-style:dashed}
+  .setup{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px 16px;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:hidden}
+  .setup[open]{display:flex;flex-direction:column}
+  .setup::backdrop{background:rgba(0,0,0,.45)}
+  .setup form{display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
+  .setup h2,.setup .fine,.setup .form-msg,.setup .submit{flex-shrink:0}
+  #setup-list{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+  .setup .setup-skip{align-self:center;flex-shrink:0;min-height:40px;margin:-4px 0 0}
+  /* 처음 왔을 때: 팀을 고르기 전엔 뒤 화면을 가림 (기본값 LG 화면이 내 팀처럼 보이지 않게) */
+  body.pre .app,body.pre nav{visibility:hidden}
+  .pick{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px 12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+  .pick:first-child{border-top:0}
+  .pick label{display:contents;cursor:pointer}
+  .pick input{width:18px;height:18px;margin:0;accent-color:var(--team-ink)}
+  .pick svg{width:28px;height:28px}
+  .pick b{display:block;font-weight:500}
+  .pick span{font-size:var(--fs-cap);color:var(--pencil)}
+  .pick select{grid-column:3;width:100%;font-size:var(--fs-body);padding:8px 10px}
+  .pick.off{color:var(--pencil)}
+  .pick.off svg{opacity:.45}
+  /* 직관 준비 */
+  /* 구장 지도: 종이 위 약도. 내 팀 구장은 팀 색 점선 도장, 고른 구장은 팀 색으로 채운 점 */
+  .park-map{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px 12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .park-map svg{width:100%;max-width:300px;height:auto;display:block;overflow:visible}
+  .park-map .land{fill:var(--paper);stroke:var(--pencil);stroke-width:1;stroke-linejoin:round}
+  .pin{cursor:pointer;outline:none}
+  .pin .hit{fill:transparent}
+  .pin .dot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+  .pin.mine .ring{fill:none;stroke:var(--team-ink);stroke-width:2;stroke-dasharray:2.5 2}
+  .pin.on .dot{fill:var(--team-ink);stroke:var(--team-ink)}
+  .pin:focus-visible .hit{stroke:var(--team-ink);stroke-width:2}
+  .park-map .lb{font-family:var(--sans);font-size:var(--fs-cap);font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:3;stroke-linejoin:round}
+  .park-map figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
 
-.pg{display:flex;flex-direction:column;gap:30px;min-width:0}
-.prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
-.prep-park dt{color:var(--pencil)}
-.list .row.tip{grid-template-columns:minmax(0,1fr)}
-.row.tip b{display:block}
-.row .rec{font-size:var(--fs-cap);color:var(--team-ink);margin-left:6px;font-weight:400}
-.check{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer}
-.check:first-child{border-top:0}
-.check input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--team-ink)}
-.check b{display:block;font-weight:500}
-.check span{font-size:var(--fs-cap);color:var(--pencil)}
-.check:has(input:checked) b{color:var(--pencil);text-decoration:line-through}
-.check:has(input:focus-visible){outline:2px solid var(--team-ink);outline-offset:-2px}
-/* 직관 기록 */
-.mini .pk{color:var(--tk-faint)}
-/* 기록 티켓: 1줄 "홈 vs 원정 구장", 2줄 결과 칩 + 응원 */
-.mini .mt,.mini .rs{margin:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:2px 6px}
-.mini .rs{align-items:center}
-/* 날짜 소인은 티켓 오른쪽 아래에 걸쳐 찍힘 → 아래 손글씨 메모는 오른쪽을 비움 */
-.entry .memo{padding-right:56px}
-.diary .entry{padding-bottom:12px}
-.peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-#log-led,#home-led{grid-template-columns:repeat(3,minmax(0,1fr))}
-.led-empty{margin:0;padding:10px 12px;border:1.5px dashed var(--line);font-size:var(--fs-cap);color:var(--pencil)}
-.add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
-.add-form label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-cap);color:var(--pencil)}
-.add-form fieldset{margin:0;padding:0;border:0;min-width:0}
-.add-form legend{padding:0;margin-bottom:4px;font-size:var(--fs-cap);color:var(--pencil)}
-.add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
-.score-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
-.score-in>span{font-size:var(--fs-title);padding-bottom:6px;color:var(--pencil)}
-.vs-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
-.vs-in>span{font-size:var(--fs-cap);padding-bottom:10px;color:var(--pencil)}
-/* 응원한 팀: 홈 / 원정 / 그냥 구경 중 하나 */
-.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.seg label{display:block;position:relative;cursor:pointer}
-.seg label+label{border-left:1px solid var(--line)}
-.seg input{position:absolute;opacity:0;width:1px;height:1px}
-.seg span{display:block;padding:8px 6px;text-align:center;font-size:var(--fs-cap);color:var(--pencil);background:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.seg input:checked+span{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
-.seg input:focus-visible+span{outline:2px solid var(--team-ink);outline-offset:-2px}
-.entry .mate{margin:0;font-size:var(--fs-cap);color:var(--pencil);padding-right:56px}
-#log-mates .row{grid-template-columns:minmax(0,1fr) auto}
-#log-mates .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
-#log-mates .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
-#log-teams .row{grid-template-columns:10px minmax(0,1fr) auto}
-#log-teams .dot{width:10px;height:10px;border-radius:50%}
-#log-teams .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
-#log-teams .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
-.form-msg{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-.form-msg:empty{display:none}
-.submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
-input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
-/* 룰 영상: 공식 채널 영상만. 썸네일 → 누르면 재생 */
-.vid{margin:0 14px 12px 11px;display:flex;flex-direction:column;gap:6px}
-.vid-btn,.vid-frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:var(--led-bg);overflow:hidden}
-.vid-btn{cursor:pointer}
-.vid-btn img{width:100%;height:100%;object-fit:cover;display:block}
-.vid-btn .play{position:absolute;left:50%;top:50%;width:56px;height:40px;margin:-20px 0 0 -28px;border-radius:10px;background:rgba(0,0,0,.72)}
-.vid-btn .play::after{content:"";position:absolute;left:23px;top:12px;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #fff}
-.vid-btn:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
-.vid-cap{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-.vids{margin:0 14px 12px 11px;display:flex;flex-direction:column}
-.vids .vid{margin:10px 0 0}
-.vid-tabs .tab{padding:8px 12px}
-.vid-desc{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-/* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
-.fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
-.fig svg{width:100%;max-width:320px;height:auto;display:block}
-.fig .ln{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.fig .dash{stroke-dasharray:4 4}
-.fig .base{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
-.fig .body{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.fig .head{fill:var(--surface);stroke:var(--ink);stroke-width:2}
-.fig .ball{fill:var(--surface);stroke:var(--seam);stroke-width:2}
-.fig .ac{fill:none;stroke:var(--team-ink);stroke-width:2.5;stroke-linecap:round}
-.fig .ach{fill:var(--team-ink)}
-.fig .net{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
-.fig .spot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
-.fig .spot.on{fill:var(--team-ink);stroke:var(--team-ink)}
-.fig .num{font-family:var(--sans);font-size:14px;font-weight:700;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
-.fig .spot.on+.num{fill:var(--on-team-ink)}
-.fig .tx{font-family:var(--sans);font-size:12px;fill:var(--pencil)}
-.fig .tx.em{fill:var(--team-ink);font-weight:700}
-.fig figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
-/* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기 장면 + 규정집 조항 */
-.rcard .share{display:block;margin:0 14px 12px 11px}   /* 카드 맨 아래 링크 보내기 */
-.more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-/* 룰 찾기: 이름·쉬운 말·본문·조항에서 찾음. 칩 옆 숫자는 지금 검색어로 걸리는 카드 수 */
-.rule-q{display:block;width:100%;margin:0 0 10px;padding:10px 12px;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px}
-.rule-q:focus{outline:2px solid var(--team-ink);outline-offset:1px}
-.chip .n{margin-left:4px;font-weight:400;color:var(--pencil)}
-.chip[aria-pressed="true"] .n{color:inherit}
-.chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
-.chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
-.rule-list{display:flex;flex-direction:column}
-/* 시즌은 이렇게: 한눈에 아래 상자. 정규시즌 경기 수와 포스트시즌 방식 */
-.season{margin:0 0 12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line)}
-.season summary{display:flex;align-items:baseline;gap:8px;cursor:pointer;list-style:none}
-.season summary::-webkit-details-marker{display:none}
-.season summary b{font-size:var(--fs-body)}
-.season summary::after{content:"+";margin-left:auto;color:var(--pencil)}
-.season[open] summary::after{content:"\2212"}
-.season[open] summary{margin-bottom:8px}
-.season>.note{margin:8px 0 0}
-/* 이 종목 한눈에: 룰 카드 위 세 칸 (선수 수 · 경기 시간 · 이기는 법). 휴대폰에서는 한 줄씩 */
-.glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px;background:var(--surface);border:1px solid var(--line)}
-.glance div{padding:10px 12px;border-left:1px dashed var(--line)}
-.glance div:first-child{border-left:0}
-.glance dt{font-size:var(--fs-cap);color:var(--pencil)}
-.glance dd{margin:2px 0 0;font-size:var(--fs-body);font-weight:700}
-.glance dd small{display:block;font-size:var(--fs-cap);font-weight:400;color:var(--pencil)}
-@media (max-width:560px){.glance div{padding:8px 10px}.glance dd small{display:none}}   /* 휴대폰: 가로 세 칸 그대로, 작은 설명은 숨겨 높이를 줄임 */
-.rule-list>.list+.list{border-top:0}
-.rcard{border-top:1px solid var(--line);border-left:3px solid transparent}
-.rcard:first-child{border-top:0}
-.rcard[open]{border-left-color:var(--team-ink)}
-.rcard summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px 12px 11px;cursor:pointer}
-.rcard summary::-webkit-details-marker{display:none}
-.rcard summary>*{grid-column:1}
-.rcard summary::after{content:"+";grid-column:2;grid-row:1/span 3;align-self:center;font-size:var(--fs-title);line-height:1;color:var(--pencil)}
-.rcard[open] summary::after{content:"−"}
-.rcard summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
-.rcard .lb{font-size:var(--fs-cap);color:var(--pencil);letter-spacing:.04em}
-.rcard dl{margin:0;padding:0 14px 14px 11px;display:flex;flex-direction:column;gap:10px}
-.rcard dt{font-size:var(--fs-cap);color:var(--pencil)}
-.rcard dd{margin:2px 0 0}
-.rcard .src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:var(--fs-cap);color:var(--pencil)}
-.rcard .src b{color:var(--ink);margin-right:6px}
-button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+  .pg{display:flex;flex-direction:column;gap:30px;min-width:0}
+  .prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+  .prep-park dt{color:var(--pencil)}
+  .list .row.tip{grid-template-columns:minmax(0,1fr)}
+  .row.tip b{display:block}
+  .row .rec{font-size:var(--fs-cap);color:var(--team-ink);margin-left:6px;font-weight:400}
+  .check{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer}
+  .check:first-child{border-top:0}
+  .check input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--team-ink)}
+  .check b{display:block;font-weight:500}
+  .check span{font-size:var(--fs-cap);color:var(--pencil)}
+  .check:has(input:checked) b{color:var(--pencil);text-decoration:line-through}
+  .check:has(input:focus-visible){outline:2px solid var(--team-ink);outline-offset:-2px}
+  /* 직관 기록 */
+  .mini .pk{color:var(--tk-faint)}
+  /* 기록 티켓: 1줄 "홈 vs 원정 구장", 2줄 결과 칩 + 응원 */
+  .mini .mt,.mini .rs{margin:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:2px 6px}
+  .mini .rs{align-items:center}
+  /* 날짜 소인은 티켓 오른쪽 아래에 걸쳐 찍힘 → 아래 손글씨 메모는 오른쪽을 비움 */
+  .entry .memo{padding-right:56px}
+  .diary .entry{padding-bottom:12px}
+  .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  #log-led,#home-led{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .led-empty{margin:0;padding:10px 12px;border:1.5px dashed var(--line);font-size:var(--fs-cap);color:var(--pencil)}
+  .add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+  .add-form label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-cap);color:var(--pencil)}
+  .add-form fieldset{margin:0;padding:0;border:0;min-width:0}
+  .add-form legend{padding:0;margin-bottom:4px;font-size:var(--fs-cap);color:var(--pencil)}
+  .add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+  .score-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
+  .score-in>span{font-size:var(--fs-title);padding-bottom:6px;color:var(--pencil)}
+  .vs-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
+  .vs-in>span{font-size:var(--fs-cap);padding-bottom:10px;color:var(--pencil)}
+  /* 응원한 팀: 홈 / 원정 / 그냥 구경 중 하나 */
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .seg label{display:block;position:relative;cursor:pointer}
+  .seg label+label{border-left:1px solid var(--line)}
+  .seg input{position:absolute;opacity:0;width:1px;height:1px}
+  .seg span{display:block;padding:8px 6px;text-align:center;font-size:var(--fs-cap);color:var(--pencil);background:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seg input:checked+span{background:var(--team-ink);color:var(--on-team-ink);font-weight:700}
+  .seg input:focus-visible+span{outline:2px solid var(--team-ink);outline-offset:-2px}
+  .entry .mate{margin:0;font-size:var(--fs-cap);color:var(--pencil);padding-right:56px}
+  #log-mates .row{grid-template-columns:minmax(0,1fr) auto}
+  #log-mates .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
+  #log-mates .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
+  #log-teams .row{grid-template-columns:10px minmax(0,1fr) auto}
+  #log-teams .dot{width:10px;height:10px;border-radius:50%}
+  #log-teams .wl{text-align:right;font-size:var(--fs-cap);color:var(--pencil)}
+  #log-teams .wl .led-chip{display:block;margin-bottom:2px;text-align:center}
+  .form-msg{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+  .form-msg:empty{display:none}
+  .submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
+  input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
+  /* 룰 영상: 공식 채널 영상만. 썸네일 → 누르면 재생 */
+  .vid{margin:0 14px 12px 11px;display:flex;flex-direction:column;gap:6px}
+  .vid-btn,.vid-frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:var(--led-bg);overflow:hidden}
+  .vid-btn{cursor:pointer}
+  .vid-btn img{width:100%;height:100%;object-fit:cover;display:block}
+  .vid-btn .play{position:absolute;left:50%;top:50%;width:56px;height:40px;margin:-20px 0 0 -28px;border-radius:10px;background:rgba(0,0,0,.72)}
+  .vid-btn .play::after{content:"";position:absolute;left:23px;top:12px;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #fff}
+  .vid-btn:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+  .vid-cap{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+  .vids{margin:0 14px 12px 11px;display:flex;flex-direction:column}
+  .vids .vid{margin:10px 0 0}
+  .vid-tabs .tab{padding:8px 12px}
+  .vid-desc{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
+  /* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
+  .fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
+  .fig svg{width:100%;max-width:320px;height:auto;display:block}
+  .fig .ln{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .fig .dash{stroke-dasharray:4 4}
+  .fig .base{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+  .fig .body{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .fig .head{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+  .fig .ball{fill:var(--surface);stroke:var(--seam);stroke-width:2}
+  .fig .ac{fill:none;stroke:var(--team-ink);stroke-width:2.5;stroke-linecap:round}
+  .fig .ach{fill:var(--team-ink)}
+  .fig .net{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+  .fig .spot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+  .fig .spot.on{fill:var(--team-ink);stroke:var(--team-ink)}
+  .fig .num{font-family:var(--sans);font-size:14px;font-weight:700;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+  .fig .spot.on+.num{fill:var(--on-team-ink)}
+  .fig .tx{font-family:var(--sans);font-size:12px;fill:var(--pencil)}
+  .fig .tx.em{fill:var(--team-ink);font-weight:700}
+  .fig figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
+  /* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기 장면 + 규정집 조항 */
+  .rcard .share{display:block;margin:0 14px 12px 11px}   /* 카드 맨 아래 링크 보내기 */
+  .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  /* 룰 찾기: 이름·쉬운 말·본문·조항에서 찾음. 칩 옆 숫자는 지금 검색어로 걸리는 카드 수 */
+  .rule-q{display:block;width:100%;margin:0 0 10px;padding:10px 12px;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px}
+  .rule-q:focus{outline:2px solid var(--team-ink);outline-offset:1px}
+  .chip .n{margin-left:4px;font-weight:400;color:var(--pencil)}
+  .chip[aria-pressed="true"] .n{color:inherit}
+  .chip{font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+  .chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
+  .rule-list{display:flex;flex-direction:column}
+  /* 시즌은 이렇게: 한눈에 아래 상자. 정규시즌 경기 수와 포스트시즌 방식 */
+  .season{margin:0 0 12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line)}
+  .season summary{display:flex;align-items:baseline;gap:8px;cursor:pointer;list-style:none}
+  .season summary::-webkit-details-marker{display:none}
+  .season summary b{font-size:var(--fs-body)}
+  .season summary::after{content:"+";margin-left:auto;color:var(--pencil)}
+  .season[open] summary::after{content:"\2212"}
+  .season[open] summary{margin-bottom:8px}
+  .season>.note{margin:8px 0 0}
+  /* 이 종목 한눈에: 룰 카드 위 세 칸 (선수 수 · 경기 시간 · 이기는 법). 휴대폰에서는 한 줄씩 */
+  .glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px;background:var(--surface);border:1px solid var(--line)}
+  .glance div{padding:10px 12px;border-left:1px dashed var(--line)}
+  .glance div:first-child{border-left:0}
+  .glance dt{font-size:var(--fs-cap);color:var(--pencil)}
+  .glance dd{margin:2px 0 0;font-size:var(--fs-body);font-weight:700}
+  .glance dd small{display:block;font-size:var(--fs-cap);font-weight:400;color:var(--pencil)}
+  @media (max-width:560px){.glance div{padding:8px 10px}.glance dd small{display:none}}   /* 휴대폰: 가로 세 칸 그대로, 작은 설명은 숨겨 높이를 줄임 */
+  .rule-list>.list+.list{border-top:0}
+  .rcard{border-top:1px solid var(--line);border-left:3px solid transparent}
+  .rcard:first-child{border-top:0}
+  .rcard[open]{border-left-color:var(--team-ink)}
+  .rcard summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px 12px 11px;cursor:pointer}
+  .rcard summary::-webkit-details-marker{display:none}
+  .rcard summary>*{grid-column:1}
+  .rcard summary::after{content:"+";grid-column:2;grid-row:1/span 3;align-self:center;font-size:var(--fs-title);line-height:1;color:var(--pencil)}
+  .rcard[open] summary::after{content:"−"}
+  .rcard summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
+  .rcard .lb{font-size:var(--fs-cap);color:var(--pencil);letter-spacing:.04em}
+  .rcard dl{margin:0;padding:0 14px 14px 11px;display:flex;flex-direction:column;gap:10px}
+  .rcard dt{font-size:var(--fs-cap);color:var(--pencil)}
+  .rcard dd{margin:2px 0 0}
+  .rcard .src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:var(--fs-cap);color:var(--pencil)}
+  .rcard .src b{color:var(--ink);margin-right:6px}
+  button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 
-/* ── 반응형: 휴대폰(~767) 한 쪽 → 태블릿(768~) 펼친 일기장 두 쪽 → PC(1100~) 왼쪽 세로 메뉴 ── */
-@media (min-width:768px){
-  body{padding-inline:32px;padding-block:32px 112px}
-  /* 왼쪽 쪽: 다음 경기 / 오른쪽 쪽: 다른 종목 + 기록. 가운데 세로선이 제본선 */
-  .app{max-width:860px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:0;row-gap:0;
-       grid-template-areas:"head head" "l r"}
-  .app>header{grid-area:head;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
-  /* 두 쪽을 따로 쌓아서, 한쪽이 길어도 다른 쪽에 빈칸이 생기지 않게 */
-  .home-col{display:flex;flex-direction:column;min-width:0}
-  .home-col.l{grid-area:l;padding-right:36px}
-  .home-col.r{grid-area:r;padding-left:36px;border-left:1px solid var(--line)}
-  .home-col>section{padding-bottom:36px}
-  nav ul{max-width:520px}
-  .page{grid-column:1/-1}
-  #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
-  #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
-  /* 직관 준비: 왼쪽 쪽 가는 법·좌석 / 오른쪽 쪽 준비물·응원 */
-  #p-prep{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
-  #p-prep>.pg:first-child{padding-right:36px}
-  #p-prep>.pg+.pg{padding-left:36px;border-left:1px solid var(--line)}
-  /* 직관 기록: 왼쪽 쪽 붙인 티켓 / 오른쪽 쪽 티켓 붙이기 */
-  #p-log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
-  #p-log>section:first-child{padding-right:36px}
-  #p-log>section+section{grid-column:2;padding-left:36px;border-left:1px solid var(--line)}
-  /* 기록 보관은 티켓 붙이기 아래 (오른쪽 쪽). 붙인 티켓은 왼쪽 쪽 전체 */
-  #p-log>section:first-child{grid-row:1/span 2}
-  #p-log>section+section+section{padding-top:32px}
-  #p-log{grid-template-rows:auto 1fr}
-  /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
-  .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
-  .rule-list>.list+.list{border-top:1px solid var(--line)}
-}
-@media (min-width:1100px){
-  /* 하단 메뉴를 왼쪽 세로 메뉴로 */
-  body{padding-left:calc(112px + 40px);padding-right:40px;padding-block:40px}
-  nav{top:0;right:auto;width:112px;border-top:0;border-right:1px solid var(--line);padding:40px 12px}
-  nav ul{grid-template-columns:1fr;gap:8px;max-width:none;font-size:var(--fs-body)}
-  nav button{padding:12px 0}
-  .app{max-width:1000px}
-  .home-col.l{padding-right:48px}
-  .home-col.r{padding-left:48px}
-}
-@media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
-/* 터치 영역: 손가락으로 누르기 편하게 (칩·고르기 칸·작은 버튼 40px 이상, 하단 메뉴·탭 44px 안팎) */
-.chip{min-height:40px;padding:9px 14px}
-select{min-height:40px}
-.week-nav button{width:40px;height:40px}
-nav button{padding:13px 0}
-.tab{padding:11px 14px}
-.vid-tabs .tab{padding:11px 12px}
-.more{padding-block:12px;margin-block:-8px}
-.clubs .bk a{padding-block:10px;margin-block:-8px}
-.map-go a{display:inline-block;padding-block:10px;margin-block:-10px}
-.season summary{padding-block:10px;margin-block:-10px}
-/* 키보드: 메뉴로 건너뛰기 (포커스를 받을 때만 보임), 접는 제목도 포커스 테두리 */
-.skip{position:fixed;left:16px;top:-60px;z-index:30;padding:10px 14px;background:var(--surface);color:var(--ink);border:2px solid var(--team-ink);border-radius:4px;font-size:var(--fs-body);font-weight:700;text-decoration:none}
-.skip:focus{top:12px}
-summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
+  /* ── 반응형: 휴대폰(~767) 한 쪽 → 태블릿(768~) 펼친 일기장 두 쪽 → PC(1100~) 왼쪽 세로 메뉴 ── */
+  @media (min-width:768px){
+    body{padding-inline:32px;padding-block:32px 112px}
+    /* 왼쪽 쪽: 다음 경기 / 오른쪽 쪽: 다른 종목 + 기록. 가운데 세로선이 제본선 */
+    .app{max-width:860px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:0;row-gap:0;
+        grid-template-areas:"head head" "l r"}
+    .app>header{grid-area:head;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+    /* 두 쪽을 따로 쌓아서, 한쪽이 길어도 다른 쪽에 빈칸이 생기지 않게 */
+    .home-col{display:flex;flex-direction:column;min-width:0}
+    .home-col.l{grid-area:l;padding-right:36px}
+    .home-col.r{grid-area:r;padding-left:36px;border-left:1px solid var(--line)}
+    .home-col>section{padding-bottom:36px}
+    nav ul{max-width:520px}
+    .page{grid-column:1/-1}
+    #p-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
+    #p-book>section:nth-child(3){grid-column:2;grid-row:1/span 2}
+    /* 직관 준비: 왼쪽 쪽 가는 법·좌석 / 오른쪽 쪽 준비물·응원 */
+    #p-prep{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
+    #p-prep>.pg:first-child{padding-right:36px}
+    #p-prep>.pg+.pg{padding-left:36px;border-left:1px solid var(--line)}
+    /* 직관 기록: 왼쪽 쪽 붙인 티켓 / 오른쪽 쪽 티켓 붙이기 */
+    #p-log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:start}
+    #p-log>section:first-child{padding-right:36px}
+    #p-log>section+section{grid-column:2;padding-left:36px;border-left:1px solid var(--line)}
+    /* 기록 보관은 티켓 붙이기 아래 (오른쪽 쪽). 붙인 티켓은 왼쪽 쪽 전체 */
+    #p-log>section:first-child{grid-row:1/span 2}
+    #p-log>section+section+section{padding-top:32px}
+    #p-log{grid-template-rows:auto 1fr}
+    /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
+    .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
+    .rule-list>.list+.list{border-top:1px solid var(--line)}
+  }
+  @media (min-width:1100px){
+    /* 하단 메뉴를 왼쪽 세로 메뉴로 */
+    body{padding-left:calc(112px + 40px);padding-right:40px;padding-block:40px}
+    nav{top:0;right:auto;width:112px;border-top:0;border-right:1px solid var(--line);padding:40px 12px}
+    nav ul{grid-template-columns:1fr;gap:8px;max-width:none;font-size:var(--fs-body)}
+    nav button{padding:12px 0}
+    .app{max-width:1000px}
+    .home-col.l{padding-right:48px}
+    .home-col.r{padding-left:48px}
+  }
+  @media (prefers-reduced-motion:reduce){.splash-in svg{animation:none}*{transition:none!important}}
+  /* 터치 영역: 손가락으로 누르기 편하게 (칩·고르기 칸·작은 버튼 40px 이상, 하단 메뉴·탭 44px 안팎) */
+  .chip{min-height:40px;padding:9px 14px}
+  select{min-height:40px}
+  .week-nav button{width:40px;height:40px}
+  nav button{padding:13px 0}
+  .tab{padding:11px 14px}
+  .vid-tabs .tab{padding:11px 12px}
+  .more{padding-block:12px;margin-block:-8px}
+  .clubs .bk a{padding-block:10px;margin-block:-8px}
+  .map-go a{display:inline-block;padding-block:10px;margin-block:-10px}
+  .season summary{padding-block:10px;margin-block:-10px}
+  /* 키보드: 메뉴로 건너뛰기 (포커스를 받을 때만 보임), 접는 제목도 포커스 테두리 */
+  .skip{position:fixed;left:16px;top:-60px;z-index:30;padding:10px 14px;background:var(--surface);color:var(--ink);border:2px solid var(--team-ink);border-radius:4px;font-size:var(--fs-body);font-weight:700;text-decoration:none}
+  .skip:focus{top:12px}
+  summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -1238,7 +1238,11 @@ function setPrepTeam(t){
   // 영구결번: 데이터에 있는 종목만. 결번이 없는 구단은 "아직 없어요"
   const rt=t&&D.retired&&D.retired[t[1]];
   const retiredRow=rt?[['영구결번',rt.length?`${rt.map(([n,p])=>`${n}번 ${esc(p)}`).join(' · ')}. 이 번호는 다른 선수가 달지 않아요${D.retiredSpot&&D.retiredSpot[t[1]]?`. ${esc(D.retiredSpot[t[1]])}`:''}`:'아직 영구결번이 없어요']]:[];
-  $('prep-cheer').innerHTML=[...D.cheer,...retiredRow,
+  // 견제구 응원: 데이터에 있는 종목만. 팀을 안 골랐으면 구단별로 한 줄씩
+  const pk=D.pickoff,PK='견제구(투수가 주자 쪽으로 공을 던져 도루를 막는 것)가 나오면 다 같이 외쳐요';
+  const pickRow=!pk?[]:t?(pk[t[1]]?[['견제구 응원',`${PK}. "${esc(pk[t[1]])}"`]]:[])
+    :[['견제구 응원',`${PK}. ${D.teams.map(x=>pk[x[1]]&&`${esc(x[1])} "${esc(pk[x[1]].replace('(투수 이름) ','').split(' ')[0])}"`).filter(Boolean).join(' · ')}`]];
+  $('prep-cheer').innerHTML=[...D.cheer,...pickRow,...retiredRow,
     !t?['응원가 미리 듣기',D.leagueSite?`<a href="${D.leagueSite[1]}" target="_blank" rel="noopener">${D.leagueSite[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`:'응원팀을 고르면 그 팀 응원가 페이지를 알려 드려요. 구단 공식 영상 채널에서도 들을 수 있어요']
     :D.cheerUrl&&D.cheerUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.cheerUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 응원가 페이지</a>에서 미리 들어 볼 수 있어요. 대표 응원가 1~2곡만 들어 보고 가도 금방 따라 불러요`]
     :D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(D.clubLabel&&D.clubLabel[t[1]]||t[0]+' 공식 홈페이지')}</a>와 공식 영상 채널에서 들을 수 있어요`]
