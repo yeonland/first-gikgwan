@@ -141,7 +141,7 @@ const prepFine='음식·음료 반입 기준은 경기장마다 달라요. 구�
 const cheer=[
   ['서포터즈석 가까이','콜리더를 따라 하면 처음이어도 금방 익숙해져요'],
   ['응원은 90분 내내','공격할 때만이 아니라 경기 내내 응원가가 이어져요'],
-  ['골 넣으면 함께','골이 들어가면 다 같이 일어나 응원가를 불러요']
+  ['골 넣으면 함께','골이 들어가면 다 같이 일어나 응원가를 불러요. 머플러가 있으면 머리 위로 높이 들어요 (머플러 업)']
 ];
 const clubUrl={'강원':'https://gangwon-fc.com','광주':'https://www.gwangjufc.com','김천':'https://www.gimcheonfc.com','대전':'https://www.dhcfc.kr',
   '부천':'https://bfc1995.com','서울':'https://www.fcseoul.com','안양':'https://www.fc-anyang.com','울산':'https://www.uhdfc.com',
