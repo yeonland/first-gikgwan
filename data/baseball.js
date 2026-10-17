@@ -179,6 +179,11 @@ const cheer=[
 // 견제구 응원: 상대 투수가 견제구를 던질 때 다 같이 외치는 구호 (나무위키 '견제 응원' 2026.10.17 확인, 팬 문서라 구단 공지와 다를 수 있음)
 const pickoff={LG:'(투수 이름) 떽! 떽! 떽! 앞으로 던져라!','두산':'야! 야! 야! 야!','키움':'(투수 이름) 뭐야! 뭐야! 뭐야!',SSG:'(투수 이름) 확! 확! 확! 확확확!',
   KT:'왓! 왓! 왓! 왓왓왓!','한화':'뭐여! 뭐여! 뭐여! 뭐하는겨! 뭐하잔겨!','삼성':'뭐꼬! 뭐꼬! 뭐꼬!',KIA:'아야~! 아야~! 아야~! 날 새겄다!','롯데':'마! 마! 마!',NC:'쫌! 쫌! 쫌쫌쫌!'};
+// 응원 도구: 공통 설명 + 확인된 구단만 (위키백과 '대한민국의 야구 응원 문화'·스포츠경향 2009.10 기사, 2026.10.17 확인). 구단별 응원봉 정식 이름은 공식 자료를 못 찾아 뺌
+const gear='막대풍선 두 개를 맞부딪혀 박자를 맞추고, 응원 타월(수건)은 머리 위로 흔들어요. 구장 굿즈숍(기념품 가게)이나 구단 온라인 스토어에서 팔아요. 처음이면 없어도 박수로 충분해요';
+// gearBy: [팀 안 골랐을 때 짧게, 팀 골랐을 때 길게]
+const gearBy={'롯데':['신문지 응원','사직에서는 신문지를 잘게 찢어 말아 흔드는 신문지 응원이 유명해요. 짝짝이(클래퍼)도 많이 써요'],
+  KIA:['노란 막대풍선','KIA 팬은 팀 색과 달리 노란 막대풍선을 들어요. "단무지"라고도 불러요']};
 const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
   '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
 
@@ -219,5 +224,5 @@ const retired={LG:[[9,'이병규'],[33,'박용택'],[41,'김용수']],'두산':[
 const retiredSpot={'롯데':'사직 전광판 기둥 아래 왼쪽에 11번, 오른쪽에 10번이 있어요'};
 
 return {retired,retiredSpot,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,pickoff,clubUrl,diaryExamples};
+  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,pickoff,gear,gearBy,clubUrl,diaryExamples};
 })();

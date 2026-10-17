@@ -1246,7 +1246,10 @@ function setPrepTeam(t){
   const pk=D.pickoff,PK='견제구(투수가 주자 쪽으로 공을 던져 도루를 막는 것)가 나오면 다 같이 외쳐요';
   const pickRow=!pk?[]:t?(pk[t[1]]?[['견제구 응원',`${PK}. "${esc(pk[t[1]])}"`]]:[])
     :[['견제구 응원',`${PK}. ${D.teams.map(x=>pk[x[1]]&&`${esc(x[1])} "${esc(pk[x[1]].replace('(투수 이름) ','').split(' ')[0])}"`).filter(Boolean).join(' · ')}`]];
-  $('prep-cheer').innerHTML=[...D.cheer,...pickRow,...retiredRow,
+  // 응원 도구: 공통 설명 + 구단별 내용(있는 구단만). 팀을 안 골랐으면 구단별 내용을 한 줄로
+  const gb=D.gearBy||{},gearRow=!D.gear?[]:[['응원 도구',D.gear+(t?(gb[t[1]]?`. ${esc(gb[t[1]][1])}`:'')
+    :Object.keys(gb).length?`. 구단마다 달라요: ${Object.entries(gb).map(([k,v])=>`${esc(k)} ${esc(v[0])}`).join(' · ')}`:'')]];
+  $('prep-cheer').innerHTML=[...D.cheer,...pickRow,...gearRow,...retiredRow,
     D.noSongs?null:!t?['응원가 미리 듣기',D.leagueSite?`<a href="${D.leagueSite[1]}" target="_blank" rel="noopener">${D.leagueSite[0]}</a>와 구단 공식 영상 채널에서 들을 수 있어요`:'응원팀을 고르면 그 팀 응원가 페이지를 알려 드려요. 구단 공식 영상 채널에서도 들을 수 있어요']
     :D.cheerUrl&&D.cheerUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.cheerUrl[t[1]]}" target="_blank" rel="noopener">${esc(t[0])} 공식 응원가 페이지</a>에서 미리 들어 볼 수 있어요. 대표 응원가 1~2곡만 들어 보고 가도 금방 따라 불러요`]
     :D.clubUrl[t[1]]?['응원가 미리 듣기',`<a href="${D.clubUrl[t[1]]}" target="_blank" rel="noopener">${esc(D.clubLabel&&D.clubLabel[t[1]]||t[0]+' 공식 홈페이지')}</a>와 공식 영상 채널에서 들을 수 있어요`]
