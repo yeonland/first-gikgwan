@@ -184,6 +184,11 @@ const gear='막대풍선 두 개를 맞부딪혀 박자를 맞추고, 응원 타
 // gearBy: [팀 안 골랐을 때 짧게, 팀 골랐을 때 길게]
 const gearBy={'롯데':['신문지 응원','사직에서는 신문지를 잘게 찢어 말아 흔드는 신문지 응원이 유명해요. 짝짝이(클래퍼)도 많이 써요'],
   KIA:['노란 막대풍선','KIA 팬은 팀 색과 달리 노란 막대풍선을 들어요. "단무지"라고도 불러요']};
+// gearShop: 구단 공식 홈페이지에서 연결되는 쇼핑몰만 (2026.10.17 확인, docs/cheer-gear.md). 없는 구단은 KBO 홈페이지가 연결하는 KBO 마켓(10구단 상품)
+const gearShop={LG:'https://twinslockerdium.co.kr',KT:'https://ktwizstore.co.kr',SSG:'https://landerscorestore.co.kr',NC:'https://smartstore.naver.com/ncdinos',
+  '롯데':'https://www.lotteon.com/p/display/seller/sellerShop/lottegiants','한화':'https://www.eaglesshop.co.kr',KIA:'https://teamstore.tigers.co.kr',
+  '키움':'https://nolmdshop.com/category/%ED%82%A4%EC%9B%80%ED%9E%88%EC%96%B4%EB%A1%9C%EC%A6%88/29/'};
+const gearShopAll='https://www.kbomarket.com';
 const clubUrl={LG:'https://www.lgtwins.com','두산':'https://www.doosanbears.com','키움':'https://heroesbaseball.co.kr',SSG:'https://www.ssglanders.com',KT:'https://www.ktwiz.co.kr',
   '한화':'https://www.hanwhaeagles.co.kr','삼성':'https://www.samsunglions.com',KIA:'https://tigers.co.kr','롯데':'https://www.giantsclub.com',NC:'https://www.ncdinos.com'};
 
@@ -224,5 +229,5 @@ const retired={LG:[[9,'이병규'],[33,'박용택'],[41,'김용수']],'두산':[
 const retiredSpot={'롯데':'사직 전광판 기둥 아래 왼쪽에 11번, 오른쪽에 10번이 있어요'};
 
 return {retired,retiredSpot,season,games,glance,teams,parkShort,book,bookNote,bookFine,nextGame,nextNote,bookNow,ruleCats,rules,homeRules,ruleFine,
-  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,pickoff,gear,gearBy,clubUrl,diaryExamples};
+  parkInfo,parkGeo,mapQuery,seats,prep,prepFine,cheer,pickoff,gear,gearBy,gearShop,gearShopAll,clubUrl,diaryExamples};
 })();
