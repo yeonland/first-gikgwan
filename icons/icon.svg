@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
+<!-- 앱 아이콘: index.html 헤더의 꽃 도장 로고. 가장자리가 잘려도(마스크 아이콘) 도장이 남도록 가운데 74%에 둠 -->
+<style>svg{--ink:#1d2024;--paper:#f5f5f2;--ball:#f5f5f2;--seam:#c8321e;--puck:#1d2024;--puck-top:#4a4f55}</style><defs>
+<symbol id="basket" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><path d="M0 -44V44M-44 0H44"/><path d="M-22 -38C-4 -14 -4 14 -22 38M22 -38C4 -14 4 14 22 38"/></g></symbol>
+<symbol id="soccer" viewBox="-50 -50 100 100"><g stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><polygon points="0,-14 13.3,-4.3 8.2,11.3 -8.2,11.3 -13.3,-4.3" fill="var(--ink)"/><path fill="none" d="M0 -14V-32M13.3 -4.3L30.4 -9.9M8.2 11.3L18.8 25.9M-8.2 11.3L-18.8 25.9M-13.3 -4.3L-30.4 -9.9"/></g></symbol>
+<symbol id="volley" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"><circle r="44" fill="var(--ball)"/><path d="M2 -2C2 -22 14 -38 32 -30"/><path d="M2 -2C20 8 38 4 43 -12"/><path d="M2 -2C-16 10 -22 30 -12 42"/><path d="M-20 -39C-10 -22 -10 -8 -24 4M-40 -18C-30 -6 -30 8 -42 14"/></g></symbol>
+<symbol id="hand" viewBox="-50 -50 100 100"><g fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle r="44" fill="var(--ball)"/><path d="M-12 -16L12 -16L20 6L0 20L-20 6Z"/><path d="M-12 -16L-22 -38M12 -16L22 -38M20 6L42 10M0 20L0 44M-20 6L-42 10"/></g></symbol>
+<symbol id="base" viewBox="-50 -50 100 100"><circle r="44" fill="var(--ball)" stroke="var(--ink)" stroke-width="4"/><g fill="none" stroke="var(--seam)" stroke-width="4" stroke-linecap="round"><path d="M-28 -34C-10 -14 -10 14 -28 34M28 -34C10 -14 10 14 28 34"/><path stroke-width="3" stroke-dasharray="2 6" d="M-36 -26C-20 -10 -20 10 -36 26M36 -26C20 -10 20 10 36 26"/></g></symbol>
+<symbol id="puck" viewBox="-50 -50 100 100"><path d="M-44 -6V10A44 16 0 0 0 44 10V-6Z" fill="var(--puck)" stroke="var(--ink)" stroke-width="3"/><ellipse cy="-6" rx="44" ry="16" fill="var(--puck-top)" stroke="var(--ink)" stroke-width="3"/></symbol>
+<symbol id="flower" viewBox="0 0 200 200"><g transform="rotate(-6 100 100)">
+<circle cx="100" cy="100" r="92" fill="none" stroke="var(--ink)" stroke-width="5"/>
+<circle cx="100" cy="100" r="84" fill="none" stroke="var(--ink)" stroke-width="2"/>
+<use href="#basket" x="76" y="30" width="48" height="48"/><use href="#soccer" x="120" y="62" width="48" height="48"/>
+<use href="#volley" x="103" y="113" width="48" height="48"/><use href="#hand" x="49" y="113" width="48" height="48"/>
+<use href="#puck" x="32" y="62" width="48" height="48"/><use href="#base" x="76" y="76" width="48" height="48"/>
+</g></symbol>
+</defs><rect width="200" height="200" fill="#f5f5f2"/><use href="#flower" x="26" y="26" width="148" height="148"/></svg>

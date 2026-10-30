@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>첫직관</title>
+<!-- 웹앱(PWA): 휴대폰 홈 화면에 앱처럼 설치. 아이콘은 헤더의 꽃 도장 로고 -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="첫직관">
+<meta name="theme-color" content="#f5f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151618" media="(prefers-color-scheme: dark)">
 <!-- 본문 글꼴은 페이지를 그리기 전에 미리 받아 둠 (휴대폰에서 시스템 글꼴로 오래 보이지 않게) -->
 <link rel="preload" href="fonts/KBO-Dia-Gothic_medium.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/KBO-Dia-Gothic_bold.woff" as="font" type="font/woff" crossorigin>
@@ -1417,6 +1424,8 @@ $('skip').addEventListener('click',e=>{e.preventDefault();(document.querySelecto
   if(!linked)go(PAGES.includes(h)?h:'home');
   if(firstVisit&&!linked)setTimeout(openSetup,splashShown?1900:0);
 })();
+// 웹앱: 한 번 열어 두면 신호가 약한 경기장에서도 열리게 (sw.js)
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
 </html>
