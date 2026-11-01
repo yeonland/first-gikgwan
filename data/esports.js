@@ -27,10 +27,10 @@ const book=Object.fromEntries(teams.map(t=>[t[1],['티켓링크',TL,'주마다 �
 const bookNote='OWCS Korea 경기';
 const bookFine='OWCS Korea 관람권은 티켓링크 e스포츠에서 주마다 팔아요(티켓링크·SOOP 공지, 2026.10.14 확인). 9팀 모두 홍대 WDG 스튜디오에서 경기해요.';
 
-// 홈 "이번 주 일정"용 [날짜, 시간, 팀 1, 팀 2, 경기장, 참고]. Liquipedia 일정 (한국 시간, 정규 리그 2026.10.17, 시드 결정전·최종 진출전 2026.10.30 확인)
+// 홈 "이번 주 일정"용 [날짜, 시간, 팀 1, 팀 2, 경기장, 참고]. 한국 시간. 정규 리그는 Liquipedia(2026.10.17), 최종 진출전 결과·지역 플레이오프는 OWCS 공식 일정(owtics.gg, UTC+9로 바꿈, 2026.11.01 확인)
 // 정규 리그 1~4위(ZETA·CR·T1·Cheeseburger)는 시드 결정전, 5~8위(Falcons·SEIJI·ZANSIDE·O2 Blast)는 최종 진출전, 9위 Poker Face는 탈락
-// 지역 플레이오프(11.6~8)는 대진·시간 발표 전이라 넣지 않음
-const LCQ='최종 진출전',SD='시드 결정전',LCQ2='승자조 결승 패자',LCQ3='패자조 준결승 승자';
+// 최종 진출전: Falcons 3-0 SEIJI로 지역 플레이오프 진출, ZANSIDE 3-1 O2 Blast(O2 Blast 탈락). 11.01 패자조 결승·시드 순위는 확인 때 경기 중이라 자리 표시로 둠
+const LCQ='최종 진출전',SD='시드 결정전',PO='지역 플레이오프';
 const games=[
  ['2026-10-02','17:15','Cheeseburger','Poker Face',WDG,'정규 리그'],['2026-10-02','18:45','Falcons','ZETA',WDG,'정규 리그'],['2026-10-02','20:30','SEIJI','T1',WDG,'정규 리그'],
  ['2026-10-03','15:15','Cheeseburger','ZANSIDE',WDG,'정규 리그'],['2026-10-03','16:35','T1','ZETA',WDG,'정규 리그'],['2026-10-03','18:35','CR','O2 Blast',WDG,'정규 리그'],
@@ -44,29 +44,33 @@ const games=[
  ['2026-10-23','17:00','Cheeseburger','O2 Blast',WDG,'정규 리그'],['2026-10-23','18:30','Falcons','ZANSIDE',WDG,'정규 리그'],['2026-10-23','20:00','CR','SEIJI',WDG,'정규 리그'],
  ['2026-10-24','15:00','Cheeseburger','ZETA',WDG,'정규 리그'],['2026-10-24','16:30','Falcons','T1',WDG,'정규 리그'],['2026-10-24','18:00','Poker Face','SEIJI',WDG,'정규 리그'],
  ['2026-10-25','15:00','Poker Face','ZANSIDE',WDG,'정규 리그'],['2026-10-25','16:30','O2 Blast','T1',WDG,'정규 리그'],['2026-10-25','18:00','ZETA','CR',WDG,'정규 리그'],
- ['2026-10-30','17:00','Falcons','SEIJI',WDG,LCQ+' 승자조 결승 · 이기면 지역 플레이오프'],['2026-10-30','18:30','ZETA','Cheeseburger',WDG,SD],['2026-10-30','20:00','CR','T1',WDG,SD],
- ['2026-10-31','15:00','ZANSIDE','O2 Blast',WDG,LCQ+' 패자조 준결승 · 지면 탈락'],['2026-10-31','16:30','ZETA','T1',WDG,SD],['2026-10-31','18:00','CR','Cheeseburger',WDG,SD],
- ['2026-11-01','15:00',LCQ2,LCQ3,WDG,LCQ+' 패자조 결승 · 이기면 지역 플레이오프'],['2026-11-01','17:30','ZETA','CR',WDG,SD],['2026-11-01','19:00','T1','Cheeseburger',WDG,SD]
+ ['2026-10-30','17:00','Falcons','SEIJI',WDG,LCQ+' 승자조 결승 · Falcons 3-0 승, 지역 플레이오프 진출'],['2026-10-30','18:30','ZETA','Cheeseburger',WDG,SD],['2026-10-30','20:00','CR','T1',WDG,SD],
+ ['2026-10-31','15:00','ZANSIDE','O2 Blast',WDG,LCQ+' 패자조 준결승 · ZANSIDE 3-1 승, O2 Blast 탈락'],['2026-10-31','16:30','ZETA','T1',WDG,SD],['2026-10-31','18:00','CR','Cheeseburger',WDG,SD],
+ ['2026-11-01','15:00','SEIJI','ZANSIDE',WDG,LCQ+' 패자조 결승 · 이기면 지역 플레이오프'],['2026-11-01','17:30','ZETA','CR',WDG,SD],['2026-11-01','19:00','T1','Cheeseburger',WDG,SD],
+ ['2026-11-06','17:00','시드 4위','Falcons',WDG,PO+' 1라운드 1경기 · 지면 탈락'],['2026-11-06','19:00','시드 3위',LCQ+' 2위',WDG,PO+' 1라운드 2경기 · 지면 탈락'],
+ ['2026-11-07','15:00','시드 1위','1경기 승자',WDG,PO+' 준결승'],['2026-11-07','17:00','시드 2위','2경기 승자',WDG,PO+' 준결승'],
+ ['2026-11-08','15:00','준결승 패자','준결승 패자',WDG,PO+' 3·4위전'],['2026-11-08','17:00','준결승 승자','준결승 승자',WDG,PO+' 결승']
 ];
 const md=iso=>iso.slice(5).replace('-','.');
 
-// 홈 티켓: 오늘 이후 내 팀의 첫 경기. 남은 경기가 없으면 지역 플레이오프 대진 발표 전, Poker Face는 정규 리그 9위로 탈락
+// 홈 티켓: 오늘 이후 내 팀의 첫 경기. 남은 경기가 없으면 지역 플레이오프 대진 발표 전, 탈락한 팀은 시즌 종료
+const out={'Poker Face':'정규 리그 9위 (탈락)','O2 Blast':'최종 진출전 패자조 준결승 패배 (탈락)'};
 function nextGame(t){
   const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const mine=games.filter(x=>x[2]===t[1]||x[3]===t[1]),left=mine.filter(x=>x[0]>=today),g=left[0];
-  if(!g&&t[1]==='Poker Face')return {round:'OWCS Korea 스테이지 3',home:t[0],away:'시즌 종료',date:null,time:null,park:WDG,
-    rows:[['순위','정규 리그 9위 (탈락)'],['참고','다음 스테이지 일정 발표 전']]};
+  if(!g&&out[t[1]])return {round:'OWCS Korea 스테이지 3',home:t[0],away:'시즌 종료',date:null,time:null,park:WDG,
+    rows:[['순위',out[t[1]]],['참고','다음 스테이지 일정 발표 전']]};
   if(!g)return {round:'OWCS Korea 지역 플레이오프',home:t[0],away:'대진 발표 전',date:null,time:null,park:WDG,
     rows:[['일정','지역 플레이오프 11.6~8'],['예매','티켓링크 (주마다 판매)'],['참고','시드 결정전·최종 진출전 결과로 대진이 정해져요']]};
   const name=k=>(teams.find(x=>x[1]===k)||[k])[0];
   return {round:'OWCS Korea '+g[5].split(' · ')[0],home:name(g[2]),away:name(g[3]),date:g[0],time:g[1],park:g[4],
     rows:[['장소',WDG],['예매','티켓링크 (주마다 판매)'],['참고',`남은 경기 ${left.length}개 (마지막 ${md(mine[mine.length-1][0])})`]]};
 }
-const nextNote='10.30 기준 Liquipedia 일정';
+const nextNote='11.01 기준 OWCS 공식 일정';
 
-const bookNow={note:'10.30 기준',date:'2026-10-30',title:'OWCS Korea 스테이지 3 · 시드 결정전·최종 진출전',
-  rows:[['일정','시드 결정전(1~4위끼리 한 번씩)·최종 진출전(5~8위) 10.30(금)~11.1(일) → 지역 플레이오프 11.6~8'],
-    ['시작','10.30(금) 17:00, 10.31(토)·11.1(일) 15:00. 하루 3경기'],
+const bookNow={note:'11.01 기준',date:'2026-11-06',title:'OWCS Korea 스테이지 3 · 지역 플레이오프',
+  rows:[['일정','11.6(금)~8(일). 6팀이 지면 바로 떨어지는 토너먼트(4세트 먼저 이기면 승). 시드 1·2위는 준결승부터'],
+    ['시작','11.6(금) 17:00, 11.7(토)·11.8(일) 15:00. 하루 2경기'],
     ['예매처',`<a href="${TL}" target="_blank" rel="noopener">티켓링크</a> e스포츠 (주마다 판매)`],
     ['중계','<a href="https://www.sooplive.com/station/owesports" target="_blank" rel="noopener">SOOP owesports</a> 채널']],
   fine:'경기 시간은 앞 경기가 길어지면 늦어질 수 있어요. 관람 나이 제한과 반입 기준은 티켓링크 예매 안내를 확인하세요.'};
