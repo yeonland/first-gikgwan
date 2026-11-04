@@ -120,6 +120,7 @@ first-gikgwan/
 ├─ DESIGN.md        디자인 기준 (색, 글꼴, 글자 크기, 화면별 규칙)
 ├─ docs/screens/    README 화면 캡처
 ├─ drafts/          로고 시안, 첫 홈 화면 시안
+├─ scripts/         rules_to_md.py: rule/ 규칙서 PDF를 rule/md/*.md로 바꿈 (조항 대조용, 저장소에는 안 올라감)
 └─ fonts/           KBO 다이아고딕 (woff)
 ```
 
