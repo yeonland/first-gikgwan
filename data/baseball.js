@@ -50,11 +50,12 @@ const bookNow={note:'10.30 기준',date:'2026-10-30',title:'플레이오프 · �
     ['매수','1인 최대 4매'],['현장','취소표만 경기 2시간 전부터 구장에서 판매']],
   fine:'온라인 예매가 어려운 만 65세 이상(1962.1.1 이전 출생), 장애인 등록증·복지카드 소지자, 외국인(여권)은 현장에서 1인 1매 살 수 있어요.'};
 
-// 룰 카드 10장: 홈 "경기 전 1분 룰"은 homeRules 3장만 꺼내 씀
+// 룰 카드 12장: 홈 "경기 전 1분 룰"은 homeRules 3장만 꺼내 씀
 // video: 공식 채널(방송사·구단·협회) 유튜브 영상만, 퍼가기 허용을 확인한 것만 {id, start(몇 초부터, 선택), by(채널), len, title, game(언제·어느 팀 경기, 홈 vs 원정)}. 여러 개면 videos:[{label(탭 이름), desc(설명), ...}]
 // book: [조항, 무엇에 관한 조항]. 조항 번호는 2026 공식야구규칙(KBO)과 대조한 것만. KBO 리그 규정은 이름만
 // 아웃송·볼넷송(inning·kbb 카드): 나무위키 KIA·롯데 응원가 문서 2026.10.17 확인. 곡은 구단마다 다르고 자주 바뀜
-const ruleCats=['점수','아웃','출루','헷갈리는 룰','KBO 규정'];
+// positions 카드: 포지션 이름·약자·기록 번호는 경기장·중계에서 쓰는 말이라 조항 없이 둠 (규칙서 확인 뒤 채움)
+const ruleCats=['점수','아웃','출루','포지션','헷갈리는 룰','KBO 규정'];
 const rules=[
  {id:'score',name:'득점',cats:['점수'],
   easy:'주자가 1·2·3루를 차례로 밟고 홈까지 오면 1점이에요.',
@@ -68,6 +69,27 @@ const rules=[
   easy:'아웃 3개면 공격과 수비가 바뀌어요.',
   field:'초에는 원정팀, 말에는 홈팀이 공격해요. 9회까지 해서 동점이면 연장전. KBO 정규시즌은 11회까지 해도 같으면 무승부, 포스트시즌은 15회까지 해요. 9회초가 끝났을 때 홈팀이 앞서 있으면 9회말은 하지 않아요. 우리 팀이 수비에서 아웃을 잡으면 구장에 아웃송(아웃 잡을 때 나오는 짧은 노래)이 나오고 응원단이 춤을 춰요. 구단마다 곡이 달라요 (KIA "삐끼삐끼"가 유명해요).',
   book:[['5.09(e)','아웃 3개면 공수 교대'],['7.01(a)','9이닝 정식 경기'],['7.01(b)','9회까지 동점이면 연장전'],['KBO 리그 규정','정규시즌 연장은 11회까지 (2025년부터)']]},
+ {id:'positions',name:'포지션 (SS 유격수, LF 좌익수…)',cats:['포지션'],
+  figCap:'홈에서 바라본 수비 자리 · 숫자는 기록할 때 쓰는 번호',
+  fig:`<svg viewBox="0 0 320 250" role="img" aria-label="야구 수비 자리 9곳. 1 투수 P, 2 포수 C, 3 1루수 1B, 4 2루수 2B, 5 3루수 3B, 6 유격수 SS, 7 좌익수 LF, 8 중견수 CF, 9 우익수 RF">
+<path class="ln" d="M160 200 L18 58 M160 200 L302 58"/>
+<path class="ln" d="M160 200 L214 146 L160 92 L106 146 Z"/>
+<rect class="base" x="208" y="140" width="12" height="12" transform="rotate(45 214 146)"/>
+<rect class="base" x="154" y="86" width="12" height="12" transform="rotate(45 160 92)"/>
+<rect class="base" x="100" y="140" width="12" height="12" transform="rotate(45 106 146)"/>
+<circle class="spot" cx="62" cy="70" r="13"/><text class="num" x="62" y="70">7</text><text class="tx" x="62" y="46" text-anchor="middle">LF 좌익수</text>
+<circle class="spot" cx="160" cy="30" r="13"/><text class="num" x="160" y="30">8</text><text class="tx" x="178" y="34">CF 중견수</text>
+<circle class="spot" cx="258" cy="70" r="13"/><text class="num" x="258" y="70">9</text><text class="tx" x="258" y="46" text-anchor="middle">RF 우익수</text>
+<circle class="spot" cx="122" cy="96" r="13"/><text class="num" x="122" y="96">6</text><text class="tx" x="104" y="100" text-anchor="end">SS 유격수</text>
+<circle class="spot" cx="198" cy="96" r="13"/><text class="num" x="198" y="96">4</text><text class="tx" x="216" y="100">2B 2루수</text>
+<circle class="spot" cx="84" cy="138" r="13"/><text class="num" x="84" y="138">5</text><text class="tx" x="66" y="142" text-anchor="end">3B 3루수</text>
+<circle class="spot" cx="236" cy="138" r="13"/><text class="num" x="236" y="138">3</text><text class="tx" x="254" y="142">1B 1루수</text>
+<circle class="spot" cx="160" cy="150" r="13"/><text class="num" x="160" y="150">1</text><text class="tx" x="160" y="178" text-anchor="middle">P 투수</text>
+<circle class="spot" cx="160" cy="226" r="13"/><text class="num" x="160" y="226">2</text><text class="tx" x="178" y="230">C 포수</text>
+</svg>`,
+  easy:'수비하는 9명은 자리마다 이름과 번호가 있어요. 전광판과 중계에서는 영어 약자로 써요.',
+  field:'P 투수(1) · C 포수(2) · 1B 1루수(3) · 2B 2루수(4) · 3B 3루수(5) · SS 유격수(6, 2루와 3루 사이) · LF 좌익수(7) · CF 중견수(8) · RF 우익수(9). 왼쪽·오른쪽은 홈에서 바라본 방향이에요. DH 지명타자는 수비는 하지 않고 투수 대신 타석에만 들어가요. 괄호 속 번호는 기록할 때 쓰는 번호라 "6-4-3 병살"은 유격수 → 2루수 → 1루수로 공이 가서 두 명을 잡았다는 뜻이에요.',
+  book:[]},
  {id:'kbb',name:'삼진과 볼넷',cats:['아웃','출루'],
   easy:'스트라이크 3개면 삼진 아웃, 볼 4개면 볼넷으로 1루에 나가요.',
   field:'투 스트라이크(스트라이크 2개) 뒤의 파울은 스트라이크로 세지 않아서, 파울이 이어지면 타석이 길어져요. 볼넷을 얻은 타자는 아웃될 걱정 없이 1루로 걸어가요. 우리 타자가 볼넷으로 나가면 볼넷송이 나와요. 구단마다 곡이 달라요 (롯데는 "살리고 달리고").',
