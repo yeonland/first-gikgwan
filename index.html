@@ -156,15 +156,15 @@
   .wk-game svg{width:20px;height:20px}
   .wk-game b{display:block;font-size:var(--fs-body)}
   .wk-game span{font-size:var(--fs-cap);color:var(--pencil)}
-  /* 홈은 상자 없이 종이에 바로 적는다: 목록은 위에 먹색 굵은 줄 + 사이 가는 줄 (장부처럼). 상자는 티켓만 */
-  #p-home .list{background:transparent;border:0;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line)}
-  #p-home .row,#p-home .wk-day{padding-inline:0}
-  #p-home .add{text-align:left;padding-inline:0}
-  #p-home .browse-go{padding-inline:0}
-  #p-home .week-nav button{background:transparent;border-color:transparent}
-  #p-home .rules{background:transparent;border:0;border-bottom:1px solid var(--line)}
-  #p-home .rules summary{padding-inline:0}
-  #p-home .rules-body{padding-inline:0}
+  /* 상자 없이 종이에 바로 적는다: 목록은 위에 먹색 굵은 줄 + 사이 가는 줄 (장부처럼). 상자는 티켓·입력 칸만 */
+  .list,.steps{background:transparent;border:0;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line)}
+  .row,.wk-day,.steps li,.check{padding-inline:0}
+  .add{text-align:left;padding-inline:0}
+  .browse-go{padding-inline:0}
+  .week-nav button{background:transparent;border-color:transparent}
+  .rules{background:transparent;border:0;border-bottom:1px solid var(--line)}
+  .rules summary{padding-inline:0}
+  .rules-body{padding-inline:0}
   /* 오늘 경기: 상자·왼쪽 색 줄 없이 큰 경기 이름 + 밑줄 친 바로가기 */
   .today-game>b{font-size:var(--fs-em);line-height:1.3}
   .today-go{display:flex;flex-wrap:wrap;gap:0 18px;margin-top:4px}
@@ -226,20 +226,19 @@
   .fine{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
   a{color:inherit;text-underline-offset:3px}
   /* 예매 */
-  .book-card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+  .book-card{border-top:1.5px solid var(--ink);padding:14px 0 0;display:flex;flex-direction:column;gap:12px}
   .bc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .book-card .info dd a{font-weight:700}
-  .steps{list-style:none;margin:0;padding:0;counter-reset:s;background:var(--surface);border:1px solid var(--line)}
+  .steps{list-style:none;margin:0;padding:0;counter-reset:s}
   .steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
   .steps li:first-child{border-top:0}
-  .steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;background:var(--led-bg);color:var(--led);font-family:var(--dot);font-size:var(--fs-body);border-radius:2px}
+  .steps li::before{content:counter(s);font-size:var(--fs-title);font-weight:700;line-height:1.2;color:var(--team-ink)}
   .steps b{display:block}
   .steps span{font-size:var(--fs-cap);color:var(--pencil)}
   .clubs .row{grid-template-columns:10px minmax(0,1fr) auto}
   .clubs .dot{width:10px;height:10px;border-radius:50%}
   .clubs .bk{text-align:right;font-size:var(--fs-cap);color:var(--pencil);max-width:9.5em}
   .clubs .bk a{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink)}
-  .clubs .me{background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
   .clubs .me b::after{content:" · 내 팀";font-weight:400;font-size:var(--fs-cap);color:var(--team-ink)}
   /* 종목: 처음 설정(여러 종목 + 종목마다 내 팀), 고른 종목이 2개 이상이면 머리말 아래 종목 칩 */
   header{flex-wrap:wrap}
@@ -266,7 +265,7 @@
   .pick.off svg{opacity:.45}
   /* 직관 준비 */
   /* 구장 지도: 종이 위 약도. 내 팀 구장은 팀 색 점선 도장, 고른 구장은 팀 색으로 채운 점 */
-  .park-map{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px 12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .park-map{margin:0;padding:4px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px}
   .park-map svg{width:100%;max-width:300px;height:auto;display:block;overflow:visible}
   .park-map .land{fill:var(--paper);stroke:var(--pencil);stroke-width:1;stroke-linejoin:round}
   .pin{cursor:pointer;outline:none}
@@ -279,7 +278,7 @@
   .park-map figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
 
   .pg{display:flex;flex-direction:column;gap:30px;min-width:0}
-  .prep-park{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+  .prep-park{border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line);padding:12px 0}
   .prep-park dt{color:var(--pencil)}
   .list .row.tip{grid-template-columns:minmax(0,1fr)}
   .row.tip b{display:block}
@@ -302,11 +301,11 @@
   .peel{align-self:flex-start;margin-top:2px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
   #log-led,#home-led{grid-template-columns:repeat(3,minmax(0,1fr))}
   .led-empty{margin:0;padding:10px 12px;border:1.5px dashed var(--line);font-size:var(--fs-cap);color:var(--pencil)}
-  .add-form{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+  .add-form{display:flex;flex-direction:column;gap:12px;border-top:1.5px solid var(--ink);padding:14px 0 0}
   .add-form label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-cap);color:var(--pencil)}
   .add-form fieldset{margin:0;padding:0;border:0;min-width:0}
   .add-form legend{padding:0;margin-bottom:4px;font-size:var(--fs-cap);color:var(--pencil)}
-  .add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+  .add-form input,.add-form select{width:100%;min-width:0;font-family:var(--sans);font-size:var(--fs-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
   .score-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
   .score-in>span{font-size:var(--fs-title);padding-bottom:6px;color:var(--pencil)}
   .vs-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end}
@@ -332,7 +331,7 @@
   .submit{font-family:var(--sans);font-size:var(--fs-body);font-weight:700;color:var(--on-team-ink);background:var(--team-ink);border:0;border-radius:8px;padding:12px;cursor:pointer}
   input:focus-visible{outline:2px solid var(--team-ink);outline-offset:1px}
   /* 룰 영상: 공식 채널 영상만. 썸네일 → 누르면 재생 */
-  .vid{margin:0 14px 12px 11px;display:flex;flex-direction:column;gap:6px}
+  .vid{margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
   .vid-btn,.vid-frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:var(--led-bg);overflow:hidden}
   .vid-btn{cursor:pointer}
   .vid-btn img{width:100%;height:100%;object-fit:cover;display:block}
@@ -340,12 +339,12 @@
   .vid-btn .play::after{content:"";position:absolute;left:23px;top:12px;border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent #fff}
   .vid-btn:focus-visible{outline:2px solid var(--team-ink);outline-offset:2px}
   .vid-cap{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
-  .vids{margin:0 14px 12px 11px;display:flex;flex-direction:column}
+  .vids{margin:0 0 12px;display:flex;flex-direction:column}
   .vids .vid{margin:10px 0 0}
   .vid-tabs .tab{padding:8px 12px}
   .vid-desc{margin:0;font-size:var(--fs-cap);color:var(--pencil)}
   /* 룰 그림: 종이 위 연필 선, 중요한 움직임만 내 팀 색 */
-  .fig{margin:0 14px 12px 11px;padding:10px 8px 8px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px}
+  .fig{margin:0 0 12px;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:4px}
   .fig svg{width:100%;max-width:320px;height:auto;display:block}
   .fig .ln{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
   .fig .dash{stroke-dasharray:4 4}
@@ -364,7 +363,7 @@
   .fig .tx.em{fill:var(--team-ink);font-weight:700}
   .fig figcaption{font-size:var(--fs-cap);color:var(--pencil);text-align:center}
   /* 룰 카드: 쉬운 말 한 줄을 접어 두고, 누르면 경기 장면 + 규정집 조항 */
-  .rcard .share{display:block;margin:0 14px 12px 11px}   /* 카드 맨 아래 링크 보내기 */
+  .rcard .share{display:block;margin:0 0 12px}   /* 카드 맨 아래 링크 보내기 */
   .more{align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;font-family:var(--sans);font-size:var(--fs-cap);color:var(--pencil);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   /* 룰 찾기: 이름·쉬운 말·본문·조항에서 찾음. 칩 옆 숫자는 지금 검색어로 걸리는 카드 수 */
@@ -376,7 +375,7 @@
   .chip[aria-pressed="true"]{color:var(--ink);font-weight:700;border-color:var(--team-ink);background:color-mix(in srgb,var(--team-ink) 10%,transparent)}
   .rule-list{display:flex;flex-direction:column}
   /* 시즌은 이렇게: 한눈에 아래 상자. 정규시즌 경기 수와 포스트시즌 방식 */
-  .season{margin:0 0 12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line)}
+  .season{margin:0 0 12px;padding:12px 0;border-bottom:1px solid var(--line)}
   .season summary{display:flex;align-items:baseline;gap:8px;cursor:pointer;list-style:none}
   .season summary::-webkit-details-marker{display:none}
   .season summary b{font-size:var(--fs-body)}
@@ -385,25 +384,25 @@
   .season[open] summary{margin-bottom:8px}
   .season>.note{margin:8px 0 0}
   /* 이 종목 한눈에: 룰 카드 위 세 칸 (선수 수 · 경기 시간 · 이기는 법). 휴대폰에서는 한 줄씩 */
-  .glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px;background:var(--surface);border:1px solid var(--line)}
-  .glance div{padding:10px 12px;border-left:1px dashed var(--line)}
-  .glance div:first-child{border-left:0}
+  .glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line)}
+  .glance div{padding:10px 12px;border-left:1px solid var(--line)}
+  .glance div:first-child{border-left:0;padding-left:0}
   .glance dt{font-size:var(--fs-cap);color:var(--pencil)}
   .glance dd{margin:2px 0 0;font-size:var(--fs-body);font-weight:700}
   .glance dd small{display:block;font-size:var(--fs-cap);font-weight:400;color:var(--pencil)}
-  @media (max-width:560px){.glance div{padding:8px 10px}.glance dd small{display:none}}   /* 휴대폰: 가로 세 칸 그대로, 작은 설명은 숨겨 높이를 줄임 */
+  @media (max-width:560px){.glance div{padding:8px 10px}.glance div:first-child{padding-left:0}.glance dd small{display:none}}   /* 휴대폰: 가로 세 칸 그대로, 작은 설명은 숨겨 높이를 줄임 */
   .rule-list>.list+.list{border-top:0}
-  .rcard{border-top:1px solid var(--line);border-left:3px solid transparent}
+  .rcard{border-top:1px solid var(--line)}
   .rcard:first-child{border-top:0}
-  .rcard[open]{border-left-color:var(--team-ink)}
-  .rcard summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px 12px 11px;cursor:pointer}
+  .rcard[open] summary b{color:var(--team-ink)}
+  .rcard summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 0;cursor:pointer}
   .rcard summary::-webkit-details-marker{display:none}
   .rcard summary>*{grid-column:1}
   .rcard summary::after{content:"+";grid-column:2;grid-row:1/span 3;align-self:center;font-size:var(--fs-title);line-height:1;color:var(--pencil)}
   .rcard[open] summary::after{content:"−"}
   .rcard summary:focus-visible{outline:2px solid var(--team-ink);outline-offset:-2px}
   .rcard .lb{font-size:var(--fs-cap);color:var(--pencil);letter-spacing:.04em}
-  .rcard dl{margin:0;padding:0 14px 14px 11px;display:flex;flex-direction:column;gap:10px}
+  .rcard dl{margin:0;padding:0 0 14px;display:flex;flex-direction:column;gap:10px}
   .rcard dt{font-size:var(--fs-cap);color:var(--pencil)}
   .rcard dd{margin:2px 0 0}
   .rcard .src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:var(--fs-cap);color:var(--pencil)}
@@ -440,7 +439,7 @@
     #p-log{grid-template-rows:auto 1fr}
     /* 룰 카드: 왼쪽 쪽 / 오른쪽 쪽 두 묶음 */
     .rule-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start}
-    .rule-list>.list+.list{border-top:1px solid var(--line)}
+    .rule-list>.list+.list{border-top:1.5px solid var(--ink)}
   }
   @media (min-width:1100px){
     /* 하단 메뉴를 왼쪽 세로 메뉴로 */
@@ -612,7 +611,6 @@
   <div class="page" id="p-rule" hidden>
     <section aria-labelledby="h-rule">
       <div class="sec-head"><h2 id="h-rule">룰 카드</h2><span class="note" id="rule-count"></span></div>
-      <p class="fine">규정집을 쉬운 말로 풀었어요. 카드를 누르면 경기 장면과 규정집 조항이 보여요.</p>
       <input type="search" class="rule-q" id="rule-q" placeholder="룰 찾기 (예: 폴대, 낫아웃, 주자)" aria-label="룰 카드 찾기" autocomplete="off">
       <dl class="glance" id="rule-glance" aria-label="이 종목 한눈에"></dl>
       <details class="season" id="rule-season"><summary><b>시즌은 이렇게</b><span class="note" id="season-sum"></span></summary><dl class="info" id="season-info"></dl><p class="note" id="season-note"></p></details>
@@ -630,7 +628,7 @@
         <div class="sec-head"><h2 id="h-go">경기장 가는 법</h2><select id="prep-park" aria-label="경기장"></select></div>
         <figure class="park-map" id="park-map"></figure>
         <dl class="info prep-park" id="prep-park-info"></dl>
-        <p class="fine">구단 안내와 보도 기준(2026.10.13 확인)이에요. 노선과 주차는 바뀔 수 있으니 출발 전에 지도 앱으로 한 번 더 확인하세요.</p>
+        <p class="fine">2026.10.13 확인. 출발 전에 지도 앱으로 한 번 더 확인하세요.</p>
       </section>
       <section aria-labelledby="h-seat">
         <div class="sec-head"><h2 id="h-seat">좌석 고르기</h2></div>
@@ -678,12 +676,12 @@
         <p class="form-msg" id="form-msg" role="status"></p>
         <button type="submit" class="submit">티켓 붙이기</button>
       </form>
-      <p class="fine">기록은 이 브라우저에만 저장돼요. 다른 기기에서는 보이지 않고, 방문 기록을 지우면 함께 지워져요.</p>
+      <p class="fine">기록은 이 브라우저에만 저장돼요. 방문 기록을 지우면 함께 지워져요.</p>
     </section>
     <section aria-labelledby="h-backup">
       <div class="sec-head"><h2 id="h-backup">기록 보관</h2><span class="note" id="backup-note"></span></div>
       <div class="list">
-        <p class="row hint">기록을 파일 하나로 보관해 두면, 브라우저를 지우거나 기기를 바꿔도 다시 불러올 수 있어요. 내 팀과 준비물 체크도 같이 담겨요. 카톡 "나와의 채팅"으로 보내 두면 찾기 쉬워요.</p>
+        <p class="row hint">파일로 보관해 두면 기기를 바꿔도 다시 불러올 수 있어요. 카톡 "나와의 채팅"에 보내 두면 찾기 쉬워요.</p>
         <p class="row hint" id="backup-inapp" hidden>카톡·인스타 안에서 연 화면에서는 파일이 저장되지 않을 수 있어요. 메뉴에서 "다른 브라우저로 열기"를 눌러 크롬·사파리에서 해 주세요.</p>
         <button type="button" class="add backup-btn" id="backup-share" hidden>카톡·메일로 보내기</button>
         <button type="button" class="add backup-btn" id="backup-save">파일로 내려받기</button>
@@ -1247,7 +1245,7 @@ function renderMap(){
   const [lx,ly]=D.parkGeo[picked]?proj(D.parkGeo[picked]):[0,0];
   const label=D.parkGeo[picked]?`<text class="lb" x="${lx.toFixed(1)}" y="${(ly-13).toFixed(1)}" text-anchor="middle">${esc(D.parkShort[picked])}</text>`:'';
   $('park-map').innerHTML=`<svg viewBox="-8 -8 316 ${KOREA.H+16}" role="group" aria-label="${SP.name} 경기장 지도"><path class="land" d="${KOREA.d}"/>${pins}${label}</svg>
-    <figcaption>점을 누르면 아래 가는 길이 바뀌어요. 점선 동그라미는 내 팀 홈. 지도 윤곽: Natural Earth</figcaption>`;
+    <figcaption>점선 동그라미는 내 팀 홈 · 지도 윤곽 Natural Earth</figcaption>`;
 }
 const pickPin=e=>{const g=e.target.closest('.pin');if(!g)return;prepPark.value=g.dataset.park;renderPark();renderMap();
   const n=$('park-map').querySelector(`.pin[data-park="${CSS.escape(g.dataset.park)}"]`);n&&n.focus()};
