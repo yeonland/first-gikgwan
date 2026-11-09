@@ -35,22 +35,25 @@ const games=[
 ];
 const md=iso=>{const [,m,d]=iso.split('-');return `${m}.${d}`};
 const nameOf=s=>teams.find(t=>t[1]===s)[0];
+// 홈 티켓: 오늘 이후 내 팀의 첫 경기
 function nextGame(t){
-  const mine=games.filter(g=>g[2]===t[1]||g[3]===t[1]),g=mine[0];
-  const isHome=g[2]===t[1],hl=t[1]==='HL안양',home=games.find(x=>x[2]==='HL안양');
+  const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const mine=games.filter(g=>(g[2]===t[1]||g[3]===t[1])&&g[0]>=today),g=mine[0];
+  if(!g)return {round:'아시아리그 정규리그',home:t[0],away:'일정 확인 중',date:null,time:null,park:null,rows:[['참고','아시아리그·구단 일정표에서 확인하세요']]};
+  const isHome=g[2]===t[1],hl=t[1]==='HL안양',home=games.find(x=>x[2]==='HL안양'&&x[0]>=today);
   const rows=[['장소',g[4]+(isHome?' (홈)':' (원정)')],['예매',hl||g[2]==='HL안양'?'티켓링크 (경기 7일 전 14시 오픈)':'아시아리그·구단 예매처']];
   rows.push(['참고',hl?(isHome?'아시아리그 정규리그 홈경기예요':`일본 원정 경기예요. 다음 홈경기 ${md(home[0])} 안양 vs ${nameOf(home[3])}`)
     :'HL 안양과의 경기만 넣었어요']);
   return {round:'아시아리그 정규리그',home:nameOf(g[2]),away:nameOf(g[3]),date:g[0],time:g[1],park:g[4],rows};
 }
-const nextNote='10.14 기준 HL 안양 일정';
+const nextNote='11.09 기준 HL 안양 일정';
 
-const bookNow={note:'10.14 기준',date:'2026-11-12',title:'HL 안양 홈 3연전 · vs 요코하마 그리츠',
+const bookNow={note:'11.09 기준',date:'2026-11-12',title:'HL 안양 홈 3연전 · vs 요코하마 그리츠',
   rows:[['경기','11.12(목) 19:00 · 11.14(토) 16:00 · 11.15(일) 14:00, 안양빙상장'],
     ['예매처',`<a href="${TL}" target="_blank" rel="noopener">티켓링크 HL 안양</a>`],
-    ['오픈','일반석은 경기 7일 전 오후 2시 (11.12 경기는 11.05)'],
+    ['오픈','일반석은 경기 7일 전 오후 2시'],
     ['가격','일반석 온라인 16,000원(성인·중고생), 8,000원(초등생). 평일 경기 30% 할인']],
-  fine:'10월 남은 경기와 11월 초는 일본 원정이에요. 정규리그는 2027.03.14까지, 팀당 40경기예요.'};
+  fine:'11월 말과 12월 초는 일본 원정이에요. 정규리그는 2027.03.14까지, 팀당 40경기예요.'};
 
 // 룰 카드 10장. book: [조항, 무엇에 관한 조항]. 조항 번호는 IIHF 공식 규정집 2025/26(영문)과 대조한 것만
 // 연장·승부치기·승점은 아시아리그 2026-27 개최요강 기준

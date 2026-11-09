@@ -30,7 +30,7 @@ const book=Object.fromEntries(teams.map(t=>[t[1],['KOVO 통합 예매',KOVO,null
 const bookNote='정규리그 홈경기';
 const bookFine='V-리그 티켓은 KOVO 통합 홈페이지와 KOVO 앱에서 팔아요(2026.10.13 확인). 일반 예매 오픈 시각은 구단마다 달라서 구단 공지를 확인해 주세요.';
 
-// 2026-27 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인, 10월 컵대회는 뺌) [날짜, 시간, 홈, 원정, 경기장]
+// 2026-27 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인, 10월 컵대회는 뺌. 2026.11.09 기사로 11.04·06·08 경기 일치 확인) [날짜, 시간, 홈, 원정, 경기장]
 const games=[
  ['2026-10-31','14:00','대한항공','현대캐피탈','인천계양체육관'],
  ['2026-10-31','16:00','GS칼텍스','한국도로공사','서울장충체육관'],
@@ -86,17 +86,20 @@ const games=[
  ['2026-11-29','16:00','SOOP','한국도로공사','SOOP 스타디움']
 ];
 const md=iso=>{const [,m,d]=iso.split('-');return `${m}.${d}`};
+// 홈 티켓: 오늘 이후 내 팀의 첫 경기
 function nextGame(t){
-  const mine=games.filter(g=>g[2]===t[1]||g[3]===t[1]),g=mine[0],home=mine.find(x=>x[2]===t[1]);
+  const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const mine=games.filter(g=>(g[2]===t[1]||g[3]===t[1])&&g[0]>=today),g=mine[0],home=mine.find(x=>x[2]===t[1]);
+  if(!g)return {round:`V-리그 ${t[5]}`,home:t[0],away:'일정 확인 중',date:null,time:null,park:null,rows:[['참고','KOVO 일정표에서 확인하세요']]};
   const rows=[['장소',g[4]+(g[2]===t[1]?' (홈)':' (원정)')],['예매','KOVO 통합 예매 (KOVO 홈페이지·앱)']];
-  rows.push(['참고',g===home?'정규리그 첫 경기가 홈경기예요'
-    :home?`첫 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${home[3]}`:'첫 홈경기는 KOVO 일정표에서 확인하세요']);
+  rows.push(['참고',g===home?'정규리그 홈경기예요'
+    :home?`다음 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${home[3]}`:'다음 홈경기는 KOVO 일정표에서 확인하세요']);
   return {round:`V-리그 ${t[5]}`,home:g[2],away:g[3],date:g[0],time:g[1],park:g[4],rows};
 }
-const nextNote='10.13 기준 KOVO 일정';
+const nextNote='11.09 기준 KOVO 일정';
 
-const bookNow={note:'10.13 기준',date:'2026-10-31',title:'HK흥국금융 2026~2027 V-리그 개막',
-  rows:[['남자부','10.31(토) 14:00 인천계양체육관 · 대한항공 vs 현대캐피탈'],['여자부','10.31(토) 16:00 서울장충체육관 · GS칼텍스 vs 한국도로공사'],
+const bookNow={note:'11.09 기준',date:'2026-11-14',title:'HK흥국금융 2026~2027 V-리그 · 이번 주말',
+  rows:[['남자부','11.14(토) 14:00 인천계양체육관 · 대한항공 vs 삼성화재 / 11.15(일) 14:00 서울장충체육관 · 우리카드 vs 현대캐피탈'],['여자부','11.14(토) 16:00 서울장충체육관 · GS칼텍스 vs SOOP / 11.15(일) 16:00 수원체육관 · 현대건설 vs 한국도로공사'],
     ['예매처',`<a href="${KOVO}" target="_blank" rel="noopener">KOVO 통합 예매</a> (KOVO 홈페이지·앱)`],['기간','정규리그 10.31 ~ 2027.04.02, 팀당 36경기']],
   fine:'KB손해보험은 이번 시즌 평택이충문화체육관을 임시 홈으로 써요. SOOP은 페퍼저축은행을 인수한 새 팀이에요.'};
 

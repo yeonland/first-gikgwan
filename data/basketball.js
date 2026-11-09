@@ -38,7 +38,7 @@ const book=Object.fromEntries(teams.map(t=>[t[1],t[5]==='KBL'
 const bookNote='정규리그 홈경기';
 const bookFine='KBL은 KBL 홈페이지와 KBL 앱의 구단 예매 페이지에서, WKBL은 WKBL 홈페이지 티켓 메뉴에서 팔아요(2026.10.14 확인). 예매 오픈 시각은 구단마다 달라서 구단 공지를 확인해 주세요.';
 
-// 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인) [날짜, 시간, 홈, 원정, 경기장]
+// 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인. 2026.11.09 기사로 11.08 창원 LG vs KCC 일치 확인) [날짜, 시간, 홈, 원정, 경기장]
 // KBL은 11.20~11.30 일정표에 경기가 없음. WKBL은 11.01 개막
 const games=[
  ['2026-10-14','19:00','가스공사','KT','대구체육관'],
@@ -128,23 +128,25 @@ const games=[
 ];
 const md=iso=>{const [,m,d]=iso.split('-');return `${m}.${d}`};
 const nameOf=s=>teams.find(t=>t[1]===s)[0];
+// 홈 티켓: 오늘 이후 내 팀의 첫 경기
 function nextGame(t){
-  const mine=games.filter(g=>g[2]===t[1]||g[3]===t[1]),g=mine[0],home=mine.find(x=>x[2]===t[1]);
+  const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const mine=games.filter(g=>(g[2]===t[1]||g[3]===t[1])&&g[0]>=today),g=mine[0],home=mine.find(x=>x[2]===t[1]);
+  if(!g)return {round:`${t[5]} 정규리그`,home:t[0],away:'일정 확인 중',date:null,time:null,park:null,rows:[['참고','리그 일정표에서 확인하세요']]};
   const isHome=g[2]===t[1];
   const rows=[['장소',g[4]+(isHome?' (홈)':' (원정)')],['예매',t[5]==='KBL'?'KBL 홈페이지·앱 구단 예매':'WKBL 홈페이지 티켓 예매']];
-  rows.push(['참고',t[1]==='LG'&&!isHome?'창원체육관 공사로 10월은 원정만. 첫 홈경기 11.01 창원 vs 원주 DB'
-    :isHome?(g[0]==='2026-11-01'&&t[5]==='WKBL'?'WKBL 공식 개막전이에요':'정규리그 홈경기예요')
+  rows.push(['참고',isHome?'정규리그 홈경기예요'
     :home?`다음 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${nameOf(home[3])}`:'다음 홈경기는 리그 일정표에서 확인하세요']);
   return {round:`${t[5]} 정규리그`,home:nameOf(g[2]),away:nameOf(g[3]),date:g[0],time:g[1],park:g[4],rows};
 }
-const nextNote='10.14 기준 KBL·WKBL 일정';
+const nextNote='11.09 기준 KBL·WKBL 일정';
 
-const bookNow={note:'10.14 기준',date:'2026-10-17',title:'2026-27 KBL 정규리그 · WKBL 개막',
-  rows:[['KBL 이번 주말','10.17(토) 원주 DB vs 삼성, 정관장 vs KT, 가스공사 vs LG · 10.18(일) KT vs 현대모비스, SK vs 소노, 정관장 vs KCC'],
-    ['WKBL 개막','11.01(일) 16:00 청주체육관 · KB스타즈 vs BNK'],
+const bookNow={note:'11.09 기준',date:'2026-11-14',title:'2026-27 KBL·WKBL 정규리그 · 이번 주말',
+  rows:[['KBL 이번 주말','11.14(토) LG vs 현대모비스, KCC vs SK, 삼성 vs 정관장 · 11.15(일) LG vs KT, 소노 vs DB, KCC vs 가스공사'],
+    ['WKBL 이번 주말','11.14(토) 삼성생명 vs KB스타즈, 하나은행 vs 신한은행 · 11.15(일) 삼성생명 vs BNK'],
     ['예매처',`KBL은 <a href="https://www.kbl.or.kr" target="_blank" rel="noopener">KBL 홈페이지</a>·앱, WKBL은 <a href="${WKBL_T}" target="_blank" rel="noopener">WKBL 티켓 예매</a>`],
     ['기간','KBL 10.03 ~ 2027.04.11, 팀당 54경기 · WKBL 11.01부터 팀당 35경기']],
-  fine:'서울 삼성은 잠실실내체육관 철거로 이번 시즌 SK와 잠실학생체육관을 같이 써요. 창원 LG는 체육관 공사로 10월에는 홈경기가 없어요.'};
+  fine:'서울 삼성은 잠실실내체육관 철거로 이번 시즌 SK와 잠실학생체육관을 같이 써요.'};
 
 // 룰 카드 12장. book: [조항, 무엇에 관한 조항]. 조항 번호는 FIBA 공식 농구 경기규칙 2026(대한민국농구협회 한국어판)과 대조한 것만
 // 리그 규정은 KBL 경기규칙(2026-2027)·KBL 규약(2025.08.28 개정), WKBL 경기규칙(2025-2026)과 대조. 두 리그 규칙서 모두 FIBA를 바탕으로 조항 번호가 같음
