@@ -38,7 +38,7 @@ const book=Object.fromEntries(teams.map(t=>[t[1],t[5]==='KBL'
 const bookNote='정규리그 홈경기';
 const bookFine='KBL은 KBL 홈페이지와 KBL 앱의 구단 예매 페이지에서, WKBL은 WKBL 홈페이지 티켓 메뉴에서 팔아요(2026.10.14 확인). 예매 오픈 시각은 구단마다 달라서 구단 공지를 확인해 주세요.';
 
-// 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인. 2026.11.09 기사로 11.08 창원 LG vs KCC 일치 확인) [날짜, 시간, 홈, 원정, 경기장]
+// 정규리그 11.30까지 (네이버 스포츠 일정 2026.10.14 확인. 2026.11.09 기사로 11.08 창원 LG vs KCC 일치, 2026.11.10 기사로 11.09 잠실 삼성 vs KT·청주 KB스타즈 vs 우리은행과 11.13 우리은행 vs BNK 일치 확인) [날짜, 시간, 홈, 원정, 경기장]
 // KBL은 11.20~11.30 일정표에 경기가 없음. WKBL은 11.01 개막
 const games=[
  ['2026-10-14','19:00','가스공사','KT','대구체육관'],
@@ -139,9 +139,9 @@ function nextGame(t){
     :home?`다음 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${nameOf(home[3])}`:'다음 홈경기는 리그 일정표에서 확인하세요']);
   return {round:`${t[5]} 정규리그`,home:nameOf(g[2]),away:nameOf(g[3]),date:g[0],time:g[1],park:g[4],rows};
 }
-const nextNote='11.09 기준 KBL·WKBL 일정';
+const nextNote='11.10 기준 KBL·WKBL 일정';
 
-const bookNow={note:'11.09 기준',date:'2026-11-14',title:'2026-27 KBL·WKBL 정규리그 · 이번 주말',
+const bookNow={note:'11.10 기준',date:'2026-11-14',title:'2026-27 KBL·WKBL 정규리그 · 이번 주말',
   rows:[['KBL 이번 주말','11.14(토) LG vs 현대모비스, KCC vs SK, 삼성 vs 정관장 · 11.15(일) LG vs KT, 소노 vs DB, KCC vs 가스공사'],
     ['WKBL 이번 주말','11.14(토) 삼성생명 vs KB스타즈, 하나은행 vs 신한은행 · 11.15(일) 삼성생명 vs BNK'],
     ['예매처',`KBL은 <a href="https://www.kbl.or.kr" target="_blank" rel="noopener">KBL 홈페이지</a>·앱, WKBL은 <a href="${WKBL_T}" target="_blank" rel="noopener">WKBL 티켓 예매</a>`],

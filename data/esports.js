@@ -32,7 +32,7 @@ const bookFine='OWCS Korea 관람권은 티켓링크 e스포츠에서 주마다 
 // 정규 리그 1~4위(ZETA·CR·T1·Cheeseburger)는 시드 결정전, 5~8위(Falcons·SEIJI·ZANSIDE·O2 Blast)는 최종 진출전, 9위 Poker Face는 탈락
 // 최종 진출전: Falcons 3-0 SEIJI로 지역 플레이오프 진출, ZANSIDE 3-1 O2 Blast(O2 Blast 탈락), 11.01 ZANSIDE 3-2 SEIJI(SEIJI 탈락)
 // 시드 결정전 성적: ZETA 3-0, CR 2-1, T1 1-2, Cheeseburger 0-3. 지역 플레이오프 대진은 owtics.gg 대진표(2026.11.03 확인) 그대로. 표의 시드 번호(T1 4번, Cheeseburger 3번)가 성적 순서와 달라 시드 번호는 안 씀
-// 지역 플레이오프 결과와 그랜드 파이널 온라인 스테이지는 owtics.gg (UTC+9로 바꿈, 2026.11.09 확인). 상대가 TBD로 나온 A조 3경기는 뺌. owtics.gg는 ZANSIDE를 RØDE ZANSIDE GAMING으로 적음
+// 지역 플레이오프 결과와 그랜드 파이널 온라인 스테이지는 owtics.gg (UTC+9로 바꿈, 2026.11.10 확인). A조 The Gatos Guapos 3경기는 11.10에 상대가 정해져 넣음. 메인 스테이지 토·일 시각은 owtics.gg에 시간대 표기 없이 나오고 공식 사이트(owcsasia.com)는 확정 후 공개라고 해서 안 넣음. owtics.gg는 ZANSIDE를 RØDE ZANSIDE GAMING으로 적음
 const LCQ='최종 진출전',SD='시드 결정전',PO='지역 플레이오프',GF='OWCS 아시아 그랜드 파이널 온라인 스테이지';
 const games=[
  ['2026-10-02','17:15','Cheeseburger','Poker Face',WDG,'정규 리그'],['2026-10-02','18:45','Falcons','ZETA',WDG,'정규 리그'],['2026-10-02','20:30','SEIJI','T1',WDG,'정규 리그'],
@@ -53,9 +53,9 @@ const games=[
  ['2026-11-06','17:00','T1','ZANSIDE',WDG,PO+' 1라운드 1경기 · T1 4-1 승, ZANSIDE 탈락'],['2026-11-06','19:00','Cheeseburger','Falcons',WDG,PO+' 1라운드 2경기 · Falcons 4-0 승, Cheeseburger 탈락'],
  ['2026-11-07','15:00','ZETA','Falcons',WDG,PO+' 준결승 · ZETA 4-1 승'],['2026-11-07','17:00','CR','T1',WDG,PO+' 준결승 · T1 4-3 승'],
  ['2026-11-08','15:00','Falcons','CR',WDG,PO+' 3·4위전 · CR 4-1 승'],['2026-11-08','17:00','ZETA','T1',WDG,PO+' 결승 · T1 4-1 승, 우승'],
- ['2026-11-11','18:45','ZETA','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-11','20:30','Falcons','MURASH',ONLINE,GF+' · A조'],['2026-11-11','22:15','CR','VARREL',ONLINE,GF+' · B조'],
- ['2026-11-12','18:45','CR','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-12','20:30','T1','MURASH',ONLINE,GF+' · A조'],['2026-11-12','22:15','ZETA','VARREL',ONLINE,GF+' · B조'],
- ['2026-11-13','18:45','VARREL','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-13','20:30','T1','Falcons',ONLINE,GF+' · A조'],['2026-11-13','22:15','ZETA','CR',ONLINE,GF+' · B조']
+ ['2026-11-11','17:00','T1','The Gatos Guapos',ONLINE,GF+' · A조'],['2026-11-11','18:45','ZETA','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-11','20:30','Falcons','MURASH',ONLINE,GF+' · A조'],['2026-11-11','22:15','CR','VARREL',ONLINE,GF+' · B조'],
+ ['2026-11-12','17:00','Falcons','The Gatos Guapos',ONLINE,GF+' · A조'],['2026-11-12','18:45','CR','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-12','20:30','T1','MURASH',ONLINE,GF+' · A조'],['2026-11-12','22:15','ZETA','VARREL',ONLINE,GF+' · B조'],
+ ['2026-11-13','17:00','MURASH','The Gatos Guapos',ONLINE,GF+' · A조'],['2026-11-13','18:45','VARREL','ENTER FORCE.36',ONLINE,GF+' · B조'],['2026-11-13','20:30','T1','Falcons',ONLINE,GF+' · A조'],['2026-11-13','22:15','ZETA','CR',ONLINE,GF+' · B조']
 ];
 const md=iso=>iso.slice(5).replace('-','.');
 
@@ -72,10 +72,10 @@ function nextGame(t){
   return {round:g[5].split(' · ')[0],home:name(g[2]),away:name(g[3]),date:g[0],time:g[1],park:g[4],
     rows:[['장소',g[4]],['예매','온라인 경기라 표가 없어요. SOOP owesports 채널 중계'],['참고','메인 스테이지 11.20~22 부산 벡스코 오디토리움']]};
 }
-const nextNote='11.09 기준 OWCS 공식 일정';
+const nextNote='11.10 기준 OWCS 공식 일정';
 
-const bookNow={note:'11.09 기준',date:'2026-11-20',title:'OWCS 아시아 그랜드 파이널 · 부산',
-  rows:[['일정','온라인 스테이지 11.11(수)~13(금), 메인 스테이지 11.20(금)~22(일). 7팀 가운데 조별 1~3위 6팀이 메인 스테이지로 가요'],
+const bookNow={note:'11.10 기준',date:'2026-11-20',title:'OWCS 아시아 그랜드 파이널 · 부산',
+  rows:[['일정','온라인 스테이지 11.11(수)~13(금), 메인 스테이지 11.20(금)~22(일). 8팀 가운데 조별 1~3위 6팀이 메인 스테이지로 가요'],
     ['장소','부산 벡스코 오디토리움. 부산 2호선 센텀시티역·벡스코역'],
     ['시작','11.20(금) 16:00. 토·일 시작 시각은 확정되면 공개돼요'],
     ['한국 지역','T1(우승), ZETA, CR, Falcons가 나가요'],
