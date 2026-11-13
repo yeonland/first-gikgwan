@@ -102,6 +102,19 @@ const rules=[
   field:'7m 드로나 퇴장, 공격권을 누구에게 줄지 확신이 없을 때, 경기 끝 30초 안에 승패가 걸린 장면 같은 때에 판독해요. 판독이 필요하면 골 인정을 취소할 수 있는 시간도 늘어나요.',
   book:[['17:13','비디오 판독'],['9:2 해석','비디오 판독 요청 기한']]},
  {id:'positions',name:'포지션',cats:['포지션'],
+  figCap:'위쪽 상대 골대를 보고 공격할 때 · 실선은 골에리어(6m), 점선은 9m 선',
+  fig:`<svg viewBox="0 0 320 246" role="img" aria-label="핸드볼 코트 반쪽. 위쪽 골대 앞 골에리어 선에 피벗, 양쪽 끝에 레프트 윙과 라이트 윙, 9m 선 밖에 레프트백, 센터백, 라이트백">
+<path class="ln" d="M10 20 H310"/>
+<rect class="ln" x="145" y="10" width="30" height="10"/>
+<path class="ln" d="M64 20 A96 92 0 0 0 256 20"/>
+<path class="ln dash" d="M10 20 A150 150 0 0 0 310 20"/>
+<circle class="spot" cx="36" cy="40" r="13"/><text class="num" x="36" y="40">윙</text><text class="tx" x="36" y="68" text-anchor="middle">레프트 윙</text>
+<circle class="spot" cx="284" cy="40" r="13"/><text class="num" x="284" y="40">윙</text><text class="tx" x="284" y="68" text-anchor="middle">라이트 윙</text>
+<circle class="spot on" cx="160" cy="128" r="13"/><text class="num" x="160" y="128">피</text><text class="tx em" x="160" y="156" text-anchor="middle">피벗</text>
+<circle class="spot" cx="76" cy="186" r="13"/><text class="num" x="76" y="186">백</text><text class="tx" x="76" y="214" text-anchor="middle">레프트백</text>
+<circle class="spot" cx="160" cy="204" r="13"/><text class="num" x="160" y="204">백</text><text class="tx" x="160" y="232" text-anchor="middle">센터백</text>
+<circle class="spot" cx="244" cy="186" r="13"/><text class="num" x="244" y="186">백</text><text class="tx" x="244" y="214" text-anchor="middle">라이트백</text>
+</svg>`,
   easy:'골키퍼 1명과 필드 선수 6명이 자리를 나눠 뛰어요.',
   field:'백(뒤쪽 공격수) 3명은 골대에서 먼 9m 선 근처에서 뛰어올라 강한 슛을 던져요. 가운데가 센터백, 양옆이 레프트백·라이트백이에요. 윙 2명은 코트 양쪽 끝에서 좁은 각도로 몸을 날려 던져요. 피벗 1명은 골대 앞 반원(골에리어) 선에 붙어 상대 수비수 사이에서 자리를 만들고, 공을 받아 바로 던져요. 수비할 때는 6명이 골에리어 앞에 한 줄로 서서 막는 경우가 많아요.',
   book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요.'}

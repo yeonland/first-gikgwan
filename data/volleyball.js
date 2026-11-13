@@ -153,6 +153,19 @@ const rules=[
   field:'뒷줄(후위)에서만 뛰고, 서브와 블로킹을 할 수 없어요. 네트보다 높은 곳에서 공격으로 넘기는 것도 안 돼요. 후위 선수와 횟수 제한 없이 자주 바뀌어요(랠리 한 번은 지나야 해요).',
   book:[['19.2','리베로 복장'],['19.3.1','경기 중 행동'],['19.3.2','리베로 대체']]},
  {id:'roles',name:'세터·공격수·미들 블로커',cats:['포지션'],
+  figCap:'공격할 때 흔히 서는 자리의 한 가지 예 · 우리 코트를 뒤에서 본 모습',
+  fig:`<svg viewBox="0 0 320 212" role="img" aria-label="배구 코트 앞줄 왼쪽부터 레프트, 센터, 라이트. 뒷줄 왼쪽부터 레프트, 리베로, 세터">
+<text class="tx" x="160" y="14" text-anchor="middle">네트</text>
+<line class="net" x1="40" y1="24" x2="280" y2="24"/>
+<rect class="ln" x="60" y="24" width="200" height="176"/>
+<path class="ln dash" d="M60 104 H260"/>
+<circle class="spot" cx="100" cy="52" r="13"/><text class="num" x="100" y="52">레</text><text class="tx" x="100" y="80" text-anchor="middle">레프트</text>
+<circle class="spot" cx="160" cy="52" r="13"/><text class="num" x="160" y="52">센</text><text class="tx" x="160" y="80" text-anchor="middle">센터</text>
+<circle class="spot" cx="220" cy="52" r="13"/><text class="num" x="220" y="52">라</text><text class="tx" x="220" y="80" text-anchor="middle">라이트</text>
+<circle class="spot" cx="100" cy="140" r="13"/><text class="num" x="100" y="140">레</text><text class="tx" x="100" y="168" text-anchor="middle">레프트</text>
+<circle class="spot" cx="160" cy="140" r="13"/><text class="num" x="160" y="140">리</text><text class="tx" x="160" y="168" text-anchor="middle">리베로</text>
+<circle class="spot on" cx="220" cy="140" r="13"/><text class="num" x="220" y="140">세</text><text class="tx em" x="220" y="168" text-anchor="middle">세터</text>
+</svg>`,
   easy:'리베로 말고도 선수마다 맡은 역할이 있어요.',
   field:'세터는 두 번째 공을 올려(토스) 공격수가 때리기 좋게 해 주는 선수로, 공격 흐름을 이끌어요. 아웃사이드 히터(레프트)는 왼쪽에서 공격하고 서브 리시브(받기)도 많이 해요. 아포짓(라이트)은 오른쪽에서 때리는 팀의 주 공격수라 외국인 선수가 많이 맡아요. 미들 블로커(센터)는 네트 가운데에서 블로킹하고 빠른 공격(속공)을 해요. 보통 세터 1명, 아포짓 1명, 아웃사이드 히터 2명, 미들 블로커 2명이 코트에 서고, 미들 블로커가 뒷줄로 가면 리베로와 바뀌어요.',
   book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요. 규칙서에는 리베로만 따로 나와요.'},

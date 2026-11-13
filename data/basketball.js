@@ -205,6 +205,18 @@ const rules=[
   book:[['KBL 경기규칙 18.2.1','작전타임 90초'],['KBL 경기규칙 부록 D.4','코치 챌린지 (3번, 파울 포함)'],['KBL 경기규칙 33.16','페이크 파울은 경기 후 제재'],
     ['WKBL 경기규칙 4.2.1','명단 최대 15명'],['WKBL 경기규칙 A.4·A.5','감독 챌린지와 파울 챌린지'],['WKBL 경기규칙 33.16.1','페이크 파울은 경기 후 벌금']]},
  {id:'positions',name:'포지션',cats:['포지션'],
+  figCap:'공격할 때 흔히 서는 자리 · 아래쪽이 상대 골대',
+  fig:`<svg viewBox="0 0 320 262" role="img" aria-label="농구 반 코트. 3점 선 꼭대기에 포인트 가드 1번, 양 날개에 슈팅 가드 2번과 스몰 포워드 3번, 골대 양옆에 파워 포워드 4번과 센터 5번">
+<rect class="ln" x="20" y="10" width="280" height="240"/>
+<path class="ln" d="M40 250 V196 A124 124 0 0 1 280 196 V250"/>
+<rect class="ln" x="122" y="160" width="76" height="90"/>
+<circle class="ln" cx="160" cy="226" r="7"/>
+<circle class="spot on" cx="160" cy="46" r="13"/><text class="num" x="160" y="46">1</text><text class="tx em" x="160" y="74" text-anchor="middle">포인트 가드</text>
+<circle class="spot" cx="262" cy="118" r="13"/><text class="num" x="262" y="118">2</text><text class="tx" x="262" y="146" text-anchor="middle">슈팅 가드</text>
+<circle class="spot" cx="58" cy="118" r="13"/><text class="num" x="58" y="118">3</text><text class="tx" x="58" y="146" text-anchor="middle">스몰 포워드</text>
+<circle class="spot" cx="96" cy="186" r="13"/><text class="num" x="96" y="186">4</text><text class="tx" x="96" y="214" text-anchor="middle">파워 포워드</text>
+<circle class="spot" cx="226" cy="186" r="13"/><text class="num" x="226" y="186">5</text><text class="tx" x="226" y="214" text-anchor="middle">센터</text>
+</svg>`,
   easy:'코트의 5명이 가드·포워드·센터로 역할을 나눠요.',
   field:'포인트 가드(1번)는 공을 몰고 넘어와 작전을 이끌어요. 슈팅 가드(2번)는 바깥에서 슛을 많이 쏘아요. 스몰 포워드(3번)는 안팎을 오가며 점수를 내요. 파워 포워드(4번)와 센터(5번)는 키가 커서 골대 밑에서 리바운드(빗나간 공 잡기)와 블록슛(슛 막기)을 맡아요. 1~5번은 등번호가 아니라 역할을 부르는 숫자예요. 4·5번을 묶어 "빅맨"이라고도 해요.',
   book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요.'}

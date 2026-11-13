@@ -100,6 +100,20 @@ const rules=[
   field:'스틱을 어깨보다 높이 들고 상대 머리나 얼굴에 닿으면 2분 퇴장이에요. 피가 나는 등 다치게 하면 더 무거운 벌을 받아요. 슛하려고 스틱을 휘두르다 닿은 건 봐주기도 해요.',
   book:[['60.1','하이스틱'],['60.2','마이너 페널티']]},
  {id:'positions',name:'포지션',cats:['포지션'],
+  figCap:'왼쪽이 우리 골대 · 오른쪽으로 공격할 때',
+  fig:`<svg viewBox="0 0 320 212" role="img" aria-label="아이스하키 링크. 왼쪽 우리 골대 앞에 골리, 그 앞에 수비수 2명, 가운데에 센터, 위아래 양옆에 윙 2명">
+<rect class="ln" x="8" y="10" width="304" height="180" rx="44"/>
+<path class="ln" d="M160 10 V190"/>
+<path class="ln dash" d="M112 10 V190 M208 10 V190"/>
+<rect class="ln" x="26" y="88" width="8" height="24"/>
+<rect class="ln" x="286" y="88" width="8" height="24"/>
+<circle class="spot on" cx="50" cy="100" r="13"/><text class="num" x="50" y="100">골</text><text class="tx em" x="50" y="128" text-anchor="middle">골리</text>
+<circle class="spot" cx="78" cy="50" r="13"/><text class="num" x="78" y="50">수</text><text class="tx" x="78" y="78" text-anchor="middle">수비수</text>
+<circle class="spot" cx="78" cy="150" r="13"/><text class="num" x="78" y="150">수</text><text class="tx" x="78" y="178" text-anchor="middle">수비수</text>
+<circle class="spot" cx="184" cy="100" r="13"/><text class="num" x="184" y="100">센</text><text class="tx" x="184" y="128" text-anchor="middle">센터</text>
+<circle class="spot" cx="244" cy="40" r="13"/><text class="num" x="244" y="40">윙</text><text class="tx" x="244" y="68" text-anchor="middle">레프트 윙</text>
+<circle class="spot" cx="244" cy="150" r="13"/><text class="num" x="244" y="150">윙</text><text class="tx" x="244" y="178" text-anchor="middle">라이트 윙</text>
+</svg>`,
   easy:'골리 1명, 공격수 3명, 수비수 2명이 빙판에 나가요.',
   field:'골리(골키퍼)는 두꺼운 보호대를 차고 골대를 지켜요. 공격수는 가운데 센터 1명과 양옆 윙 2명이에요. 센터는 심판이 퍽(공 대신 쓰는 고무 원판)을 떨어뜨려 경기를 다시 시작할 때(페이스오프) 주로 퍽을 따내요. 수비수(디펜스) 2명은 우리 골대 앞을 막고, 공격할 때는 뒤에서 받쳐 줘요. 공격수 3명과 수비수 2명이 한 묶음(라인)으로 함께 바뀌어요.',
   book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요.'}

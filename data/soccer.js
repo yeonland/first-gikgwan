@@ -113,6 +113,25 @@ const rules=[
   field:'골인지 아닌지, 페널티킥, 바로 퇴장, 엉뚱한 선수에게 카드를 준 경우 네 가지만 봐요. 주심이 경기장 옆 화면으로 직접 확인하기도 해요(온필드 리뷰). 판독으로 흐른 시간은 추가시간에 더해져요.',
   book:[['VAR 프로토콜 1','원칙'],['VAR 프로토콜 2','리뷰 대상이 되는 판정']]},
  {id:'positions',name:'포지션',cats:['포지션'],
+  figCap:'4-4-2 포메이션 · 아래쪽이 우리 골대',
+  fig:`<svg viewBox="0 0 320 300" role="img" aria-label="축구장. 아래 우리 골대 앞에 골키퍼, 그 앞에 수비수 4명(양옆 풀백, 가운데 센터백 둘), 미드필더 4명, 맨 앞에 공격수 2명">
+<rect class="ln" x="30" y="6" width="260" height="288"/>
+<path class="ln" d="M30 150 H290"/>
+<circle class="ln" cx="160" cy="150" r="26"/>
+<rect class="ln" x="95" y="234" width="130" height="60"/>
+<rect class="ln" x="95" y="6" width="130" height="60"/>
+<circle class="spot on" cx="160" cy="262" r="13"/><text class="num" x="160" y="262">골</text><text class="tx em" x="160" y="290" text-anchor="middle">골키퍼</text>
+<circle class="spot" cx="62" cy="198" r="13"/><text class="num" x="62" y="198">수</text><text class="tx" x="62" y="226" text-anchor="middle">풀백</text>
+<circle class="spot" cx="124" cy="198" r="13"/><text class="num" x="124" y="198">수</text><text class="tx" x="124" y="226" text-anchor="middle">센터백</text>
+<circle class="spot" cx="196" cy="198" r="13"/><text class="num" x="196" y="198">수</text><text class="tx" x="196" y="226" text-anchor="middle">센터백</text>
+<circle class="spot" cx="258" cy="198" r="13"/><text class="num" x="258" y="198">수</text><text class="tx" x="258" y="226" text-anchor="middle">풀백</text>
+<circle class="spot" cx="62" cy="140" r="13"/><text class="num" x="62" y="140">미</text><text class="tx" x="62" y="168" text-anchor="middle">측면</text>
+<circle class="spot" cx="124" cy="140" r="13"/><text class="num" x="124" y="140">미</text><text class="tx" x="124" y="168" text-anchor="middle">중앙</text>
+<circle class="spot" cx="196" cy="140" r="13"/><text class="num" x="196" y="140">미</text><text class="tx" x="196" y="168" text-anchor="middle">중앙</text>
+<circle class="spot" cx="258" cy="140" r="13"/><text class="num" x="258" y="140">미</text><text class="tx" x="258" y="168" text-anchor="middle">측면</text>
+<circle class="spot" cx="124" cy="72" r="13"/><text class="num" x="124" y="72">공</text><text class="tx" x="124" y="100" text-anchor="middle">공격수</text>
+<circle class="spot" cx="196" cy="72" r="13"/><text class="num" x="196" y="72">공</text><text class="tx" x="196" y="100" text-anchor="middle">공격수</text>
+</svg>`,
   easy:'골키퍼 1명과 수비수·미드필더·공격수 10명이 뛰어요.',
   field:'골키퍼(GK)는 우리 골대 앞 큰 네모(페널티 에어리어) 안에서 손을 쓸 수 있는 유일한 선수라 혼자 다른 색 옷을 입어요. 수비수(DF)는 가운데 센터백과 양옆 풀백(측면 수비수)으로 나뉘어요. 미드필더(MF)는 가운데에서 공을 이어 주고 공격과 수비를 오가요. 공격수(FW)는 골을 노리는데, 가운데는 스트라이커, 양옆은 윙어라고 해요. "4-4-2"처럼 쓰는 숫자는 포메이션(선수 배치)이에요. 골키퍼를 빼고 뒤에서부터 수비수-미드필더-공격수 수를 적은 거예요.',
   book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요. 규칙서에는 골키퍼만 따로 나와요.'}
