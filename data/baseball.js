@@ -45,7 +45,7 @@ const bookNow=null;
 // video: 공식 채널(방송사·구단·협회) 유튜브 영상만, 퍼가기 허용을 확인한 것만 {id, start(몇 초부터, 선택), by(채널), len, title, game(언제·어느 팀 경기, 홈 vs 원정)}. 여러 개면 videos:[{label(탭 이름), desc(설명), ...}]
 // book: [조항, 무엇에 관한 조항]. 조항 번호는 2026 공식야구규칙(KBO)과 대조한 것만. KBO 리그 규정은 이름만
 // 아웃송·볼넷송(inning·kbb 카드): 나무위키 KIA·롯데 응원가 문서 2026.10.17 확인. 곡은 구단마다 다르고 자주 바뀜
-const ruleCats=['점수','아웃','출루','헷갈리는 룰','KBO 규정'];
+const ruleCats=['점수','아웃','출루','헷갈리는 룰','KBO 규정','포지션'];
 const rules=[
  {id:'score',name:'득점',cats:['점수'],
   easy:'주자가 1·2·3루를 차례로 밟고 홈까지 오면 1점이에요.',
@@ -117,7 +117,27 @@ const rules=[
  {id:'clock',name:'피치클락',cats:['KBO 규정'],
   easy:'투수와 타자 모두 정해진 시간 안에 준비해야 해요.',
   field:'2026년 KBO는 주자가 없으면 18초, 있으면 23초 안에 투구를 시작해야 해요. 투수가 늦으면 볼, 타자가 8초 남았을 때까지 타석에서 준비하지 않으면 스트라이크. 타자 사이 간격은 33초예요. 1군은 견제 횟수 제한이 없어요.',
-  book:[['KBO 리그 규정','피치클락 (2026년 18초·23초로 단축)']]}
+  book:[['KBO 리그 규정','피치클락 (2026년 18초·23초로 단축)']]},
+ {id:'positions',name:'수비 포지션 9개',cats:['포지션'],
+  figCap:'포수 쪽에서 외야를 본 모습 · 숫자는 기록에 쓰는 포지션 번호',
+  fig:`<svg viewBox="0 0 320 276" role="img" aria-label="야구장 수비 위치. 외야에 좌익수 7, 중견수 8, 우익수 9. 내야에 3루수 5, 유격수 6, 2루수 4, 1루수 3. 가운데 투수 1, 홈 뒤 포수 2">
+<path class="ln" d="M160 236 L20 96 M160 236 L300 96"/>
+<path class="ln" d="M20 96 Q160 -36 300 96"/>
+<path class="ln" d="M160 236 L224 172 L160 108 L96 172 Z"/>
+<rect class="base" x="154" y="230" width="12" height="12" transform="rotate(45 160 236)"/>
+<circle class="spot" cx="80" cy="64" r="13"/><text class="num" x="80" y="64">7</text><text class="tx" x="80" y="92" text-anchor="middle">좌익수</text>
+<circle class="spot" cx="160" cy="34" r="13"/><text class="num" x="160" y="34">8</text><text class="tx" x="160" y="62" text-anchor="middle">중견수</text>
+<circle class="spot" cx="240" cy="64" r="13"/><text class="num" x="240" y="64">9</text><text class="tx" x="240" y="92" text-anchor="middle">우익수</text>
+<circle class="spot on" cx="124" cy="116" r="13"/><text class="num" x="124" y="116">6</text><text class="tx em" x="124" y="144" text-anchor="middle">유격수</text>
+<circle class="spot" cx="196" cy="116" r="13"/><text class="num" x="196" y="116">4</text><text class="tx" x="196" y="144" text-anchor="middle">2루수</text>
+<circle class="spot" cx="78" cy="158" r="13"/><text class="num" x="78" y="158">5</text><text class="tx" x="78" y="186" text-anchor="middle">3루수</text>
+<circle class="spot" cx="242" cy="158" r="13"/><text class="num" x="242" y="158">3</text><text class="tx" x="242" y="186" text-anchor="middle">1루수</text>
+<circle class="spot" cx="160" cy="176" r="13"/><text class="num" x="160" y="176">1</text><text class="tx" x="160" y="204" text-anchor="middle">투수</text>
+<circle class="spot" cx="160" cy="260" r="13"/><text class="num" x="160" y="260">2</text><text class="tx" x="182" y="264">포수</text>
+</svg>`,
+  easy:'수비할 때 9명이 정해진 자리에 서요. 자리마다 이름과 번호가 있어요.',
+  field:'투수(1)는 가운데 마운드(흙 언덕)에서 공을 던지고, 포수(2)는 홈 뒤에 앉아 그 공을 받아요. 내야(베이스 안쪽)에는 1루수(3)·2루수(4)·3루수(5)·유격수(6)가 서요. 유격수는 2루와 3루 사이를 지키는데, 땅볼이 많이 와서 수비 잘하는 선수가 맡아요. 외야(잔디 쪽 먼 곳)에는 좌익수(7)·중견수(8)·우익수(9)가 서서 멀리 뜬 공을 잡아요. 왼쪽·오른쪽은 홈에서 바라본 방향이에요. 중계에서 "6-4-3 병살(아웃 둘을 한 번에)"이라고 하면 공이 유격수→2루수→1루수로 이어졌다는 뜻이에요. 지명타자(투수 대신 타석에만 서는 선수)는 수비에 나가지 않아요.',
+  book:[],bookNote:'포지션 이름은 규칙서 조항이 아니라 경기에서 쓰는 말이에요. 번호는 경기 기록지에서 쓰는 약속이에요.'}
 ];
 const homeRules=['score','kbb','dropk'];
 const ruleFine='조항 번호는 <a href="https://6ptotvmi5753.edge.naverncp.com/KBO_FILE/ebook/pdf/2026_%EC%95%BC%EA%B5%AC%EA%B7%9C%EC%B9%99.pdf" target="_blank" rel="noopener">KBO 2026 공식야구규칙</a>과 대조했고, 문장은 규칙서를 옮기지 않고 풀어 썼어요. KBO 규정은 <a href="https://www.koreabaseball.com/Kbo/League/GameManage2026.aspx" target="_blank" rel="noopener">KBO 2026 주요 규정·규칙</a>(2026.10.13 확인) 기준이에요.';

@@ -1298,7 +1298,7 @@ function vidsHTML(r){
 }
 const ruleCard=r=>`<details class="rcard" data-id="${r.id}"><summary><span class="lb">${r.cats.map(esc).join(' · ')}</span><b>${esc(r.name)}</b><span>${esc(r.easy)}</span></summary>
   ${vidsHTML(r)}${r.fig?`<figure class="fig">${r.fig}<figcaption>${esc(r.figCap||'')}</figcaption></figure>`:''}<dl><div><dt>경기에서 보면</dt><dd>${esc(r.field)}</dd></div>
-  <div><dt>규정집에서는</dt><dd>${r.book.length?`<ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul>`:'<span class="note">조항 번호는 전체 규칙서로 확인한 뒤 채워요</span>'}</dd></div></dl><button type="button" class="more share" data-share="${r.id}">이 카드 링크 보내기</button></details>`;
+  <div><dt>규정집에서는</dt><dd>${r.book.length?`<ul class="src">${r.book.map(([no,what])=>`<li><b>${esc(no)}</b>${esc(what)}</li>`).join('')}</ul>`:`<span class="note">${esc(r.bookNote||'조항 번호는 전체 규칙서로 확인한 뒤 채워요')}</span>`}</dd></div></dl><button type="button" class="more share" data-share="${r.id}">이 카드 링크 보내기</button></details>`;
 function renderRules(){
   const open=new Set([...document.querySelectorAll('#rule-list .rcard[open]')].map(d=>d.dataset.id));
   // 검색: 띄어쓰기·대소문자 무시. 이름, 쉬운 말, 경기에서 보면, 분류, 조항까지 찾음
