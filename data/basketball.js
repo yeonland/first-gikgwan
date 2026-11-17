@@ -139,11 +139,11 @@ function nextGame(t){
     :home?`다음 홈경기 ${md(home[0])} ${parkShort[home[4]]} vs ${nameOf(home[3])}`:'다음 홈경기는 리그 일정표에서 확인하세요']);
   return {round:`${t[5]} 정규리그`,home:nameOf(g[2]),away:nameOf(g[3]),date:g[0],time:g[1],park:g[4],rows};
 }
-const nextNote='11.10 기준 KBL·WKBL 일정';
+const nextNote='11.17 기준 KBL·WKBL 일정';
 
-const bookNow={note:'11.10 기준',date:'2026-11-14',title:'2026-27 KBL·WKBL 정규리그 · 이번 주말',
-  rows:[['KBL 이번 주말','11.14(토) LG vs 현대모비스, KCC vs SK, 삼성 vs 정관장 · 11.15(일) LG vs KT, 소노 vs DB, KCC vs 가스공사'],
-    ['WKBL 이번 주말','11.14(토) 삼성생명 vs KB스타즈, 하나은행 vs 신한은행 · 11.15(일) 삼성생명 vs BNK'],
+const bookNow={note:'11.17 기준',date:'2026-11-18',title:'2026-27 KBL·WKBL 정규리그 · 이번 주',
+  rows:[['KBL 이번 주','11.18(수) 삼성 vs LG · 11.19(목) KT vs SK, 정관장 vs KCC. 11.20~11.30 일정표에는 KBL 경기가 없어요'],
+    ['WKBL 이번 주','11.18(수) 신한은행 vs KB스타즈 · 11.20(금) 하나은행 vs 삼성생명 · 11.21(토) KB스타즈 vs 신한은행, BNK vs 우리은행 · 11.22(일) KB스타즈 vs 삼성생명'],
     ['예매처',`KBL은 <a href="https://www.kbl.or.kr" target="_blank" rel="noopener">KBL 홈페이지</a>·앱, WKBL은 <a href="${WKBL_T}" target="_blank" rel="noopener">WKBL 티켓 예매</a>`],
     ['기간','KBL 10.03 ~ 2027.04.11, 팀당 54경기 · WKBL 11.01부터 팀당 35경기']],
   fine:'서울 삼성은 잠실실내체육관 철거로 이번 시즌 SK와 잠실학생체육관을 같이 써요.'};
