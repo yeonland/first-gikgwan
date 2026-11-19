@@ -77,13 +77,13 @@ function nextGame(t){
     rows:g[4]===BEXCO?[['장소',g[4]],['예매','티켓링크'],['참고','11.21·22 대진은 이 경기 결과에 따라 정해져요']]
       :[['장소',g[4]],['예매','온라인 경기라 표가 없어요. SOOP owesports 채널 중계'],['참고','메인 스테이지 11.20~22 부산 벡스코 오디토리움']]};
 }
-const nextNote='11.17 기준 OWCS 공식 일정';
+const nextNote='11.19 기준 OWCS 공식 일정';
 
-// 온라인 스테이지 최종 순위와 11.20 대진은 owtics.gg, 진출 6팀은 owcsasia.com (2026.11.17 확인)
-const bookNow={note:'11.17 기준',date:'2026-11-20',title:'OWCS 아시아 그랜드 파이널 · 부산',
+// 온라인 스테이지 최종 순위와 11.20 대진은 owtics.gg, 진출 6팀은 owcsasia.com (2026.11.17 확인). 경기 시각 16·18·20시는 OWCS 아시아 공식 X 예매 안내·인벤 글로벌 (2026.11.19 확인), 토·일 경기 순서는 owcsasia.com에 확정 후 공개라고 나옴
+const bookNow={note:'11.19 기준',date:'2026-11-20',title:'OWCS 아시아 그랜드 파이널 · 부산',
   rows:[['일정','메인 스테이지 11.20(금)~22(일). 20일 1라운드·시드 결정전, 21일 5·6위전·준결승, 22일 3·4위전·결승'],
     ['장소','부산 벡스코 오디토리움. 부산 2호선 센텀시티역·벡스코역'],
-    ['11.20(금)','16:00 The Gatos Guapos vs CR · 18:00 T1 vs VARREL · 20:00 Falcons vs ZETA (시드 결정전). 토·일 시작 시각은 확정되면 공개돼요'],
+    ['11.20(금)','16:00 The Gatos Guapos vs CR · 18:00 T1 vs VARREL · 20:00 Falcons vs ZETA (시드 결정전). 공식 예매 안내의 경기 시각은 16:00·18:00·20:00이고, 토·일 경기 순서는 확정되면 공개돼요'],
     ['한국 지역','T1(우승), ZETA, CR, Falcons 모두 메인 스테이지 진출. 조 1위는 Falcons(A조)·ZETA(B조)'],
     ['예매처','<a href="https://www.ticketlink.co.kr/sports/1262/686" target="_blank" rel="noopener">티켓링크</a> (3일 모두 예매 중)'],
     ['중계','<a href="https://www.sooplive.com/station/owesports" target="_blank" rel="noopener">SOOP owesports</a> 채널']],
