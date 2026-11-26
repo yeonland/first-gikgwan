@@ -2,7 +2,7 @@
 // 일정이 매일 바뀌어서 저장본을 먼저 쓰면 옛 일정이 보임. 그래서 순서를 인터넷 → 저장본으로 둠
 const CACHE='first-gikgwan-v1';
 const CORE=['./','index.html','manifest.json','icons/icon.svg','icons/icon-192.png',
-  'fonts/KBO-Dia-Gothic_medium.woff','fonts/KBO-Dia-Gothic_bold.woff',
+  'fonts/KBO-Dia-Gothic_light.woff','fonts/KBO-Dia-Gothic_medium.woff','fonts/KBO-Dia-Gothic_bold.woff',
   ...['baseball','volleyball','basketball','hockey','handball','soccer','esports'].map(id=>`data/${id}.js`)];
 
 self.addEventListener('install',e=>{

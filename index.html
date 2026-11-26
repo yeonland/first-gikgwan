@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#f5f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#151618" media="(prefers-color-scheme: dark)">
 <!-- 본문 글꼴은 페이지를 그리기 전에 미리 받아 둠 (휴대폰에서 시스템 글꼴로 오래 보이지 않게) -->
+<link rel="preload" href="fonts/KBO-Dia-Gothic_light.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/KBO-Dia-Gothic_medium.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/KBO-Dia-Gothic_bold.woff" as="font" type="font/woff" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -21,8 +22,10 @@
   [hidden]{display:none!important}
   body{margin:0}
   img,svg{max-width:100%}
-  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:100 500;font-display:swap}
-  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:600 900;font-display:swap}
+  /* 굵기 세 단계: 보통 글씨 Light · 목록 제목 Medium · 제목·팀 이름 Bold (글꼴 자체가 두꺼워서 한 단계씩 낮춤) */
+  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_light.woff") format("woff");font-weight:100 400;font-display:swap}
+  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_medium.woff") format("woff");font-weight:500 600;font-display:swap}
+  @font-face{font-family:"KBO Dia Gothic";src:url("fonts/KBO-Dia-Gothic_bold.woff") format("woff");font-weight:700 900;font-display:swap}
   /* 로고 글자: 강원교육새음. 파일은 재배포 금지라 저장소에 없음 → 눈누 CDN을 먼저, 인터넷이 없을 때만 로컬 파일 */
   @font-face{font-family:"GangwonEducationSaeum";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff") format("woff"),url("fonts/GangwonEduSaeeum_OTFMediumA.woff") format("woff");font-weight:normal;font-display:swap}
   /* Layout: one phone column on plain diary paper; games are printed tickets, their numbers glow like a scoreboard */
@@ -121,7 +124,7 @@
   .row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
   .row:first-child{border-top:0}
   .row svg{width:28px;height:28px}
-  .row b{display:block;font-size:var(--fs-body)}
+  .row b{display:block;font-size:var(--fs-body);font-weight:500}
   .row span{font-size:var(--fs-cap);color:var(--pencil)}
   .list-in{display:contents}
   .row.other{width:100%;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
@@ -154,7 +157,7 @@
   .wk-games{display:flex;flex-direction:column;gap:6px;min-width:0}
   .wk-game{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
   .wk-game svg{width:20px;height:20px}
-  .wk-game b{display:block;font-size:var(--fs-body)}
+  .wk-game b{display:block;font-size:var(--fs-body);font-weight:500}
   .wk-game span{font-size:var(--fs-cap);color:var(--pencil)}
   /* 오늘 경기: 상자·왼쪽 색 줄 없이 큰 경기 이름 + 밑줄 친 바로가기 */
   .today-game>b{font-size:var(--fs-em);line-height:1.3}
@@ -224,7 +227,7 @@
   .steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
   .steps li:first-child{border-top:0}
   .steps li::before{content:counter(s);font-size:var(--fs-title);font-weight:700;line-height:1.2;color:var(--team-ink)}
-  .steps b{display:block}
+  .steps b{display:block;font-weight:500}
   .steps span{font-size:var(--fs-cap);color:var(--pencil)}
   .clubs .row{grid-template-columns:10px minmax(0,1fr) auto}
   .clubs .dot{width:10px;height:10px;border-radius:50%}
